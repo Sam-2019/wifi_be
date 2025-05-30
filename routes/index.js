@@ -14,10 +14,11 @@ import path from "path";
 const router = express.Router();
 router.get("/", async function (req, res) {
   try {
-    res.sendFile(path.join(__dirname + "/public/hello.html"));
+    res.status(200);
+    res.sendFile(path.join(__dirname + "/public/200.html"));
   } catch (error) {
-    console.error("Error in /:", error);
-    res.status(500).json({ message: "Internal Server Error" });
+    res.status(500);
+    res.sendFile(path.join(__dirname + "/public/500.html"));
   }
 });
 

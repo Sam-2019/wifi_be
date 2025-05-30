@@ -4,34 +4,71 @@ import { mikro } from "../config/mikrotik.js";
 import {
   addPendingRegistration,
   findPendingRegistration,
+  getPendingRegistration,
 } from "../db/repository/pending_registration.js";
 import { writeToSheet } from "../config/gSheet.js";
 import { addSale } from "../db/repository/sale.js";
-import { success } from "../config/constants.js";
+import { success, hubtel, __dirname } from "../config/constants.js";
+import path from "path";
 
 const router = express.Router();
 router.get("/", async function (req, res) {
   try {
-    res.status(200).json({ message: "Hello World!" });
+    res.sendFile(path.join(__dirname + "/public/hello.html"));
   } catch (error) {
     console.error("Error in /:", error);
     res.status(500).json({ message: "Internal Server Error" });
   }
 });
 
-router.get("/register", async function (req, res) {
+router.get("/api/register/sale", async function (req, res) {
   const results = req.body;
 
   try {
     console.log(results);
-    res.status(200).json({ message: "Registrations" });
+    const sales = await getSales();
+    if (!sales || sales.length === 0) {
+      return res.status(404).json({ message: "No sales found" });
+    }
+    res.status(200).json({ message: sales });
   } catch (error) {
     console.error("Error in /register:", error);
     res.status(500).json({ message: "Internal Server Error" });
   }
 });
 
-router.post("/register", async function (req, res) {
+router.post("/api/register/sale", async function (req, res) {
+  const results = req.body;
+
+  try {
+    await addSale(results);
+    await writeToSheet(results);
+    res.status(200).json({ message: "Registration Successful" });
+  } catch (error) {
+    console.error("Error in /register:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+});
+
+router.get("/api/register/sale/intent", async function (req, res) {
+  const results = req.body;
+
+  try {
+    console.log(results);
+    const pending_registrations = await getPendingRegistration();
+    if (!pending_registrations || pending_registrations.length === 0) {
+      return res
+        .status(404)
+        .json({ message: "No pending registrations found" });
+    }
+    res.status(200).json({ message: pending_registrations });
+  } catch (error) {
+    console.error("Error in /register:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+});
+
+router.post("/api/register/sale/intent", async function (req, res) {
   const results = req.body;
 
   try {
@@ -44,7 +81,7 @@ router.post("/register", async function (req, res) {
   }
 });
 
-router.post("/payment/callback", async function (req, res) {
+router.post("/api/payment/callback", async function (req, res) {
   const results = req.body;
   const status = results.Status;
 
@@ -66,12 +103,12 @@ router.post("/payment/callback", async function (req, res) {
     }
 
     const stringifyResponse = JSON.stringify(results);
-    const updatedDate = {
+    const updatedData = {
       ...foundPendingRegistration.toObject(),
-      provider: "HUBTEL",
+      provider: hubtel,
       providerResponse: stringifyResponse,
     };
-    await addSale(updatedDate);
+    await addSale(updatedData);
 
     res.status(200).json({ message: success });
   } catch (error) {
@@ -80,7 +117,7 @@ router.post("/payment/callback", async function (req, res) {
   }
 });
 
-router.get("/mikrotik", async function (req, res) {
+router.get("/api/mikrotik", async function (req, res) {
   await mikro
     .talk(["/interface/print"])
     .then((response) => {
@@ -95,7 +132,7 @@ router.get("/mikrotik", async function (req, res) {
     });
 });
 
-router.post("/mikrotik", async function (req, res) {
+router.post("/api/mikrotik", async function (req, res) {
   await mikro
     .talk(["/interface/print"])
     .then((response) => {

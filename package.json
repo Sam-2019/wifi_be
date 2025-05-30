@@ -19,7 +19,8 @@
     "express": "^4.21.2",
     "helmet": "^8.1.0",
     "mikro-client": "^0.5.3",
-    "mongoose": "^8.15.1"
+    "mongoose": "^8.15.1",
+    "path": "^0.12.7"
   },
   "devDependencies": {
     "nodemon": "^3.1.10",

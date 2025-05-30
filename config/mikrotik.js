@@ -1,3 +1,5 @@
+import { MikroClient } from "mikro-client";
+
 export const mikrotikOptions = {
   host: "XXX.XXX.XXX.XXX",
   port: "XXXX",
@@ -5,3 +7,5 @@ export const mikrotikOptions = {
   password: "xxxxx",
   timeout: 5000,
 };
+
+export const mikro = new MikroClient(mikrotikOptions);

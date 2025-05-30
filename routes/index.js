@@ -1,7 +1,6 @@
 import "dotenv/config";
 import express from "express";
-import { MikroClient } from "mikro-client";
-import { mikrotikOptions } from "../config/mikrotik.js";
+import { mikro } from "../config/mikrotik.js";
 import {
   addPendingRegistration,
   findPendingRegistration,
@@ -12,21 +11,37 @@ import { success } from "../config/constants.js";
 
 const router = express.Router();
 router.get("/", async function (req, res) {
-  return res.status(200).json({ message: "Hello World!" });
+  try {
+    res.status(200).json({ message: "Hello World!" });
+  } catch (error) {
+    console.error("Error in /:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
 });
 
 router.get("/register", async function (req, res) {
   const results = req.body;
-  console.log(results);
-  return res.send("Register endpoint");
+
+  try {
+    console.log(results);
+    res.status(200).json({ message: "Registrations" });
+  } catch (error) {
+    console.error("Error in /register:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
 });
 
 router.post("/register", async function (req, res) {
   const results = req.body;
-  const parseResults = JSON.parse(results.body);
-  await addPendingRegistration(parseResults);
-  await writeToSheet(parseResults);
-  res.status(200).json({ message: "Registration Successful" });
+
+  try {
+    await addPendingRegistration(results);
+    await writeToSheet(results);
+    res.status(200).json({ message: "Registration Successful" });
+  } catch (error) {
+    console.error("Error in /register:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
 });
 
 router.post("/payment/callback", async function (req, res) {
@@ -40,46 +55,58 @@ router.post("/payment/callback", async function (req, res) {
 
   const responseData = results.Data;
   const clientReference = responseData.ClientReference;
-  const foundPendingRegistration = await findPendingRegistration(
-    clientReference
-  );
 
-  if (!foundPendingRegistration) {
-    return res.status(404).send("Registration not found");
+  try {
+    const foundPendingRegistration = await findPendingRegistration(
+      clientReference
+    );
+
+    if (!foundPendingRegistration) {
+      return res.status(404).send("Registration not found");
+    }
+
+    const stringifyResponse = JSON.stringify(results);
+    const updatedDate = {
+      ...foundPendingRegistration.toObject(),
+      provider: "HUBTEL",
+      providerResponse: stringifyResponse,
+    };
+    await addSale(updatedDate);
+
+    res.status(200).json({ message: success });
+  } catch (error) {
+    console.error("Error processing payment callback:", error);
+    return res.status(500).send("Internal Server Error");
   }
-
-  const stringifyResponse = JSON.stringify(results);
-  const updatedDate = {
-    ...foundPendingRegistration.toObject(),
-    provider: "HUBTEL",
-    providerResponse: stringifyResponse,
-  };
-  await addSale(updatedDate);
-
-  res.status(200).json({ message: success });
 });
 
 router.get("/mikrotik", async function (req, res) {
-  const mikro = new MikroClient(mikrotikOptions);
   await mikro
     .talk(["/interface/print"])
     .then((response) => {
       console.log(response);
+      mikro.close();
+      res.status(200).json({ message: "Mikrotik command executed" });
     })
     .catch((error) => {
       console.error(error);
+      mikro.close();
+      res.status(400).json({ message: "Mikrotik command failed" });
     });
 });
 
 router.post("/mikrotik", async function (req, res) {
-  const mikro = new MikroClient(mikrotikOptions);
   await mikro
     .talk(["/interface/print"])
     .then((response) => {
       console.log(response);
+      mikro.close();
+      res.status(200).json({ message: "Mikrotik command executed" });
     })
     .catch((error) => {
       console.error(error);
+      mikro.close();
+      res.status(400).json({ message: "Mikrotik command failed" });
     });
 });
 

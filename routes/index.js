@@ -1,6 +1,6 @@
 import "dotenv/config";
 import express from "express";
-import { mikro } from "../config/mikrotik.js";
+import { createUser } from "../mikrotik/index.js";
 import {
   addPendingRegistration,
   findPendingRegistration,
@@ -117,33 +117,17 @@ router.post("/api/payment/callback", async function (req, res) {
   }
 });
 
-router.get("/api/mikrotik", async function (req, res) {
-  await mikro
-    .talk(["/interface/print"])
-    .then((response) => {
-      console.log(response);
-      mikro.close();
-      res.status(200).json({ message: "Mikrotik command executed" });
-    })
-    .catch((error) => {
-      console.error(error);
-      mikro.close();
-      res.status(400).json({ message: "Mikrotik command failed" });
-    });
-});
+router.get("/api/mikrotik", async function (req, res) {});
 
 router.post("/api/mikrotik", async function (req, res) {
-  await mikro
-    .talk(["/interface/print"])
+  const results = req.body;
+  createUser(resultsusername, results.password)
     .then((response) => {
-      console.log(response);
-      mikro.close();
-      res.status(200).json({ message: "Mikrotik command executed" });
+      res.status(200).json({ message: "User created successfully", response });
     })
     .catch((error) => {
-      console.error(error);
-      mikro.close();
-      res.status(400).json({ message: "Mikrotik command failed" });
+      console.error("Error creating user:", error);
+      res.status(500).json({ message: "Internal Server Error" });
     });
 });
 

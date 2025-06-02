@@ -5,20 +5,22 @@ import { authMiddleware } from "../config/middleware.js";
 import helmet from "helmet";
 import cors from "cors";
 import { connectDB } from "../db/index.js";
-const app = express();
 
-app.use(helmet());
-app.use(cors());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(json());
+
+const app = express();
+// app.use(helmet());
+// app.use(cors());
+// app.use(bodyParser.json());
+// app.use(bodyParser.urlencoded({ extended: false }));
+// app.use(json());
 // app.use(authMiddleware);
 
-connectDB();
-app.use(express.static("./public"));
+// connectDB();
+// app.use(express.static("./public"));
 
-app.use("/", router);
+// app.use("/", router);
+app.set('port', process.env.PORT || 4000)
 
-app.listen(4000, () => console.log("Server ready on port 4000."));
+app.listen(5980, () => console.log("Server ready on port 5980."));
 
 export default app;

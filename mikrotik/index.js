@@ -6,7 +6,7 @@ const mikrotikOptions = {
   port: "XXXX",
   username: "xxxxx",
   password: "xxxxx",
-  timeout: 5000,
+  // timeout: 5000,
 };
 
 // Create a new instance of MikroClient with the provided options

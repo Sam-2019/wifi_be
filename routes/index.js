@@ -15,10 +15,10 @@ const router = express.Router();
 router.get("/", async function (req, res) {
   try {
     res.status(200);
-    res.sendFile(path.join(__dirname + "/public/200.html"));
+    res.sendFile(path.join(__dirname + "/public/up.html"));
   } catch (error) {
     res.status(500);
-    res.sendFile(path.join(__dirname + "/public/500.html"));
+    res.sendFile(path.join(__dirname + "/public/down.html"));
   }
 });
 

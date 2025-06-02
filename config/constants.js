@@ -8,9 +8,12 @@ const unauthorized = "Unauthorized";
 const forbidden = "Forbidden";
 const authorization = "authorization";
 const success = "Success";
-const hubtel = process.env.VITE_HUBTEL;
+const hubtel = "hubtel";
 
 const __dirname = path.resolve();
+const server_down = "server is down";
+const server_up = "server is up";
+const server_url = "https://wifi-be.onrender.com";
 
 export {
   development,
@@ -21,4 +24,7 @@ export {
   success,
   hubtel,
   __dirname,
+  server_down,
+  server_up,
+  server_url,
 };

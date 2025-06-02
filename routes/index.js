@@ -1,6 +1,5 @@
 import "dotenv/config";
 import express from "express";
-import { createUser } from "../mikrotik/index.js";
 import {
   addPendingRegistration,
   findPendingRegistration,
@@ -121,15 +120,15 @@ router.post("/api/payment/callback", async function (req, res) {
 router.get("/api/mikrotik", async function (req, res) {});
 
 router.post("/api/mikrotik", async function (req, res) {
-  const results = req.body;
-  createUser(resultsusername, results.password)
-    .then((response) => {
-      res.status(200).json({ message: "User created successfully", response });
-    })
-    .catch((error) => {
-      console.error("Error creating user:", error);
-      res.status(500).json({ message: "Internal Server Error" });
-    });
+  // const results = req.body;
+  // createUser(resultsusername, results.password)
+  //   .then((response) => {
+  //     res.status(200).json({ message: "User created successfully", response });
+  //   })
+  //   .catch((error) => {
+  //     console.error("Error creating user:", error);
+  //     res.status(500).json({ message: "Internal Server Error" });
+  //   });
 });
 
 export default router;

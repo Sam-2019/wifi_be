@@ -5,6 +5,7 @@ import { authMiddleware } from "../config/middleware.js";
 import helmet from "helmet";
 import cors from "cors";
 import { connectDB } from "../db/index.js";
+import { ping } from "./pinger.js";
 
 
 const app = express();
@@ -20,6 +21,7 @@ app.use(express.static("./public"));
 
 app.use("/", router);
 app.set('port', process.env.PORT || 4000)
+ping();
 
 app.listen(4000, () => console.log("Server ready on port 4000."));
 

@@ -13,7 +13,7 @@ const hubtel = "hubtel";
 const __dirname = path.resolve();
 const server_down = "server is down";
 const server_up = "server is up";
-const server_url = "https://wifi-be.onrender.com";
+const server_url = process.env.SERVER_URL;
 
 export {
   development,

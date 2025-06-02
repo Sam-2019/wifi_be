@@ -1,10 +1,10 @@
 import router from "../routes/index.js";
 import express, { json } from "express";
 import bodyParser from "body-parser";
-import { authMiddleware } from "../config/middleware.js";
+// import { authMiddleware } from "../config/middleware.js";
 import helmet from "helmet";
 import cors from "cors";
-import { connectDB } from "../db/index.js";
+// import { connectDB } from "../db/index.js";
 import { ping } from "./pinger.js";
 
 

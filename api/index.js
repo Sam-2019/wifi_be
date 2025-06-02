@@ -21,6 +21,6 @@ app.use(express.static("./public"));
 app.use("/", router);
 app.set('port', process.env.PORT || 4000)
 
-app.listen(5980, () => console.log("Server ready on port 5980."));
+app.listen(4000, () => console.log("Server ready on port 4000."));
 
 export default app;

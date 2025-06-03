@@ -6,7 +6,7 @@ import {
   getPendingRegistration,
 } from "../db/repository/pending_registration.js";
 import { writeToSheet } from "../config/gSheet.js";
-import { addSale } from "../db/repository/sale.js";
+import { addSale, getSales } from "../db/repository/sale.js";
 import { success, hubtel, __dirname } from "../config/constants.js";
 import path from "path";
 

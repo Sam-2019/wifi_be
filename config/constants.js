@@ -8,12 +8,18 @@ const unauthorized = "Unauthorized";
 const forbidden = "Forbidden";
 const authorization = "authorization";
 const success = "success";
+const successful = "successful";
 const hubtel = "hubtel";
 
 const __dirname = path.resolve();
 const server_down = "server is down";
 const server_up = "server is up";
+
 const server_url = process.env.SERVER_URL;
+const clientID = process.env.MERCHANT;
+const hostUrl = process.env.TRANSACTION_STATUS_CHECK_URL;
+const authToken = process.env.BASIC_AUTH;
+const apiUrl = `${hostUrl}/${clientID}/status`;
 
 export {
   development,
@@ -22,9 +28,12 @@ export {
   forbidden,
   authorization,
   success,
+  successful,
   hubtel,
   __dirname,
   server_down,
   server_up,
   server_url,
+  authToken,
+  apiUrl,
 };

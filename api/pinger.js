@@ -1,15 +1,17 @@
-import axios from "axios";
-import { server_url, server_up, server_down } from "../config/constants.js";
+import { server_url } from "../config/constants.js";
 
 async function pingServer() {
-  return axios
-    .get(server_url)
-    .then((res) => server_up)
-    .catch((error) => server_down);
+  fetch(server_url)
+    .then((response) => {
+      console.log("Server is up:", response.status);
+    })
+    .catch((error) => {
+      console.error("Server is down:", error.message);
+    });
 }
 
 function pinger(callback, timer) {
-  setInterval(async function () {
+  setInterval(async () => {
     console.log("Pinger running");
     await callback();
   }, timer);
@@ -17,7 +19,7 @@ function pinger(callback, timer) {
 
 const ping = () => {
   console.log("Pinger started");
-  pinger(pingServer, 3 * 60 * 1000);
+  pinger(pingServer, 13 * 60 * 1000);
 };
 
 export { ping };

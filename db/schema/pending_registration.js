@@ -17,6 +17,7 @@ const dataSchema = new Schema(
     isCustodian: { type: Boolean, default: false },
     dateTime: { type: String },
     credentials: { type: String },
+    provider: { type: String },
   },
   {
     timestamps: true,

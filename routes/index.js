@@ -83,9 +83,16 @@ router.post("/api/register/sale/intent", async function (req, res) {
 
 router.post("/api/payment/callback", async function (req, res) {
   const results = req.body;
-  const status = results.Status;
 
-  if (status !== success) {
+  if (results === undefined || results === null) {
+    console.error("Payment callback received with no data");
+    return res.status(400).send("Payment callback received with no data");
+  }
+
+  const registeresponseCode = results.ResponseCode;
+  const message = results.Message;
+
+  if (message !== success) {
     console.error("Payment callback failed with status:", status);
     return res.status(400).send("Payment callback failed");
   }

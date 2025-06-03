@@ -7,7 +7,7 @@ const production = "production";
 const unauthorized = "Unauthorized";
 const forbidden = "Forbidden";
 const authorization = "authorization";
-const success = "Success";
+const success = "success";
 const hubtel = "hubtel";
 
 const __dirname = path.resolve();

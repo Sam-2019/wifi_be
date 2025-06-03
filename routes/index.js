@@ -40,6 +40,11 @@ router.get("/api/register/sale", async function (req, res) {
 router.post("/api/register/sale", async function (req, res) {
   const results = req.body;
 
+  if (results === undefined || results === null) {
+    console.error("Registration received with no data");
+    return res.status(400).send("Registration received with no data");
+  }
+
   try {
     await addSale(results);
     await writeToSheet(results);
@@ -70,6 +75,11 @@ router.get("/api/register/sale/intent", async function (req, res) {
 
 router.post("/api/register/sale/intent", async function (req, res) {
   const results = req.body;
+
+  if (results === undefined || results === null) {
+    console.error("Registration received with no data");
+    return res.status(400).send("Registration received with no data");
+  }
 
   try {
     await addPendingRegistration(results);

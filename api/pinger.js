@@ -10,12 +10,14 @@ async function pingServer() {
 
 function pinger(callback, timer) {
   setInterval(async function () {
+    console.log("Pinger running");
     await callback();
   }, timer);
 }
 
 const ping = () => {
-  pinger(pingServer, 25 * 60 * 1000);
+  console.log("Pinger started");
+  pinger(pingServer, 3 * 60 * 1000);
 };
 
 export { ping };

@@ -1,4 +1,4 @@
-import Model from "../models/pending_registration.js";
+import Model from "../modelsXschema/pending_registration.js";
 
 const getPendingRegistration = async () => {
   return await Model.find({});

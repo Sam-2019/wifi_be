@@ -1,4 +1,4 @@
-import Model from "../models/sale.js";
+import Model from "../modelsXschema/sale.js";
 
 const getSales = async () => {
   return await Model.find({});

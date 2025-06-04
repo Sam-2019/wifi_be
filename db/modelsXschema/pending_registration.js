@@ -1,4 +1,4 @@
-import { Schema } from "mongoose";
+import { model, Schema } from "mongoose";
 
 const dataSchema = new Schema(
   {
@@ -22,7 +22,7 @@ const dataSchema = new Schema(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
-export { dataSchema };
+export default model("PendingRegistration", dataSchema);

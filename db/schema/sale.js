@@ -19,11 +19,11 @@ const dataSchema = new Schema(
     provider: { type: String },
     providerResponse: { type: String },
     credentials: { type: String },
-    provider: { type: String },
+    registrationType: { type: String, required: true },
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 export { dataSchema };

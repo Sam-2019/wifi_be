@@ -18,6 +18,7 @@ const dataSchema = new Schema(
     dateTime: { type: String },
     credentials: { type: String },
     provider: { type: String },
+    registrationType: { type: String, required: true },
   },
   {
     timestamps: true,

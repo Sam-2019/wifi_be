@@ -158,21 +158,31 @@ router.post("/api/payment/status", async (req, res) => {
   const queryString = new URLSearchParams(queryParams).toString();
   const endpoint = `${apiUrl}?${queryString}`;
 
-  console.log("Fetching transaction status from:", endpoint);
-
- const response = await fetch(endpoint, {
+  fetch(endpoint, {
     method: "GET",
     headers: {
       Authorization: `Basic ${authToken}`,
       "Content-Type": "application/json",
     },
   })
-
-  console.log("Response from Hubtel:", response);
-
-  return res.status(200).json({
-    message: "This endpoint is currently disabled for security reasons.",
-  });
+    .then(async (response) => {
+      if (!response.ok) {
+        console.error(
+          "Failed to fetch transaction status:",
+          response.statusText,
+        );
+        return res
+          .status(400)
+          .json({ message: "Failed to fetch transaction status" });
+      }
+      const data = await response.json();
+      console.log("Transaction status data:", data);
+      res.status(200).json(data);
+    })
+    .catch((error) => {
+      console.error("Error fetching transaction status:", error);
+      res.status(500).json({ message: "Internal Server Error" });
+    });
 });
 
 export default router;

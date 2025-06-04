@@ -139,7 +139,7 @@ router.post("/api/payment/callback", async (req, res) => {
   }
 });
 
-router.get("/api/payment/status", async (req, res) => {
+router.post("/api/payment/status", async (req, res) => {
   const results = req.body;
 
   if (
@@ -160,7 +160,7 @@ router.get("/api/payment/status", async (req, res) => {
 
   fetch(endpoint, {
     method: "GET",
-    headers: {
+        headers: {
       Authorization: `Basic ${authToken}`,
       "Content-Type": "application/json",
     },

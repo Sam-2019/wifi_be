@@ -12,7 +12,6 @@ const DBNAME = isDevelopment ? DEV_DB_NAME : PROD_DB_NAME;
 const dbConn = mongoose.connection;
 dbConn.on("connected", () => {
   console.log("Mongoose connected");
-  console.log(`Database: ${DBNAME}`);
 });
 
 const connectDB = () => {

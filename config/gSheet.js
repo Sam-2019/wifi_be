@@ -1,6 +1,5 @@
 import { isDevelopment } from "./constants.js";
 
-const NODE_ENV = process.env.NODE_ENV;
 const DEV_GSHEET = process.env.GOOGLE_SCRIPTS_TEST;
 const PROD_GSHEET = process.env.GOOGLE_SCRIPTS_LIVE;
 const GG_DB_URI = isDevelopment ? DEV_GSHEET : PROD_GSHEET;

@@ -23,6 +23,6 @@ app.use("/", router);
 app.set('port', process.env.PORT || 4000)
 ping();
 
-app.listen(4000, () => console.log("Server ready on http://localhost:4000"));
+app.listen(4000, () => console.log(`Server is running on port ${app.get('port')}`));
 
 export default app;

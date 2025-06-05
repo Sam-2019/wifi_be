@@ -20,6 +20,8 @@ const clientID = process.env.MERCHANT;
 const hostUrl = process.env.TRANSACTION_STATUS_CHECK_URL;
 const authToken = process.env.BASIC_AUTH;
 const apiUrl = `${hostUrl}/${clientID}/status`;
+const isDevelopment = process.env.NODE_ENV === development;
+const serverMode  = isDevelopment ? "Development Mode" : "Production Mode";
 
 export {
   development,
@@ -36,4 +38,6 @@ export {
   server_url,
   authToken,
   apiUrl,
+  isDevelopment,
+  serverMode
 };

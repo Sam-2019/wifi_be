@@ -17,7 +17,7 @@ dbConn.on("connected", () => {
 const connectDB = () => {
   mongoose.connect(DB_URI, {
     dbName: DBNAME,
-    autoIndex: true,
+    autoIndex: false,
   });
 };
 

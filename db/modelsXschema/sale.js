@@ -20,6 +20,7 @@ const dataSchema = new Schema(
     providerResponse: { type: String },
     credentials: { type: String },
     registrationType: { type: String, required: true },
+    purchaseInfo: { type: String },
   },
   {
     timestamps: true,

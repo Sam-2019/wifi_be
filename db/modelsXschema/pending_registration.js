@@ -8,8 +8,8 @@ const dataSchema = new Schema(
     planFee: { type: Number, required: true },
     registrationFee: { type: Number, required: true },
     totalCost: { type: Number, required: true },
-    clientReference: { type: String, required: true,},
-    email: { type: String, required: true, },
+    clientReference: { type: String, required: true },
+    email: { type: String, required: true },
     dateOfBirth: { type: Date, required: true },
     blockCourt: { type: String },
     roomType: { type: String },
@@ -19,6 +19,7 @@ const dataSchema = new Schema(
     credentials: { type: String },
     provider: { type: String },
     registrationType: { type: String, required: true },
+    purchaseInfo: { type: String },
   },
   {
     timestamps: true,

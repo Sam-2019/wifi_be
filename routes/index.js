@@ -34,7 +34,7 @@ router.get("/api/register/sale", async (req, res) => {
     console.log(results);
     const sales = await getSales();
     if (!sales || sales.length === 0) {
-      return res.status(404).json({ message: "No sales found" });
+      return res.status(404).json({ message: "No sales found", data: [] });
     }
     res.status(200).json({ message: sales });
   } catch (error) {
@@ -70,7 +70,7 @@ router.get("/api/register/sale/intent", async (req, res) => {
     if (!pending_registrations || pending_registrations.length === 0) {
       return res
         .status(404)
-        .json({ message: "No pending registrations found" });
+        .json({ message: "No pending registrations found", data: [] });
     }
     res.status(200).json({ message: pending_registrations });
   } catch (error) {

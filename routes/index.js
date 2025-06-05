@@ -28,10 +28,7 @@ router.get("/", async (req, res) => {
 });
 
 router.get("/api/register/sale", async (req, res) => {
-  const results = req.body;
-
   try {
-    console.log(results);
     const sales = await getSales();
     if (!sales || sales.length === 0) {
       return res.status(404).json({ message: "No sales found", data: [] });
@@ -62,10 +59,7 @@ router.post("/api/register/sale", async (req, res) => {
 });
 
 router.get("/api/register/sale/intent", async (req, res) => {
-  const results = req.body;
-
   try {
-    console.log(results);
     const pending_registrations = await getPendingRegistration();
     if (!pending_registrations || pending_registrations.length === 0) {
       return res
@@ -176,7 +170,6 @@ router.post("/api/payment/status", async (req, res) => {
           .json({ message: "Failed to fetch transaction status" });
       }
       const data = await response.json();
-      console.log("Transaction status data:", data);
       res.status(200).json(data);
     })
     .catch((error) => {

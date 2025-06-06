@@ -13,6 +13,7 @@ import {
   __dirname,
   authToken,
   apiUrl,
+  internalServerError,
 } from "../config/constants.js";
 import path from "path";
 
@@ -36,7 +37,7 @@ router.get("/api/register/sale", async (req, res) => {
     res.status(200).json({ message: sales });
   } catch (error) {
     console.error("Error in /register:", error);
-    res.status(500).json({ message: "Internal Server Error" });
+    res.status(500).send(internalServerError);
   }
 });
 
@@ -54,7 +55,7 @@ router.post("/api/register/sale", async (req, res) => {
     res.status(200).json({ message: "Registration Successful" });
   } catch (error) {
     console.error("Error in /register:", error);
-    res.status(500).json({ message: "Internal Server Error" });
+    res.status(500).send(internalServerError);
   }
 });
 
@@ -69,7 +70,7 @@ router.get("/api/register/sale/intent", async (req, res) => {
     res.status(200).json({ message: pending_registrations });
   } catch (error) {
     console.error("Error in /register:", error);
-    res.status(500).json({ message: "Internal Server Error" });
+    res.status(500).send(internalServerError);
   }
 });
 
@@ -87,7 +88,7 @@ router.post("/api/register/sale/intent", async (req, res) => {
     res.status(200).json({ message: "Registration Successful" });
   } catch (error) {
     console.error("Error in /register:", error);
-    res.status(500).json({ message: "Internal Server Error" });
+    res.status(500).send(internalServerError);
   }
 });
 
@@ -129,7 +130,7 @@ router.post("/api/payment/callback", async (req, res) => {
     res.status(200).json({ message: success });
   } catch (error) {
     console.error("Error processing payment callback:", error);
-    return res.status(500).send("Internal Server Error");
+    return res.status(500).send(internalServerError);
   }
 });
 
@@ -174,7 +175,7 @@ router.post("/api/payment/status", async (req, res) => {
     })
     .catch((error) => {
       console.error("Error fetching transaction status:", error);
-      res.status(500).json({ message: "Internal Server Error" });
+      res.status(500).send(internalServerError);
     });
 });
 

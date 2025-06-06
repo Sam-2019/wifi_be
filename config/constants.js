@@ -22,6 +22,7 @@ const authToken = process.env.BASIC_AUTH;
 const apiUrl = `${hostUrl}/${clientID}/status`;
 const isDevelopment = process.env.NODE_ENV === development;
 const serverMode  = isDevelopment ? "Development Mode" : "Production Mode";
+const internalServerError = "Internal Server Error";
 
 export {
   development,
@@ -39,5 +40,6 @@ export {
   authToken,
   apiUrl,
   isDevelopment,
-  serverMode
+  serverMode,
+  internalServerError
 };

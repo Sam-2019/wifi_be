@@ -10,7 +10,7 @@ const dataSchema = new Schema(
     totalCost: { type: Number, required: true },
     clientReference: { type: String, required: true },
     email: { type: String, required: true },
-    dateOfBirth: { type: Date, required: true },
+    dateOfBirth: { type: Date },
     blockCourt: { type: String },
     roomType: { type: String },
     roomNumber: { type: String },

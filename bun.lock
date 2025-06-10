@@ -5,6 +5,7 @@
       "name": "express",
       "dependencies": {
         "@adminjs/express": "^6.1.1",
+        "@adminjs/logger": "^5.0.1",
         "@adminjs/mongoose": "^4.1.0",
         "adminjs": "^7.8.16",
         "connect-mongo": "^5.1.0",
@@ -28,6 +29,8 @@
     "@adminjs/design-system": ["@adminjs/design-system@4.1.1", "", { "dependencies": { "@hypnosphi/create-react-context": "^0.3.1", "@tinymce/tinymce-react": "^4.3.2", "@tiptap/core": "2.1.13", "@tiptap/extension-bubble-menu": "2.1.13", "@tiptap/extension-character-count": "2.1.13", "@tiptap/extension-code": "2.1.13", "@tiptap/extension-document": "2.1.13", "@tiptap/extension-floating-menu": "2.1.13", "@tiptap/extension-heading": "2.1.13", "@tiptap/extension-image": "2.1.13", "@tiptap/extension-link": "2.1.13", "@tiptap/extension-table": "2.1.13", "@tiptap/extension-table-cell": "2.1.13", "@tiptap/extension-table-header": "2.1.13", "@tiptap/extension-table-row": "2.1.13", "@tiptap/extension-text": "2.1.13", "@tiptap/extension-text-align": "2.1.13", "@tiptap/extension-typography": "2.1.13", "@tiptap/pm": "2.1.13", "@tiptap/react": "2.1.13", "@tiptap/starter-kit": "2.1.13", "date-fns": "^2.29.3", "flat": "^5.0.2", "hoist-non-react-statics": "3.3.2", "jw-paginate": "^1.0.4", "lodash": "^4.17.21", "polished": "^4.2.2", "react-currency-input-field": "^3.6.10", "react-datepicker": "^4.10.0", "react-feather": "^2.0.10", "react-phone-input-2": "^2.15.1", "react-select": "^5.8.0", "react-text-mask": "^5.5.0", "styled-components": "5.3.9", "styled-system": "^5.1.5", "text-mask-addons": "^3.8.0" }, "peerDependencies": { "react": "^18.1.0", "react-dom": "^18.1.0" } }, "sha512-aUJjoOwXlBgJWckqDcgUDrRCiDnSrtSHnjFIYzfhhm0dFV107ToHNBemvh72/+krXHtMhRuWCkYkKnrJKh1Bjw=="],
 
     "@adminjs/express": ["@adminjs/express@6.1.1", "", { "peerDependencies": { "adminjs": "^7.4.0", "express": ">=4.18.2", "express-formidable": "^1.2.0", "express-session": ">=1.17.3", "tslib": "^2.5.0" } }, "sha512-Th8Oe9lFkHkfmJb6hUe08zwwZOt5afZ2RRMbMZ1Bq7pzEFnJGnTl8jglYNKdc9Fmxtvbabug0wteQ6qCMZuaVQ=="],
+
+    "@adminjs/logger": ["@adminjs/logger@5.0.1", "", { "dependencies": { "lodash": "^4.17.21" }, "peerDependencies": { "adminjs": "^7.0.0" } }, "sha512-zqtWqTbBMSg3jLK4S9U4CBhmqqCf2DISFq3SIX9jfhpgTA/1CIU0VE2ARTtLZdQsGzCvhqljG74E4L6YXvk7VQ=="],
 
     "@adminjs/mongoose": ["@adminjs/mongoose@4.1.0", "", { "dependencies": { "escape-regexp": "0.0.1", "lodash": "^4.17.21" }, "peerDependencies": { "adminjs": "^7.0.0", "mongoose": ">=8" } }, "sha512-G8M3eGPoQVchh+w1XGH7bfEGBFAPDLApQYoxkNPpvSCpj1OoBGgWJrX+gb0G0VqZv7ROLFe/2pkLE6yYmaUIzw=="],
 

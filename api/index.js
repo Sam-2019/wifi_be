@@ -1,32 +1,48 @@
+import AdminJSExpress from "@adminjs/express";
 import router from "../routes/index.js";
 import express, { json } from "express";
 import bodyParser from "body-parser";
 // import { authMiddleware } from "../config/middleware.js";
 import cors from "cors";
-import { connectDB } from "../db/index.js";
 import { ping } from "./pinger.js";
+import { connectDB, dbSession } from "../db/index.js";
+import { admin, authenticate, COOKIE, COOKIE_PASS } from "../config/admin.js";
 
-const app = express();
 const port = process.env.PORT || 4000;
 
-app.use(
-  cors({
-    origin: "*",
-    methods: ["GET", "POST"],
-  }),
-);
+const start = async () => {
+  const app = express();
+  app.use(
+    cors({
+      origin: "*",
+      methods: ["GET", "POST"],
+    })
+  );
+  connectDB();
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(json());
-// app.use(authMiddleware);
+  const adminRouter = AdminJSExpress.buildAuthenticatedRouter(
+    admin,
+    {
+      authenticate,
+      cookieName: COOKIE,
+      cookiePassword: COOKIE_PASS,
+    },
+    null,
+    dbSession
+  );
+  app.use(admin.options.rootPath, adminRouter);
 
-connectDB();
-app.use(express.static("./public"));
+  app.use(bodyParser.json());
+  app.use(bodyParser.urlencoded({ extended: false }));
+  app.use(json());
+  app.use(express.static("./public"));
+  app.use("/", router);
+  ping();
 
-app.use("/", router);
-ping();
+  app.listen(port, () => {
+    console.log(`Server is running on port ${port}`);
+    console.log(`AdminJS started on ${port}${admin.options.rootPath}`);
+  });
+};
 
-app.listen(port, () => console.log(`Server is running on port ${port}`));
-
-export default app;
+start();

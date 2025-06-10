@@ -21,4 +21,5 @@ const dataSchema = new Schema(
   { timestamps: true },
 );
 
-export default model("SmsReceipt", dataSchema);
+const Sms = model("SmsReceipt", dataSchema);
+export default Sms;

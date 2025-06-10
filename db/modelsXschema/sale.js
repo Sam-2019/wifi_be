@@ -24,7 +24,8 @@ const dataSchema = new Schema(
   },
   {
     timestamps: true,
-  },
+  }
 );
 
-export default model("Sales", dataSchema);
+const Sale = model("Sales", dataSchema);
+export default Sale;

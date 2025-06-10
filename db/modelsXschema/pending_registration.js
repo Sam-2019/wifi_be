@@ -23,7 +23,8 @@ const dataSchema = new Schema(
   },
   {
     timestamps: true,
-  },
+  }
 );
 
-export default model("PendingRegistration", dataSchema);
+const PendingRegistration = model("PendingRegistration", dataSchema);
+export default PendingRegistration;

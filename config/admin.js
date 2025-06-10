@@ -1,8 +1,8 @@
 import AdminJS from "adminjs";
+import Sms from "../db/modelsXschema/sms.js";
+import Sale from "../db/modelsXschema/sale.js";
 import * as AdminJSMongoose from "@adminjs/mongoose";
 import PendingRegistration from "../db/modelsXschema/pending_registration.js";
-import Sale from "../db/modelsXschema/sale.js";
-import Sms from "../db/modelsXschema/sms.js";
 
 AdminJS.registerAdapter({
   Resource: AdminJSMongoose.Resource,

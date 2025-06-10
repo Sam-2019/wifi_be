@@ -1,15 +1,15 @@
-import Model from "../modelsXschema/sale.js";
+import Sale from "../modelsXschema/sale.js";
 
 const getSales = async () => {
-  return await Model.find({});
+  return await Sale.find({});
 };
 
 const addSale = async (data) => {
-  return await Model.create(data);
+  return await Sale.create(data);
 };
 
 const findSale = async (id) => {
-  return await Model.findOne({
+  return await Sale.findOne({
     id: id,
   });
 };

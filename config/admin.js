@@ -1,8 +1,17 @@
 import AdminJS from "adminjs";
+import * as AdminJSMongoose from "@adminjs/mongoose";
+import PendingRegistration from "../db/modelsXschema/pending_registration.js";
+import Sale from "../db/modelsXschema/sale.js";
+import Sms from "../db/modelsXschema/sms.js";
+
+AdminJS.registerAdapter({
+  Resource: AdminJSMongoose.Resource,
+  Database: AdminJSMongoose.Database,
+});
 
 const DEFAULT_ADMIN = {
   email: process.env.USER_EMAIL,
-  password: process.env.USER_PASSWORD
+  password: process.env.USER_PASSWORD,
 };
 
 const authenticate = async (email, password) => {
@@ -12,7 +21,11 @@ const authenticate = async (email, password) => {
   return null;
 };
 
-const admin = new AdminJS({});
+const adminOptions = {
+  resources: [PendingRegistration, Sale, Sms],
+};
+
+const admin = new AdminJS(adminOptions);
 
 const COOKIE = process.env.COOKIE_NAME;
 const COOKIE_PASS = process.env.COOKIE_PASSWORD;

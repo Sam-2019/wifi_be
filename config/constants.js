@@ -15,13 +15,14 @@ const __dirname = path.resolve();
 const server_down = "server is down";
 const server_up = "server is up";
 
+const isDevelopment = process.env.NODE_ENV === development;
 const server_url = process.env.SERVER_URL;
 const clientID = process.env.MERCHANT;
 const hostUrl = process.env.TRANSACTION_STATUS_CHECK_URL;
 const authToken = process.env.BASIC_AUTH;
+
 const apiUrl = `${hostUrl}/${clientID}/status`;
-const isDevelopment = process.env.NODE_ENV === development;
-const serverMode  = isDevelopment ? "Development Mode" : "Production Mode";
+const serverMode = isDevelopment ? "Development Mode" : "Production Mode";
 const internalServerError = "Internal Server Error";
 
 export {
@@ -41,5 +42,5 @@ export {
   apiUrl,
   isDevelopment,
   serverMode,
-  internalServerError
+  internalServerError,
 };

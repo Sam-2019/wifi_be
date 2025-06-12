@@ -36,7 +36,9 @@ router.get("/api/register", async (req, res) => {
   try {
     const sales = await getRegistration();
     if (!sales || sales.length === 0) {
-      return res.status(404).json({ message: "No registration found", data: [] });
+      return res
+        .status(404)
+        .json({ message: "No registration found", data: [] });
     }
     res.status(200).json({ message: sales });
   } catch (error) {
@@ -148,9 +150,8 @@ router.post("/api/payment/callback", async (req, res) => {
   const clientReference = responseData.ClientReference;
 
   try {
-    const foundPendingRegistration = await findPendingRegistration(
-      clientReference
-    );
+    const foundPendingRegistration =
+      await findPendingRegistration(clientReference);
 
     if (!foundPendingRegistration) {
       return res.status(404).send("Registration not found");
@@ -158,9 +159,11 @@ router.post("/api/payment/callback", async (req, res) => {
 
     const stringifyResponse = JSON.stringify(results);
     const updatedData = {
-      ...foundPendingRegistration.toObject(),
-      provider: hubtel,
+      ...foundPendingRegistration,
+      provider: hubtel.toUpperCase(),
       providerResponse: stringifyResponse,
+      transactionId: responseData.ClientReference,
+      externalTransactionId: responseData.ClientReference,
     };
     await addSale(updatedData);
 
@@ -185,6 +188,8 @@ router.post("/api/payment/status", async (req, res) => {
 
   const queryParams = {
     clientReference: results.clientReference,
+    transactionId: results.transactionId,
+    externalTransactionId: results.externalTransactionId,
   };
 
   const queryString = new URLSearchParams(queryParams).toString();
@@ -201,7 +206,7 @@ router.post("/api/payment/status", async (req, res) => {
       if (!response.ok) {
         console.error(
           "Failed to fetch transaction status:",
-          response.statusText
+          response.statusText,
         );
         return res
           .status(400)

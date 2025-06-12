@@ -9,9 +9,18 @@ const addPendingRegistration = async (data) => {
 };
 
 const findPendingRegistration = async (clientReference) => {
-  return await Model.findOne({
-    clientReference: clientReference,
-  });
+  return await Model.findOne(
+    {
+      clientReference: clientReference,
+    },
+    { _id: 0 },
+  )
+    .sort({ $natural: -1 })
+    .lean();
 };
 
-export { getPendingRegistration, addPendingRegistration, findPendingRegistration };
+export {
+  getPendingRegistration,
+  addPendingRegistration,
+  findPendingRegistration,
+};

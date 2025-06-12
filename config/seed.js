@@ -16,8 +16,8 @@ function createRandomRegistration() {
   const phoneNumber = faker.phone.number();
   const subscriptionPlan = faker.helpers.arrayElement([
     `Daily-(GHC ${planPrices.daily})`,
-    `Daily-(GHC ${planPrices.weekly})`,
-    `Daily-(GHC ${planPrices.monthly})`,
+    `Weekly-(GHC ${planPrices.weekly})`,
+    `Monthly-(GHC ${planPrices.monthly})`,
   ]);
 
   const planFee = subscriptionPlan.includes("Daily")
@@ -30,7 +30,7 @@ function createRandomRegistration() {
 
   const totalCost = planFee + registrationFee;
   return {
-    userID: faker.string.uuid(),
+    regID: faker.string.uuid(),
     fullName: `${firstName} ${lastName}`,
     phoneNumber: String(phoneNumber),
     subscriptionPlan: subscriptionPlan,

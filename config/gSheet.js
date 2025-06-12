@@ -1,11 +1,7 @@
-import { isDevelopment } from "./constants.js";
+import { gs_uri } from "./constants.js";
 
-const DEV_GSHEET = process.env.GOOGLE_SCRIPTS_TEST;
-const PROD_GSHEET = process.env.GOOGLE_SCRIPTS_LIVE;
-const GG_DB_URI = isDevelopment ? DEV_GSHEET : PROD_GSHEET;
-
-const writeToSheet = async (payload) => {
-  fetch(GG_DB_URI, {
+export const writeToSheet = async (payload) => {
+  fetch(gs_uri, {
     method: "POST",
     mode: "no-cors",
     body: JSON.stringify(payload),
@@ -16,5 +12,3 @@ const writeToSheet = async (payload) => {
     console.log("Data sent to Google Scripts successfully");
   });
 };
-
-export { writeToSheet };

@@ -24,18 +24,23 @@ const PROD_DB = process.env.PROD_DB;
 const DEV_DB_NAME = process.env.DEV_DB_NAME;
 const PROD_DB_NAME = process.env.PROD_DB_NAME;
 
+const DEV_GSHEET = process.env.GOOGLE_SCRIPTS_TEST;
+const PROD_GSHEET = process.env.GOOGLE_SCRIPTS_LIVE;
+
 const apiUrl = `${hostUrl}/${clientID}/status`;
 const internalServerError = "Internal Server Error";
 const isDevelopment = process.env.NODE_ENV === development;
 const serverMode = isDevelopment ? "Development Mode" : "Production Mode";
 
 const db_uri = isDevelopment ? DEV_DB : PROD_DB;
+const gs_uri = isDevelopment ? DEV_GSHEET : PROD_GSHEET;
 const db_name = isDevelopment ? DEV_DB_NAME : PROD_DB_NAME;
 
 export {
   hubtel,
   apiUrl,
   db_uri,
+  gs_uri,
   db_name,
   success,
   paystack,

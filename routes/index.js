@@ -36,7 +36,7 @@ router.get("/api/register", async (req, res) => {
   try {
     const sales = await getRegistration();
     if (!sales || sales.length === 0) {
-      return res.status(404).json({ message: "No sales found", data: [] });
+      return res.status(404).json({ message: "No registration found", data: [] });
     }
     res.status(200).json({ message: sales });
   } catch (error) {
@@ -72,7 +72,7 @@ router.get("/api/register/sale", async (req, res) => {
     }
     res.status(200).json({ message: sales });
   } catch (error) {
-    console.error("Error in /register:", error);
+    console.error("Error in /register/sale:", error);
     res.status(500).send(internalServerError);
   }
 });
@@ -88,9 +88,9 @@ router.post("/api/register/sale", async (req, res) => {
   try {
     await addSale(results);
     await writeToSheet(results);
-    res.status(200).json({ message: "Registration Successful" });
+    res.status(200).json({ message: "Sale Successful" });
   } catch (error) {
-    console.error("Error in /register:", error);
+    console.error("Error in /register/sale:", error);
     res.status(500).send(internalServerError);
   }
 });
@@ -123,7 +123,7 @@ router.post("/api/register/sale/intent", async (req, res) => {
     await writeToSheet(results);
     res.status(200).json({ message: "Registration Successful" });
   } catch (error) {
-    console.error("Error in /register:", error);
+    console.error("Error in /register/sale/intent:", error);
     res.status(500).send(internalServerError);
   }
 });

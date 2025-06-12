@@ -1,45 +1,56 @@
 import path from "path";
 import "dotenv/config";
 
-const development = "development";
-const production = "production";
-
-const unauthorized = "Unauthorized";
-const forbidden = "Forbidden";
-const authorization = "authorization";
-const success = "success";
-const successful = "successful";
 const hubtel = "hubtel";
-
+const success = "success";
+const paystack = "paystack";
+const forbidden = "Forbidden";
+const successful = "successful";
+const production = "production";
 const __dirname = path.resolve();
-const server_down = "server is down";
 const server_up = "server is up";
+const development = "development";
+const unauthorized = "Unauthorized";
+const server_down = "server is down";
+const authorization = "authorization";
 
-const server_url = process.env.SERVER_URL;
 const clientID = process.env.MERCHANT;
-const hostUrl = process.env.TRANSACTION_STATUS_CHECK_URL;
 const authToken = process.env.BASIC_AUTH;
+const server_url = process.env.SERVER_URL;
+const hostUrl = process.env.TRANSACTION_STATUS_CHECK_URL;
+
+const DEV_DB = process.env.DEV_DB;
+const PROD_DB = process.env.PROD_DB;
+const DEV_DB_NAME = process.env.DEV_DB_NAME;
+const PROD_DB_NAME = process.env.PROD_DB_NAME;
+
 const apiUrl = `${hostUrl}/${clientID}/status`;
-const isDevelopment = process.env.NODE_ENV === development;
-const serverMode  = isDevelopment ? "Development Mode" : "Production Mode";
 const internalServerError = "Internal Server Error";
+const isDevelopment = process.env.NODE_ENV === development;
+const serverMode = isDevelopment ? "Development Mode" : "Production Mode";
+
+const db_uri = isDevelopment ? DEV_DB : PROD_DB;
+const db_name = isDevelopment ? DEV_DB_NAME : PROD_DB_NAME;
 
 export {
-  development,
-  production,
-  unauthorized,
-  forbidden,
-  authorization,
-  success,
-  successful,
   hubtel,
+  apiUrl,
+  db_uri,
+  db_name,
+  success,
+  paystack,
   __dirname,
-  server_down,
+  forbidden,
+  authToken,
   server_up,
   server_url,
-  authToken,
-  apiUrl,
-  isDevelopment,
+  successful,
   serverMode,
-  internalServerError
+  production,
+  server_down,
+  development,
+  unauthorized,
+  authorization,
+  isDevelopment,
+  internalServerError,
 };

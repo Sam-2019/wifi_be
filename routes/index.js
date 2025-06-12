@@ -5,6 +5,10 @@ import {
   findPendingRegistration,
   getPendingRegistration,
 } from "../db/repository/pending_registration.js";
+import {
+  addRegistration,
+  getRegistration,
+} from "../db/repository/registration.js";
 import { writeToSheet } from "../config/gSheet.js";
 import { addSale, getSales } from "../db/repository/sale.js";
 import {
@@ -25,6 +29,38 @@ router.get("/", async (req, res) => {
   } catch (error) {
     res.status(500);
     res.sendFile(path.join(`${__dirname}/public/down.html`));
+  }
+});
+
+router.get("/api/register", async (req, res) => {
+  try {
+    const sales = await getRegistration();
+    if (!sales || sales.length === 0) {
+      return res.status(404).json({ message: "No sales found", data: [] });
+    }
+    res.status(200).json({ message: sales });
+  } catch (error) {
+    console.error("Error in /register:", error);
+    res.status(500).send(internalServerError);
+  }
+});
+
+router.post("/api/register", async (req, res) => {
+  const results = req.body;
+
+  if (results === undefined || results === null) {
+    console.error("Registration received with no data");
+    return res.status(400).send("Registration received with no data");
+  }
+
+  try {
+    const response = await addRegistration(results);
+    res
+      .status(200)
+      .json({ message: "Registration Successful", data: response });
+  } catch (error) {
+    console.error("Error in /register:", error);
+    res.status(500).send(internalServerError);
   }
 });
 
@@ -112,8 +148,9 @@ router.post("/api/payment/callback", async (req, res) => {
   const clientReference = responseData.ClientReference;
 
   try {
-    const foundPendingRegistration =
-      await findPendingRegistration(clientReference);
+    const foundPendingRegistration = await findPendingRegistration(
+      clientReference
+    );
 
     if (!foundPendingRegistration) {
       return res.status(404).send("Registration not found");
@@ -164,7 +201,7 @@ router.post("/api/payment/status", async (req, res) => {
       if (!response.ok) {
         console.error(
           "Failed to fetch transaction status:",
-          response.statusText,
+          response.statusText
         );
         return res
           .status(400)

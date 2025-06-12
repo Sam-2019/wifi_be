@@ -15,7 +15,7 @@ const dataSchema = new Schema(
     roomType: { type: String },
     roomNumber: { type: String },
     isCustodian: { type: Boolean, default: false },
-    dateTime: { type: String },
+    dateTime: { type: Date, default: Date.now() },
     provider: { type: String },
     providerResponse: { type: String },
     credentials: { type: String },

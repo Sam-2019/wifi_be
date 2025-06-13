@@ -27,4 +27,4 @@ const dataSchema = new Schema(
   }
 );
 
-export default model("PendingRegistration", dataSchema);
+export default model("FailedRegistration", dataSchema);

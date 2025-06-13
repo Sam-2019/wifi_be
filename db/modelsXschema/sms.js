@@ -18,7 +18,7 @@ const dataSchema = new Schema(
       type: Object,
     },
   },
-  { timestamps: true },
+  { timestamps: true }
 );
 
 export default model("SmsReceipt", dataSchema);

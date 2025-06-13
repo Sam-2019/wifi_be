@@ -1,6 +1,6 @@
 import Model from "../modelsXschema/registration.js";
 
-const getRegistration = async () => {
+const getRegistrations = async () => {
   return await Model.find({});
 };
 
@@ -14,4 +14,4 @@ const findRegistration = async (clientReference) => {
   });
 };
 
-export { getRegistration, addRegistration, findRegistration };
+export { getRegistrations, addRegistration, findRegistration };

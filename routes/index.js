@@ -7,10 +7,12 @@ import {
 } from "../db/repository/pending_registration.js";
 import {
   addRegistration,
-  getRegistration,
+  getRegistrations,
+  findRegistration
 } from "../db/repository/registration.js";
 import {
   addFailedRegistration,
+  findFailedRegistration,
   getFailedRegistrations,
 } from "../db/repository/failed_registration.js";
 import { writeToSheet } from "../config/gSheet.js";
@@ -36,22 +38,37 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.get("/api/register", async (req, res) => {
+router.get("/api/registrations", async (req, res) => {
   try {
-    const sales = await getRegistration();
-    if (!sales || sales.length === 0) {
+    const results = await getRegistrations();
+    if (!results || results.length === 0) {
       return res
         .status(404)
         .json({ message: "No registration found", data: [] });
     }
-    res.status(200).json({ message: sales });
+    res.status(200).json({ message: results });
   } catch (error) {
-    console.error("Error in /register:", error);
+    console.error("Error in /registrations:", error);
     res.status(500).send(internalServerError);
   }
 });
 
-router.post("/api/register", async (req, res) => {
+router.get("/api/registration", async (req, res) => {
+  try {
+    const result = await getRegistration();
+    if (!result || sales.length === 0) {
+      return res
+        .status(404)
+        .json({ message: "No registration found", data: [] });
+    }
+    res.status(200).json({ message: result });
+  } catch (error) {
+    console.error("Error in /registration:", error);
+    res.status(500).send(internalServerError);
+  }
+});
+
+router.post("/api/registeration", async (req, res) => {
   const results = req.body;
 
   if (results === undefined || results === null) {
@@ -70,7 +87,7 @@ router.post("/api/register", async (req, res) => {
   }
 });
 
-router.get("/api/register/sale", async (req, res) => {
+router.get("/api/sales", async (req, res) => {
   try {
     const sales = await getSales();
     if (!sales || sales.length === 0) {
@@ -83,7 +100,7 @@ router.get("/api/register/sale", async (req, res) => {
   }
 });
 
-router.post("/api/register/sale", async (req, res) => {
+router.post("/api/sale", async (req, res) => {
   const results = req.body;
 
   if (results === undefined || results === null) {
@@ -101,7 +118,7 @@ router.post("/api/register/sale", async (req, res) => {
   }
 });
 
-router.get("/api/register/sale/intent", async (req, res) => {
+router.get("/api/pending-registrations", async (req, res) => {
   try {
     const pending_registrations = await getPendingRegistrations();
     if (!pending_registrations || pending_registrations.length === 0) {
@@ -116,7 +133,7 @@ router.get("/api/register/sale/intent", async (req, res) => {
   }
 });
 
-router.post("/api/register/sale/intent", async (req, res) => {
+router.post("/api/pending-registration", async (req, res) => {
   const results = req.body;
 
   if (results === undefined || results === null) {
@@ -134,7 +151,7 @@ router.post("/api/register/sale/intent", async (req, res) => {
   }
 });
 
-router.get("/api/register/failed-registrations", async (req, res) => {
+router.get("/api/failed-registrations", async (req, res) => {
   try {
     const results = await getFailedRegistrations();
     if (!results || results.length === 0) {
@@ -147,7 +164,21 @@ router.get("/api/register/failed-registrations", async (req, res) => {
   }
 });
 
-router.post("/api/register/failed-registration", async (req, res) => {
+router.get("/api/failed-registration", async (req, res) => {
+  const data = '';
+  try {
+    const result = await findFailedRegistration(data);
+    if (!result || result.length === 0) {
+      return res.status(404).json({ message: "No record found", data: [] });
+    }
+    res.status(200).json({ message: result });
+  } catch (error) {
+    console.error("Error in /failed-registrations:", error);
+    res.status(500).send(internalServerError);
+  }
+});
+
+router.post("/api/failed-registration", async (req, res) => {
   const results = req.body;
 
   if (results === undefined || results === null) {

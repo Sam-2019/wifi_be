@@ -3,12 +3,16 @@ import express from "express";
 import {
   addPendingRegistration,
   findPendingRegistration,
-  getPendingRegistration,
+  getPendingRegistrations,
 } from "../db/repository/pending_registration.js";
 import {
   addRegistration,
   getRegistration,
 } from "../db/repository/registration.js";
+import {
+  addFailedRegistration,
+  getFailedRegistrations,
+} from "../db/repository/failed_registration.js";
 import { writeToSheet } from "../config/gSheet.js";
 import { addSale, getSales } from "../db/repository/sale.js";
 import {
@@ -99,7 +103,7 @@ router.post("/api/register/sale", async (req, res) => {
 
 router.get("/api/register/sale/intent", async (req, res) => {
   try {
-    const pending_registrations = await getPendingRegistration();
+    const pending_registrations = await getPendingRegistrations();
     if (!pending_registrations || pending_registrations.length === 0) {
       return res
         .status(404)
@@ -130,6 +134,36 @@ router.post("/api/register/sale/intent", async (req, res) => {
   }
 });
 
+router.get("/api/register/failed-registrations", async (req, res) => {
+  try {
+    const results = await getFailedRegistrations();
+    if (!results || results.length === 0) {
+      return res.status(404).json({ message: "No record found", data: [] });
+    }
+    res.status(200).json({ message: results });
+  } catch (error) {
+    console.error("Error in /register/failed-registrations:", error);
+    res.status(500).send(internalServerError);
+  }
+});
+
+router.post("/api/register/failed-registration", async (req, res) => {
+  const results = req.body;
+
+  if (results === undefined || results === null) {
+    console.error("Received with no data");
+    return res.status(400).send("Received with no data");
+  }
+
+  try {
+    await addFailedRegistration(results);
+    res.status(200).json({ message: "Failed Payment recorded" });
+  } catch (error) {
+    console.error("Error in /register/failed-registration:", error);
+    res.status(500).send(internalServerError);
+  }
+});
+
 router.post("/api/payment/callback", async (req, res) => {
   const results = req.body;
 
@@ -150,8 +184,9 @@ router.post("/api/payment/callback", async (req, res) => {
   const clientReference = responseData.ClientReference;
 
   try {
-    const foundPendingRegistration =
-      await findPendingRegistration(clientReference);
+    const foundPendingRegistration = await findPendingRegistration(
+      clientReference
+    );
 
     if (!foundPendingRegistration) {
       return res.status(404).send("Registration not found");
@@ -206,7 +241,7 @@ router.post("/api/payment/status", async (req, res) => {
       if (!response.ok) {
         console.error(
           "Failed to fetch transaction status:",
-          response.statusText,
+          response.statusText
         );
         return res
           .status(400)

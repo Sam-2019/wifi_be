@@ -1,6 +1,6 @@
 import Model from "../modelsXschema/pending_registration.js";
 
-const getPendingRegistration = async () => {
+const getPendingRegistrations = async () => {
   return await Model.find({});
 };
 
@@ -13,14 +13,14 @@ const findPendingRegistration = async (clientReference) => {
     {
       clientReference: clientReference,
     },
-    { _id: 0 },
+    { _id: 0 }
   )
     .sort({ $natural: -1 })
     .lean();
 };
 
 export {
-  getPendingRegistration,
+  getPendingRegistrations,
   addPendingRegistration,
   findPendingRegistration,
 };

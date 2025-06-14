@@ -56,13 +56,18 @@ router.get("/api/registrations", async (req, res) => {
 router.get("/api/registration", async (req, res) => {
   const results = req.body;
 
-  if (results === undefined || results === null) {
+  if (
+    (results === undefined || results === null,
+    results.phoneNumber === undefined || results.phoneNumber === null,
+    results.email === undefined || results.email === null)
+    // results.clientReference === undefined || results.clientReference === null
+  ) {
     console.error("Received with no data");
     return res.status(400).send("Received with no data");
   }
 
   try {
-    const result = await findRegistration(phoneNumber, email, userName);
+    const result = await findRegistration(results);
     if (!result || result.length === 0) {
       return res.status(404).json({ message: "No record found", data: null });
     }
@@ -187,12 +192,18 @@ router.get("/api/failed-registrations", async (req, res) => {
 router.get("/api/failed-registration", async (req, res) => {
   const results = req.body;
 
-  if (results === undefined || results === null) {
+  if (
+    (results === undefined || results === null,
+    results.phoneNumber === undefined || results.phoneNumber === null,
+    results.email === undefined || results.email === null
+    // results.clientReference === undefined || results.clientReference === null
+  )
+  ) {
     console.error("Received with no data");
     return res.status(400).send("Received with no data");
   }
   try {
-    const result = await findFailedRegistration();
+    const result = await findFailedRegistration(results);
     if (!result || result.length === 0) {
       return res.status(404).json({ message: "No record found", data: result });
     }
@@ -258,8 +269,8 @@ router.post("/api/payment/callback", async (req, res) => {
       ...foundPendingRegistration,
       provider: hubtel.toUpperCase(),
       providerResponse: stringifyResponse,
-      transactionId: responseData.ClientReference,
-      externalTransactionId: responseData.ClientReference,
+      transactionId: responseData.transactionId,
+      externalTransactionId: responseData.externalTransactionId,
     };
     await addSale(updatedData);
 

@@ -36,6 +36,15 @@ const db_uri = isDevelopment ? DEV_DB : PROD_DB;
 const gs_uri = isDevelopment ? DEV_GSHEET : PROD_GSHEET;
 const db_name = isDevelopment ? DEV_DB_NAME : PROD_DB_NAME;
 
+const excludeItems = {
+  _id: 0,
+  regID: 0,
+  credentials: 0,
+  createdAt: 0,
+  updatedAt: 0,
+  __v: 0,
+};
+
 export {
   hubtel,
   apiUrl,
@@ -55,6 +64,7 @@ export {
   server_down,
   development,
   unauthorized,
+  excludeItems,
   authorization,
   isDevelopment,
   internalServerError,

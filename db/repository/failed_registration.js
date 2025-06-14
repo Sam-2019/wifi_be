@@ -1,22 +1,27 @@
 import Model from "../modelsXschema/failed_registration.js";
+import { excludeItems } from "../../config/constants.js";
 
 const getFailedRegistrations = async () => {
-  return await Model.find({});
+  return await Model.find({}, excludeItems).lean();
 };
 
 const addFailedRegistration = async (data) => {
   return await Model.create(data);
 };
 
-const findFailedRegistration = async (clientReference) => {
+const findFailedRegistration = async (data) => {
+  const phoneNumber = data.phoneNumber;
+  const email = data.email;
+  // const clientReference = data.clientReference;
+
   return await Model.findOne(
     {
-      clientReference: clientReference,
+      phoneNumber: phoneNumber,
+      email: email,
+      // clientReference: clientReference,
     },
-    { _id: 0 }
-  )
-    .sort({ $natural: -1 })
-    .lean();
+    excludeItems
+  ).lean();
 };
 
 export {

@@ -6,7 +6,8 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import { ping } from "./pinger.js";
 import { connectDB, dbSession } from "../db/index.js";
-import { admin, authenticate, COOKIE, COOKIE_PASS } from "../config/admin.js";
+import { admin, authenticate } from "../config/admin.js";
+import { cookie, cookiePass } from "../config/constants.js";
 
 const port = process.env.PORT || 4000;
 
@@ -24,8 +25,8 @@ const start = async () => {
     admin,
     {
       authenticate,
-      cookieName: COOKIE,
-      cookiePassword: COOKIE_PASS,
+      cookieName: cookie,
+      cookiePassword: cookiePass,
     },
     null,
     dbSession

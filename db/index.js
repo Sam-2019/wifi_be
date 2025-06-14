@@ -1,6 +1,15 @@
 import mongoose from "mongoose";
 import { seed } from "../config/seed.js";
-import { db_uri, db_name, isDevelopment } from "../config/constants.js";
+import {
+  dbUri,
+  dbName,
+  isDevelopment,
+  secret,
+  dbCollection,
+  ttl,
+  crypto,
+} from "../config/constants.js";
+import MongoStore from "connect-mongo";
 
 const dbConn = mongoose.connection;
 dbConn.on("connected", () => {
@@ -9,8 +18,8 @@ dbConn.on("connected", () => {
 });
 
 const connectDB = () => {
-  mongoose.connect(db_uri, {
-    dbName: db_name,
+  mongoose.connect(dbUri, {
+    dbName: dbName,
     autoIndex: false,
   });
 };
@@ -22,14 +31,13 @@ const disconnectDB = () => {
 const dbSession = {
   resave: true,
   saveUninitialized: true,
-  secret: SECRET,
+  secret: secret,
   store: MongoStore.create({
-    mongoUrl: DB_URI,
-    dbName: DB_NAME,
-    collectionName: DB_COLLECTION,
+    mongoUrl: dbUri,
+    dbName: dbName,
+    collectionName: dbCollection,
     ttl: ttl,
-    crypto: { secret: CRYPTO },
-    
+    crypto: { secret: crypto },
   }),
 };
 

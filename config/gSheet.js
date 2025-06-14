@@ -1,7 +1,7 @@
-import { gs_uri } from "./constants.js";
+import { gsUri } from "./constants.js";
 
 export const writeToSheet = async (payload) => {
-  fetch(gs_uri, {
+  fetch(gsUri, {
     method: "POST",
     mode: "no-cors",
     body: JSON.stringify(payload),

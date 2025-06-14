@@ -1,6 +1,6 @@
 import { faker } from "@faker-js/faker";
-import { hubtel, paystack } from "./constants";
-import { addRegistration } from "../db/repository/registration";
+import { hubtel, paystack } from "./constants.js";
+import { addRegistration } from "../db/repository/registration.js";
 
 const registrationFee = 50;
 const planPrices = {

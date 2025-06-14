@@ -27,5 +27,6 @@ const dataSchema = new Schema(
   }
 );
 
-const PendingRegistration = model("PendingRegistration", dataSchema);
-export default PendingRegistration;
+const Registration = model("Registration", dataSchema);
+export default Registration;
+

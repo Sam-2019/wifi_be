@@ -19,6 +19,7 @@ const dataSchema = new Schema(
     dateTime: { type: Date, default: Date.now() },
     credentials: { type: String },
     provider: { type: String },
+    providerResponse: { type: String },
     registrationType: { type: String },
     purchaseInfo: { type: String },
   },
@@ -27,5 +28,6 @@ const dataSchema = new Schema(
   }
 );
 
-const PendingRegistration = model("PendingRegistration", dataSchema);
-export default PendingRegistration;
+const FailedRegistration = model("FailedRegistration", dataSchema);
+export default FailedRegistration;
+

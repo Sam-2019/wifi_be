@@ -62,9 +62,9 @@ router.get("/api/registration", async (req, res) => {
   }
 
   try {
-    const result = await findRegistration();
+    const result = await findRegistration(phoneNumber, email, userName);
     if (!result || result.length === 0) {
-      return res.status(404).json({ message: "No record found", data: [] });
+      return res.status(404).json({ message: "No record found", data: null });
     }
     res.status(200).json({ message: result });
   } catch (error) {
@@ -73,10 +73,15 @@ router.get("/api/registration", async (req, res) => {
   }
 });
 
-router.post("/api/registeration", async (req, res) => {
+router.post("/api/registration", async (req, res) => {
   const results = req.body;
 
-  if (results === undefined || results === null) {
+  if (
+    results === undefined ||
+    results === null ||
+    results.clientReference === undefined ||
+    results.clientReference === null
+  ) {
     console.error("Registration received with no data");
     return res.status(400).send("Registration received with no data");
   }
@@ -87,7 +92,7 @@ router.post("/api/registeration", async (req, res) => {
       .status(200)
       .json({ message: "Registration Successful", data: response });
   } catch (error) {
-    console.error("Error in /register:", error);
+    console.error("Error in /registration", error);
     res.status(500).send(internalServerError);
   }
 });
@@ -100,7 +105,7 @@ router.get("/api/sales", async (req, res) => {
     }
     res.status(200).json({ message: sales });
   } catch (error) {
-    console.error("Error in /register/sale:", error);
+    console.error("Error in /sales:", error);
     res.status(500).send(internalServerError);
   }
 });
@@ -108,7 +113,12 @@ router.get("/api/sales", async (req, res) => {
 router.post("/api/sale", async (req, res) => {
   const results = req.body;
 
-  if (results === undefined || results === null) {
+  if (
+    results === undefined ||
+    results === null ||
+    results.clientReference === undefined ||
+    results.clientReference === null
+  ) {
     console.error("Registration received with no data");
     return res.status(400).send("Registration received with no data");
   }
@@ -118,7 +128,7 @@ router.post("/api/sale", async (req, res) => {
     await writeToSheet(results);
     res.status(200).json({ message: "Sale Successful" });
   } catch (error) {
-    console.error("Error in /register/sale:", error);
+    console.error("Error in /sale:", error);
     res.status(500).send(internalServerError);
   }
 });
@@ -133,7 +143,7 @@ router.get("/api/pending-registrations", async (req, res) => {
     }
     res.status(200).json({ message: pending_registrations });
   } catch (error) {
-    console.error("Error in /register:", error);
+    console.error("Error in /pending-registrations", error);
     res.status(500).send(internalServerError);
   }
 });
@@ -141,7 +151,12 @@ router.get("/api/pending-registrations", async (req, res) => {
 router.post("/api/pending-registration", async (req, res) => {
   const results = req.body;
 
-  if (results === undefined || results === null) {
+  if (
+    results === undefined ||
+    results === null ||
+    results.clientReference === undefined ||
+    results.clientReference === null
+  ) {
     console.error("Registration received with no data");
     return res.status(400).send("Registration received with no data");
   }
@@ -151,7 +166,7 @@ router.post("/api/pending-registration", async (req, res) => {
     await writeToSheet(results);
     res.status(200).json({ message: "Registration Successful" });
   } catch (error) {
-    console.error("Error in /register/sale/intent:", error);
+    console.error("Error in /pending-registration:", error);
     res.status(500).send(internalServerError);
   }
 });
@@ -164,7 +179,7 @@ router.get("/api/failed-registrations", async (req, res) => {
     }
     res.status(200).json({ message: results });
   } catch (error) {
-    console.error("Error in /register/failed-registrations:", error);
+    console.error("Error in /failed-registrations:", error);
     res.status(500).send(internalServerError);
   }
 });
@@ -177,9 +192,9 @@ router.get("/api/failed-registration", async (req, res) => {
     return res.status(400).send("Received with no data");
   }
   try {
-    const result = await findFailedRegistration(data);
+    const result = await findFailedRegistration();
     if (!result || result.length === 0) {
-      return res.status(404).json({ message: "No record found", data: [] });
+      return res.status(404).json({ message: "No record found", data: result });
     }
     res.status(200).json({ message: result });
   } catch (error) {
@@ -191,7 +206,12 @@ router.get("/api/failed-registration", async (req, res) => {
 router.post("/api/failed-registration", async (req, res) => {
   const results = req.body;
 
-  if (results === undefined || results === null) {
+  if (
+    results === undefined ||
+    results === null ||
+    results.clientReference === undefined ||
+    results.clientReference === null
+  ) {
     console.error("Received with no data");
     return res.status(400).send("Received with no data");
   }
@@ -200,7 +220,7 @@ router.post("/api/failed-registration", async (req, res) => {
     await addFailedRegistration(results);
     res.status(200).json({ message: "Failed Payment recorded" });
   } catch (error) {
-    console.error("Error in /register/failed-registration:", error);
+    console.error("Error in /failed-registration:", error);
     res.status(500).send(internalServerError);
   }
 });

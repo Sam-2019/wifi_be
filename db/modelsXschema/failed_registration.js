@@ -19,6 +19,7 @@ const dataSchema = new Schema(
     dateTime: { type: Date, default: Date.now() },
     credentials: { type: String },
     provider: { type: String },
+    providerResponse: { type: String },
     registrationType: { type: String },
     purchaseInfo: { type: String },
   },

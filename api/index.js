@@ -1,12 +1,12 @@
-import AdminJSExpress from "@adminjs/express";
-import router from "../routes/index.js";
-import express, { json } from "express";
-import bodyParser from "body-parser";
-// import { authMiddleware } from "../config/middleware.js";
 import cors from "cors";
 import { ping } from "./pinger.js";
+import bodyParser from "body-parser";
+import express, { json } from "express";
+import router from "../routes/index.js";
+import AdminJSExpress from "@adminjs/express";
 import { connectDB, dbSession } from "../db/index.js";
 import { admin, authenticate } from "../config/admin.js";
+// import { authMiddleware } from "../config/middleware.js";
 import { cookie, cookiePass } from "../config/constants.js";
 
 const port = process.env.PORT || 4000;

@@ -1,19 +1,19 @@
 import mongoose from "mongoose";
+import MongoStore from "connect-mongo";
 import { seed } from "../config/seed.js";
 import {
+  ttl,
   dbUri,
+  crypto,
   dbName,
-  isDevelopment,
   secret,
   dbCollection,
-  ttl,
-  crypto,
+  isDevelopment,
 } from "../config/constants.js";
-import MongoStore from "connect-mongo";
 
 const dbConn = mongoose.connection;
 dbConn.on("connected", () => {
-  if (isDevelopment) seed();
+  // if (isDevelopment) seed();
   console.log("Mongoose connected");
 });
 

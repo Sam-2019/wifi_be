@@ -1,10 +1,16 @@
 import "dotenv/config";
+import path from "path";
 import express from "express";
+import { writeToSheet } from "../config/gSheet.js";
+import { addSale, getSales } from "../db/repository/sale.js";
 import {
-  addPendingRegistration,
-  findPendingRegistration,
-  getPendingRegistrations,
-} from "../db/repository/pending_registration.js";
+  hubtel,
+  apiUrl,
+  success,
+  __dirname,
+  authToken,
+  internalServerError,
+} from "../config/constants.js";
 import {
   addRegistration,
   findRegistration,
@@ -15,17 +21,11 @@ import {
   findFailedRegistration,
   getFailedRegistrations,
 } from "../db/repository/failed_registration.js";
-import { writeToSheet } from "../config/gSheet.js";
-import { addSale, getSales } from "../db/repository/sale.js";
 import {
-  success,
-  hubtel,
-  __dirname,
-  authToken,
-  apiUrl,
-  internalServerError,
-} from "../config/constants.js";
-import path from "path";
+  addPendingRegistration,
+  findPendingRegistration,
+  getPendingRegistrations,
+} from "../db/repository/pending_registration.js";
 
 const router = express.Router();
 router.get("/", async (req, res) => {
@@ -195,9 +195,8 @@ router.get("/api/failed-registration", async (req, res) => {
   if (
     (results === undefined || results === null,
     results.phoneNumber === undefined || results.phoneNumber === null,
-    results.email === undefined || results.email === null
+    results.email === undefined || results.email === null)
     // results.clientReference === undefined || results.clientReference === null
-  )
   ) {
     console.error("Received with no data");
     return res.status(400).send("Received with no data");

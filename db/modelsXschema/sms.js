@@ -2,7 +2,7 @@ import { model, Schema } from "mongoose";
 
 const dataSchema = new Schema(
   {
-    mobile_number: {
+    mobileNumber: {
       type: String,
     },
     message: {

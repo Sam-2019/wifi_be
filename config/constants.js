@@ -5,6 +5,7 @@ const hubtel = "hubtel";
 const success = "success";
 const paystack = "paystack";
 const forbidden = "Forbidden";
+const assetPath = "./assets/";
 const successful = "successful";
 const production = "production";
 const __dirname = path.resolve();
@@ -12,6 +13,7 @@ const server_up = "server is up";
 const development = "development";
 const unauthorized = "Unauthorized";
 const server_down = "server is down";
+const componentPath = "./components/";
 const authorization = "authorization";
 
 const clientID = process.env.MERCHANT;
@@ -73,6 +75,7 @@ export {
   success,
   paystack,
   __dirname,
+  assetPath,
   forbidden,
   authToken,
   server_up,
@@ -87,6 +90,7 @@ export {
   dbCollection,
   excludeItems,
   authorization,
+  componentPath,
   isDevelopment,
   adminCredentials,
   internalServerError,

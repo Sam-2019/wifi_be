@@ -1,16 +1,24 @@
-import AdminJS from "adminjs";
+import { dashboard } from "./filePath.js";
+import { adminCredentials } from "./constants.js";
+import AdminJS, { ComponentLoader } from "adminjs";
+import * as AdminJSMongoose from "@adminjs/mongoose";
+
 import Sms from "../db/modelsXschema/sms.js";
 import Sale from "../db/modelsXschema/sale.js";
-import * as AdminJSMongoose from "@adminjs/mongoose";
-import PendingRegistration from "../db/modelsXschema/pending_registration.js";
 import Registration from "../db/modelsXschema/registration.js";
+import PendingRegistration from "../db/modelsXschema/pending_registration.js";
 import FailedRegistration from "../db/modelsXschema/failed_registration.js";
-import { adminCredentials } from "./constants.js";
 
 AdminJS.registerAdapter({
   Resource: AdminJSMongoose.Resource,
   Database: AdminJSMongoose.Database,
 });
+
+const componentLoader = new ComponentLoader();
+
+const Components = {
+  Dashboard: componentLoader.add("Dashboard", dashboard),
+};
 
 const onlyForAdmin = ({ currentAdmin }) => currentAdmin.role === "Admin";
 
@@ -27,11 +35,11 @@ const authenticate = async (email, password) => {
 const RegistrationResource = {
   resource: Registration,
   options: {
-    id: "pending_registrations",
-    listProperties: ["id", "name", "createdAt"],
-    filterProperties: ["id", "name", "createdAt"],
-    editProperties: ["id", "name", "bio", "createdAt"],
-    showProperties: ["id", "name", "bio", "createdAt"],
+    id: "registrations",
+    listProperties: ["regID", "fullName", "dateTime"],
+    filterProperties: ["regID", "fullName", "dateTime"],
+    editProperties: ["regID", "fullName", "dateTime"],
+    showProperties: ["regID", "fullName", "dateTime"],
     sort: {
       sortBy: "updatedAt",
       direction: "desc",
@@ -49,10 +57,10 @@ const PendingRegistrationResource = {
   resource: PendingRegistration,
   options: {
     id: "pending_registrations",
-    listProperties: ["id", "name", "createdAt"],
-    filterProperties: ["id", "name", "createdAt"],
-    editProperties: ["id", "name", "bio", "createdAt"],
-    showProperties: ["id", "name", "bio", "createdAt"],
+    listProperties: ["regID", "fullName", "dateTime"],
+    filterProperties: ["regID", "fullName", "dateTime"],
+    editProperties: ["regID", "fullName", "dateTime"],
+    showProperties: ["regID", "fullName", "dateTime"],
     sort: {
       sortBy: "updatedAt",
       direction: "desc",
@@ -70,10 +78,10 @@ const SaleResource = {
   resource: Sale,
   options: {
     id: "sales",
-    listProperties: ["id", "name", "createdAt"],
-    filterProperties: ["id", "name", "createdAt"],
-    editProperties: ["id", "name", "bio", "createdAt"],
-    showProperties: ["id", "name", "bio", "createdAt"],
+    listProperties: ["regID", "fullName", "dateTime"],
+    filterProperties: ["regID", "fullName", "dateTime"],
+    editProperties: ["regID", "fullName", "dateTime"],
+    showProperties: ["regID", "fullName", "dateTime"],
     sort: {
       sortBy: "updatedAt",
       direction: "desc",
@@ -90,11 +98,11 @@ const SaleResource = {
 const FailedRegistrationResource = {
   resource: FailedRegistration,
   options: {
-    id: "pending_registrations",
-    listProperties: ["id", "name", "createdAt"],
-    filterProperties: ["id", "name", "createdAt"],
-    editProperties: ["id", "name", "bio", "createdAt"],
-    showProperties: ["id", "name", "bio", "createdAt"],
+    id: "failed_registrations",
+    listProperties: ["regID", "fullName", "dateTime"],
+    filterProperties: ["regID", "fullName", "dateTime"],
+    editProperties: ["regID", "fullName", "dateTime"],
+    showProperties: ["regID", "fullName", "dateTime"],
     sort: {
       sortBy: "updatedAt",
       direction: "desc",
@@ -112,10 +120,10 @@ const SmsResource = {
   resource: Sms,
   options: {
     id: "sms_receipts",
-    listProperties: ["id", "name", "createdAt"],
-    filterProperties: ["id", "name", "createdAt"],
-    editProperties: ["id", "name", "bio", "createdAt"],
-    showProperties: ["id", "name", "bio", "createdAt"],
+    listProperties: ["mobileNumber", "message", "provider", "payload"],
+    filterProperties: ["mobileNumber", "message", "provider", "payload"],
+    editProperties: ["mobileNumber", "message", "provider", "payload"],
+    showProperties: ["mobileNumber", "message", "provider", "payload"],
     sort: {
       sortBy: "updatedAt",
       direction: "desc",
@@ -130,7 +138,21 @@ const SmsResource = {
 };
 
 const adminOptions = {
-  resources: [Registration, PendingRegistration, Sale, FailedRegistration, Sms],
+  branding: {
+    companyName: "PenatgonWifi",
+    softwareBrothers: false,
+  },
+  dashboard: {
+    component: Components.Dashboard,
+  },
+  componentLoader,
+  resources: [
+    RegistrationResource,
+    PendingRegistrationResource,
+    SaleResource,
+    FailedRegistrationResource,
+    SmsResource,
+  ],
   locale: {
     language: "en",
     translations: {
@@ -174,5 +196,6 @@ const adminOptions = {
 };
 
 const admin = new AdminJS(adminOptions);
+admin.watch();
 
 export { admin, authenticate };

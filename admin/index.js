@@ -11,7 +11,7 @@ import { dashboard } from "../config/filePath.js";
 import AdminJS, { ComponentLoader } from "adminjs";
 import { findUser } from "../db/repository/user.js";
 import * as AdminJSMongoose from "@adminjs/mongoose";
-import { adminCredentials } from "../config/constants.js";
+import { adminCredentials, admin, companyName } from "../config/constants.js";
 
 AdminJS.registerAdapter({
   Resource: AdminJSMongoose.Resource,
@@ -35,7 +35,7 @@ const Components = {
 // };
 
 const isAdminRole = ({ currentAdmin }) => {
-  return currentAdmin && currentAdmin.role === "Admin";
+  return currentAdmin && currentAdmin.role === admin;
 };
 
 const authenticate = async (email, password) => {
@@ -52,7 +52,7 @@ const authenticate = async (email, password) => {
 const adminOptions = {
   branding: {
     softwareBrothers: false,
-    companyName: "PenatgonWifi",
+    companyName: companyName,
   },
   dashboard: {
     component: Components.Dashboard,
@@ -115,7 +115,7 @@ const adminOptions = {
   },
 };
 
-const admin = new AdminJS(adminOptions);
-admin.watch();
+const adminjs = new AdminJS(adminOptions);
+adminjs.watch();
 
-export { admin, authenticate };
+export { adminjs, authenticate };

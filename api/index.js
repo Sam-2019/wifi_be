@@ -5,7 +5,7 @@ import express, { json } from "express";
 import router from "../routes/index.js";
 import AdminJSExpress from "@adminjs/express";
 import { connectDB, dbSession } from "../db/index.js";
-import { admin, authenticate } from "../admin/index.js";
+import { adminjs, authenticate } from "../admin/index.js";
 // import { authMiddleware } from "../config/middleware.js";
 import { cookie, cookiePass } from "../config/constants.js";
 
@@ -22,7 +22,7 @@ const start = async () => {
   connectDB();
 
   const adminRouter = AdminJSExpress.buildAuthenticatedRouter(
-    admin,
+    adminjs,
     {
       authenticate,
       cookieName: cookie,
@@ -31,7 +31,7 @@ const start = async () => {
     null,
     dbSession,
   );
-  app.use(admin.options.rootPath, adminRouter);
+  app.use(adminjs.options.rootPath, adminRouter);
 
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: false }));
@@ -42,7 +42,7 @@ const start = async () => {
 
   app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
-    console.log(`AdminJS started on ${port}${admin.options.rootPath}`);
+    console.log(`AdminJS started on ${port}${adminjs.options.rootPath}`);
   });
 };
 

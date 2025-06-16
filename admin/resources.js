@@ -1,8 +1,8 @@
 import bcrypt from "bcrypt";
 import Sms from "../db/modelsXschema/sms.js";
-import { salt } from "../config/constants.js";
 import Sale from "../db/modelsXschema/sale.js";
 import User from "../db/modelsXschema/user.js";
+import { salt, admin } from "../config/constants.js";
 import Registration from "../db/modelsXschema/registration.js";
 import FailedRegistration from "../db/modelsXschema/failed_registration.js";
 import PendingRegistration from "../db/modelsXschema/pending_registration.js";
@@ -132,13 +132,14 @@ export const UserResource = {
     },
     actions: {
       new: {
+        isAccessible: ({ currentAdmin }) => currentAdmin.role === admin,
         before: async (request) => {
           if (request.payload?.password) {
             request.payload = {
               ...request.payload,
               encryptedPassword: await bcrypt.hash(
                 request.payload.password,
-               salt,
+                salt,
               ),
               password: undefined,
             };
@@ -153,6 +154,7 @@ export const UserResource = {
         },
       },
       edit: {
+        isAccessible: ({ currentAdmin }) => currentAdmin.role === admin,
         before: async (request) => {
           if (request.method === "post") {
             if (request.payload?.password) {
@@ -160,7 +162,7 @@ export const UserResource = {
                 ...request.payload,
                 encryptedPassword: await bcrypt.hash(
                   request.payload.password,
-                 salt,
+                  salt,
                 ),
                 password: undefined,
               };

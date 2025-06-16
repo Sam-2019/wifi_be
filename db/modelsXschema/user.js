@@ -6,6 +6,8 @@ const dataSchema = new Schema(
     email: {
       type: String,
       required: true,
+      unique: true
+      
     },
     encryptedPassword: {
       type: String,
@@ -13,7 +15,7 @@ const dataSchema = new Schema(
     },
     role: {
       type: String,
-      enum: ["Admin", "Restricted"],
+      enum: ["admin", "restricted"],
       required: true,
     },
   },

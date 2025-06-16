@@ -1,6 +1,7 @@
 import path from "path";
 import "dotenv/config";
 
+const admin = "admin";
 const hubtel = "hubtel";
 const success = "success";
 const paystack = "paystack";
@@ -11,6 +12,7 @@ const production = "production";
 const __dirname = path.resolve();
 const server_up = "server is up";
 const development = "development";
+const companyName = "PenatgonWifi";
 const unauthorized = "Unauthorized";
 const server_down = "server is down";
 const componentPath = "./components/";
@@ -51,7 +53,7 @@ const excludeItems = {
   __v: 0,
 };
 
-const salt = process.env.COOKIE_NAME;
+const salt = Number(process.env.SALT);
 const cookie = process.env.COOKIE_NAME;
 const cookiePass = process.env.COOKIE_PASSWORD;
 
@@ -67,6 +69,7 @@ export {
   ttl,
   salt,
   dbUri,
+  admin,
   gsUri,
   apiUrl,
   cookie,
@@ -86,6 +89,7 @@ export {
   successful,
   serverMode,
   production,
+  companyName,
   server_down,
   development,
   unauthorized,

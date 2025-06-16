@@ -1,13 +1,15 @@
+import bcrypt from "bcrypt";
 import { dashboard } from "./filePath.js";
-import { adminCredentials } from "./constants.js";
 import AdminJS, { ComponentLoader } from "adminjs";
 import * as AdminJSMongoose from "@adminjs/mongoose";
 
 import Sms from "../db/modelsXschema/sms.js";
+import User from "../db/modelsXschema/user.js";
 import Sale from "../db/modelsXschema/sale.js";
+import { findUser } from "../db/repository/user.js";
 import Registration from "../db/modelsXschema/registration.js";
-import PendingRegistration from "../db/modelsXschema/pending_registration.js";
 import FailedRegistration from "../db/modelsXschema/failed_registration.js";
+import PendingRegistration from "../db/modelsXschema/pending_registration.js";
 
 AdminJS.registerAdapter({
   Resource: AdminJSMongoose.Resource,
@@ -20,16 +22,19 @@ const Components = {
   Dashboard: componentLoader.add("Dashboard", dashboard),
 };
 
-const onlyForAdmin = ({ currentAdmin }) => currentAdmin.role === "Admin";
+const isAdminRole = ({ currentAdmin }) => {
+  return currentAdmin && currentAdmin.role === "Admin";
+};
 
 const authenticate = async (email, password) => {
-  if (
-    email === adminCredentials.email &&
-    password === adminCredentials.password
-  ) {
-    return Promise.resolve(adminCredentials);
+  const user = await findUser(email);
+  if (user) {
+    const matched = await bcrypt.compare(password, user.encryptedPassword);
+    if (matched) {
+      return user;
+    }
   }
-  return null;
+  return false;
 };
 
 const RegistrationResource = {
@@ -137,31 +142,72 @@ const SmsResource = {
   },
 };
 
+const UserResource = {
+  resource: User,
+  options: {
+    id: "users",
+    properties: {
+      encryptedPassword: {
+        isVisible: false,
+      },
+      password: {
+        type: "string",
+        isVisible: {
+          list: false,
+          edit: true,
+          filter: false,
+          show: false,
+        },
+      },
+    },
+    actions: {
+      new: {
+        // Hash the password.
+        before: async (request) => {
+          if (request?.payload?.password) {
+            request.payload = {
+              ...request.payload,
+              encryptedPassword: await bcrypt.hash(
+                request.payload.password,
+                10
+              ),
+              password: undefined,
+            };
+          }
+          return request;
+        },
+      },
+    },
+  },
+};
+
 const adminOptions = {
   branding: {
-    companyName: "PenatgonWifi",
     softwareBrothers: false,
+    companyName: "PenatgonWifi",
   },
   dashboard: {
     component: Components.Dashboard,
   },
   componentLoader,
   resources: [
-    RegistrationResource,
-    PendingRegistrationResource,
-    SaleResource,
-    FailedRegistrationResource,
     SmsResource,
+    UserResource,
+    SaleResource,
+    RegistrationResource,
+    FailedRegistrationResource,
+    PendingRegistrationResource,
   ],
   locale: {
     language: "en",
     translations: {
       labels: {
+        User: "Users",
+        Sale: "Revenue",
+        Sms: "Sms Receipts",
         Registration: "Registration",
         PendingRegistration: "Pending Revenue",
-        Sale: "Revenue",
         FailedRegistration: "Failed Registration",
-        Sms: "Sms Receipts",
       },
       resources: {
         Registration: {
@@ -188,6 +234,11 @@ const adminOptions = {
         Sms: {
           messages: {
             noRecordsInResource: "There are no sms receipts to display",
+          },
+        },
+        User: {
+          messages: {
+            noRecordsInResource: "There are no users to display",
           },
         },
       },

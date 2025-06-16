@@ -51,6 +51,7 @@ const excludeItems = {
   __v: 0,
 };
 
+const salt = process.env.COOKIE_NAME;
 const cookie = process.env.COOKIE_NAME;
 const cookiePass = process.env.COOKIE_PASSWORD;
 
@@ -64,6 +65,7 @@ const adminCredentials = {
 
 export {
   ttl,
+  salt,
   dbUri,
   gsUri,
   apiUrl,

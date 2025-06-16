@@ -4,13 +4,14 @@ import {
   UserResource,
   SaleResource,
   RegistrationResource,
-  PendingRegistrationResource,
   FailedRegistrationResource,
+  PendingRegistrationResource,
 } from "../admin/resources.js";
 import { dashboard } from "../config/filePath.js";
 import AdminJS, { ComponentLoader } from "adminjs";
 import { findUser } from "../db/repository/user.js";
 import * as AdminJSMongoose from "@adminjs/mongoose";
+import { adminCredentials } from "../config/constants.js";
 
 AdminJS.registerAdapter({
   Resource: AdminJSMongoose.Resource,
@@ -22,6 +23,16 @@ const componentLoader = new ComponentLoader();
 const Components = {
   Dashboard: componentLoader.add("Dashboard", dashboard),
 };
+
+// const authenticate = async (email, password) => {
+//   if (
+//     email === adminCredentials.email &&
+//     password === adminCredentials.password
+//   ) {
+//     return Promise.resolve(adminCredentials);
+//   }
+//   return null;
+// };
 
 const isAdminRole = ({ currentAdmin }) => {
   return currentAdmin && currentAdmin.role === "Admin";
@@ -67,11 +78,7 @@ const adminOptions = {
         FailedRegistration: "Failed Registration",
       },
       resources: {
-        Registration: {
-          messages: {
-            noRecordsInResource: "There are no registrations to display",
-          },
-        },
+
         PendingRegistration: {
           messages: {
             noRecordsInResource:
@@ -83,9 +90,9 @@ const adminOptions = {
             noRecordsInResource: "There are no sales to display",
           },
         },
-        FailedRegistration: {
+        User: {
           messages: {
-            noRecordsInResource: "There are no failed registrations to display",
+            noRecordsInResource: "There are no users to display",
           },
         },
         Sms: {
@@ -93,9 +100,14 @@ const adminOptions = {
             noRecordsInResource: "There are no sms receipts to display",
           },
         },
-        User: {
+        Registration: {
           messages: {
-            noRecordsInResource: "There are no users to display",
+            noRecordsInResource: "There are no registrations to display",
+          },
+        },
+        FailedRegistration: {
+          messages: {
+            noRecordsInResource: "There are no failed registrations to display",
           },
         },
       },

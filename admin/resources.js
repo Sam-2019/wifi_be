@@ -1,4 +1,6 @@
+import bcrypt from "bcrypt";
 import Sms from "../db/modelsXschema/sms.js";
+import { salt } from "../config/constants.js";
 import Sale from "../db/modelsXschema/sale.js";
 import User from "../db/modelsXschema/user.js";
 import Registration from "../db/modelsXschema/registration.js";
@@ -130,19 +132,56 @@ export const UserResource = {
     },
     actions: {
       new: {
-        // Hash the password.
         before: async (request) => {
-          if (request?.payload?.password) {
+          if (request.payload?.password) {
             request.payload = {
               ...request.payload,
               encryptedPassword: await bcrypt.hash(
                 request.payload.password,
-                10,
+               salt,
               ),
               password: undefined,
             };
           }
           return request;
+        },
+      },
+      show: {
+        after: async (response) => {
+          response.record.params.password = "";
+          return response;
+        },
+      },
+      edit: {
+        before: async (request) => {
+          if (request.method === "post") {
+            if (request.payload?.password) {
+              request.payload = {
+                ...request.payload,
+                encryptedPassword: await bcrypt.hash(
+                  request.payload.password,
+                 salt,
+                ),
+                password: undefined,
+              };
+            } else {
+              // biome-ignore lint/performance/noDelete: <explanation>
+              delete request.payload?.password;
+            }
+          }
+          return request;
+        },
+        after: async (response) => {
+          response.record.params.password = "";
+          return response;
+        },
+      },
+      list: {
+        after: async (response) => {
+          for (const record of response.records) {
+            record.params.password = "";
+          }
+          return response;
         },
       },
     },

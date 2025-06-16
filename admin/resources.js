@@ -2,6 +2,7 @@ import bcrypt from "bcrypt";
 import Sms from "../db/modelsXschema/sms.js";
 import Sale from "../db/modelsXschema/sale.js";
 import User from "../db/modelsXschema/user.js";
+import { isAdminRole } from "../admin/index.js";
 import { salt, admin } from "../config/constants.js";
 import Registration from "../db/modelsXschema/registration.js";
 import FailedRegistration from "../db/modelsXschema/failed_registration.js";
@@ -24,6 +25,12 @@ export const RegistrationResource = {
         isAccessible: false,
         isVisible: true,
       },
+      delete: {
+        isAccessible: ({ currentAdmin }) => currentAdmin.role === admin,
+      },
+      bulkDelete: {
+        isAccessible: ({ currentAdmin }) => currentAdmin.role === admin,
+      },
     },
   },
 };
@@ -44,6 +51,12 @@ export const PendingRegistrationResource = {
       edit: {
         isAccessible: false,
         isVisible: true,
+      },
+      delete: {
+        isAccessible: ({ currentAdmin }) => currentAdmin.role === admin,
+      },
+      bulkDelete: {
+        isAccessible: ({ currentAdmin }) => currentAdmin.role === admin,
       },
     },
   },
@@ -66,6 +79,12 @@ export const SaleResource = {
         isAccessible: false,
         isVisible: true,
       },
+      delete: {
+        isAccessible: ({ currentAdmin }) => currentAdmin.role === admin,
+      },
+      bulkDelete: {
+        isAccessible: ({ currentAdmin }) => currentAdmin.role === admin,
+      },
     },
   },
 };
@@ -87,6 +106,12 @@ export const FailedRegistrationResource = {
         isAccessible: false,
         isVisible: true,
       },
+      delete: {
+        isAccessible: ({ currentAdmin }) => currentAdmin.role === admin,
+      },
+      bulkDelete: {
+        isAccessible: ({ currentAdmin }) => currentAdmin.role === admin,
+      },
     },
   },
 };
@@ -107,6 +132,12 @@ export const SmsResource = {
       edit: {
         isAccessible: false,
         isVisible: true,
+      },
+      delete: {
+        isAccessible: ({ currentAdmin }) => currentAdmin.role === admin,
+      },
+      bulkDelete: {
+        isAccessible: ({ currentAdmin }) => currentAdmin.role === admin,
       },
     },
   },
@@ -139,7 +170,7 @@ export const UserResource = {
               ...request.payload,
               encryptedPassword: await bcrypt.hash(
                 request.payload.password,
-                salt,
+                salt
               ),
               password: undefined,
             };
@@ -148,6 +179,7 @@ export const UserResource = {
         },
       },
       show: {
+        isAccessible: ({ currentAdmin }) => currentAdmin.role === admin,
         after: async (response) => {
           response.record.params.password = "";
           return response;
@@ -162,7 +194,7 @@ export const UserResource = {
                 ...request.payload,
                 encryptedPassword: await bcrypt.hash(
                   request.payload.password,
-                  salt,
+                  salt
                 ),
                 password: undefined,
               };
@@ -185,6 +217,12 @@ export const UserResource = {
           }
           return response;
         },
+      },
+      delete: {
+        isAccessible: ({ currentAdmin }) => currentAdmin.role === admin,
+      },
+      bulkDelete: {
+        isAccessible: ({ currentAdmin }) => isAdminRole({currentAdmin}),
       },
     },
   },

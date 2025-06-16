@@ -118,4 +118,4 @@ const adminOptions = {
 const adminjs = new AdminJS(adminOptions);
 adminjs.watch();
 
-export { adminjs, authenticate };
+export { adminjs, authenticate, isAdminRole };

@@ -2,12 +2,13 @@ import { model, Schema } from "mongoose";
 
 const dataSchema = new Schema(
   {
-    fullName: { type: String },
+    userId: { type: String },
+    fullName: { type: String, required: true, },
     email: {
       type: String,
       required: true,
       unique: true
-      
+
     },
     encryptedPassword: {
       type: String,

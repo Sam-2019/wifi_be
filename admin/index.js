@@ -7,11 +7,15 @@ import {
   FailedRegistrationResource,
   PendingRegistrationResource,
 } from "../admin/resources.js";
+import { dbSession } from "../db/index.js";
+import AdminJSExpress from "@adminjs/express";
 import { dashboard } from "../config/filePath.js";
 import AdminJS, { ComponentLoader } from "adminjs";
 import { findUser } from "../db/repository/user.js";
 import * as AdminJSMongoose from "@adminjs/mongoose";
+import { cookie, cookiePass } from "../config/constants.js";
 import { adminCredentials, admin, companyName } from "../config/constants.js";
+
 
 AdminJS.registerAdapter({
   Resource: AdminJSMongoose.Resource,
@@ -78,7 +82,6 @@ const adminOptions = {
         FailedRegistration: "Failed Registration",
       },
       resources: {
-
         PendingRegistration: {
           messages: {
             noRecordsInResource:
@@ -118,4 +121,15 @@ const adminOptions = {
 const adminjs = new AdminJS(adminOptions);
 adminjs.watch();
 
-export { adminjs, authenticate, isAdminRole };
+const adminRouter = AdminJSExpress.buildAuthenticatedRouter(
+  adminjs,
+  {
+    authenticate,
+    cookieName: cookie,
+    cookiePassword: cookiePass,
+  },
+  null,
+  dbSession
+);
+
+export { adminjs, adminRouter, authenticate, isAdminRole };

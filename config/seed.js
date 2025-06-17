@@ -58,10 +58,10 @@ function createRandomRegistration() {
     roomNumber: faker.helpers.arrayElement(["A20", "B20", "C20", "D20"]),
     isCustodian: false,
     dateTime: Date.now(),
-    credentials: JSON.stringify({
+    credentials: {
       userName: firstName,
       password: lastName,
-    }),
+    },
     provider: faker.helpers.arrayElement([hubtel.toUpperCase(), paystack.toUpperCase()]),
     registrationType: faker.helpers.arrayElement(["Registration", "Top Up"]),
   };

@@ -1,6 +1,6 @@
 import path from "path";
-import { componentPath, assetPath } from "./constants.js";
+import { componentPath } from "./constants.js";
 
-export const logo = path.resolve(`${assetPath}/logo.png`);
+const dashboard = path.resolve(`${componentPath}/dashboard.jsx`);
 
-export const dashboard = path.resolve(`${componentPath}/dashboard.jsx`);
+export { path, dashboard };

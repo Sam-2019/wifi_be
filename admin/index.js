@@ -16,18 +16,6 @@ import * as AdminJSMongoose from "@adminjs/mongoose";
 import { cookie, cookiePass } from "../config/constants.js";
 import { adminCredentials, admin, companyName } from "../config/constants.js";
 
-
-AdminJS.registerAdapter({
-  Resource: AdminJSMongoose.Resource,
-  Database: AdminJSMongoose.Database,
-});
-
-const componentLoader = new ComponentLoader();
-
-const Components = {
-  Dashboard: componentLoader.add("Dashboard", dashboard),
-};
-
 // const authenticate = async (email, password) => {
 //   if (
 //     email === adminCredentials.email &&
@@ -37,10 +25,6 @@ const Components = {
 //   }
 //   return null;
 // };
-
-const isAdminRole = ({ currentAdmin }) => {
-  return currentAdmin && currentAdmin.role === admin;
-};
 
 const authenticate = async (email, password) => {
   const user = await findUser(email);
@@ -53,8 +37,23 @@ const authenticate = async (email, password) => {
   return false;
 };
 
+AdminJS.registerAdapter({
+  Resource: AdminJSMongoose.Resource,
+  Database: AdminJSMongoose.Database,
+});
+
+const componentLoader = new ComponentLoader();
+const Components = {
+  Dashboard: componentLoader.add("Dashboard", dashboard),
+};
+
+const isAdminRole = ({ currentAdmin }) => {
+  return currentAdmin && currentAdmin.role === admin;
+};
+
 const adminOptions = {
   branding: {
+    logo: "/assets/logo.png",
     softwareBrothers: false,
     companyName: companyName,
   },

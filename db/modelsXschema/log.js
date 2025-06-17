@@ -13,5 +13,5 @@ const dataSchema = new Schema({
   }
 );
 
-const Logger = model("Log", dataSchema);
-export default Logger;
+const Log = model("Log", dataSchema);
+export default Log;

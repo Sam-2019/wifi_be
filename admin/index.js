@@ -57,7 +57,7 @@ const logger = loggerFeature({
   propertiesMapping: {
     user: 'userId',
   },
-  userIdAttribute: 'id',
+  userIdAttribute: '_id',
 });
 
 const RegistrationResource = {
@@ -300,41 +300,35 @@ const UserResource = {
 
 const LogResource = {
   resource: Logger,
-  options: {
-    id: "logs",
-  },
   featureOptions: {
     propertiesMapping: {
       recordTitle: 'title',
-      userIdAttribute: 'id',
-      resourceOptions: {
-        navigation: {
-          name: 'SectionName',
-          icon: 'iconName'
-        }
-      }
+      userIdAttribute: '_id',
     }
   },
-  actions: {
-    new: {
-      isAccessible: false,
-    },
-    show: {
-      isAccessible: false
-    },
-    edit: {
-      isAccessible: false
-    },
-    list: {
-      isAccessible: false
-    },
-    delete: {
-      isAccessible: false,
-    },
-    bulkDelete: {
-      isAccessible: false,
+  options: {
+    actions: {
+      new: {
+        isAccessible: ({ currentAdmin }) => currentAdmin.role === admin,
+      },
+      show: {
+        isAccessible: ({ currentAdmin }) => currentAdmin.role === admin,
+      },
+      edit: {
+        isAccessible: ({ currentAdmin }) => currentAdmin.role === admin,
+      },
+      list: {
+        isAccessible: ({ currentAdmin }) => currentAdmin.role === admin,
+      },
+      delete: {
+        isAccessible: ({ currentAdmin }) => currentAdmin.role === admin,
+      },
+      bulkDelete: {
+        isAccessible: ({ currentAdmin }) => currentAdmin.role === admin,
+      },
     },
   },
+
 }
 
 const adminOptions = {

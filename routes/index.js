@@ -306,7 +306,7 @@ router.get("/api/customers", async (req, res) => {
 router
   .route("/api/customer")
   .get(async (req, res) => {
-    const results = req.body;
+    const results = req.query;
 
     if (
       results === undefined ||
@@ -428,7 +428,7 @@ router.post("/api/payment/status", async (req, res) => {
       if (!response.ok) {
         console.error(
           "Failed to fetch transaction status:",
-          response.statusText
+          response.statusText,
         );
         return res
           .status(400)

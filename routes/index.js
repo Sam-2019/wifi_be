@@ -58,7 +58,7 @@ router.get("/api/sales", async (req, res) => {
 router
   .route("/api/sale")
   .get(async (req, res) => {
-    const results = req.body;
+    const results = req.query;
 
     if (results === undefined || results === null) {
       console.error("Received with no data");
@@ -118,7 +118,7 @@ router.get("/api/registrations", async (req, res) => {
 router
   .route("/api/registration")
   .get(async (req, res) => {
-    const results = req.body;
+    const results = req.query;
 
     if (results === undefined || results === null) {
       console.error("Received with no data");
@@ -181,7 +181,7 @@ router.get("/api/pending-registrations", async (req, res) => {
 router
   .route("/api/pending-registration")
   .get(async (req, res) => {
-    const results = req.body;
+    const results = req.query;
 
     if (results === undefined || results === null) {
       console.error("Received with no data");
@@ -246,7 +246,7 @@ router.get("/api/failed-registrations", async (req, res) => {
 router
   .route("/api/failed-registration")
   .get(async (req, res) => {
-    const results = req.body;
+    const results = req.query;
 
     if (results === undefined || results === null) {
       console.error("Received with no data");

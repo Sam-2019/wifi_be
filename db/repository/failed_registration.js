@@ -1,5 +1,5 @@
-import FailedRegistration from "../modelsXschema/failed_registration.js";
 import { excludeItems } from "../../config/constants.js";
+import FailedRegistration from "../modelsXschema/failed_registration.js";
 
 const getFailedRegistrations = async () => {
   return await FailedRegistration.find({}, excludeItems).lean();
@@ -9,23 +9,21 @@ const addFailedRegistration = async (data) => {
   return await FailedRegistration.create(data);
 };
 
-const findFailedRegistration = async (data) => {
-  const phoneNumber = data.phoneNumber;
-  const email = data.email;
-  // const clientReference = data.clientReference;
+const getFailedRegistration = async (data) => {
+  const email = data?.email;
+  const phoneNumber = data?.phoneNumber;
 
   return await FailedRegistration.findOne(
     {
-      phoneNumber: phoneNumber,
       email: email,
-      // clientReference: clientReference,
+      phoneNumber: phoneNumber,
     },
     excludeItems
   ).lean();
 };
 
 export {
-  getFailedRegistrations,
   addFailedRegistration,
-  findFailedRegistration,
+  getFailedRegistration,
+  getFailedRegistrations,
 };

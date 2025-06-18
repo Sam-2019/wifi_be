@@ -1,5 +1,5 @@
-import PendingRegistration from "../modelsXschema/pending_registration.js";
 import { excludeItems } from "../../config/constants.js";
+import PendingRegistration from "../modelsXschema/pending_registration.js";
 
 const getPendingRegistrations = async () => {
   return await PendingRegistration.find({}, excludeItems).lean();
@@ -9,19 +9,19 @@ const addPendingRegistration = async (data) => {
   return await PendingRegistration.create(data);
 };
 
-const findPendingRegistration = async (clientReference) => {
+const getPendingRegistration = async (clientReference) => {
   return await PendingRegistration.findOne(
     {
       clientReference: clientReference,
     },
-    excludeItems
+    excludeItems,
   )
     .sort({ $natural: -1 })
     .lean();
 };
 
 export {
-  getPendingRegistrations,
   addPendingRegistration,
-  findPendingRegistration,
+  getPendingRegistration,
+  getPendingRegistrations,
 };

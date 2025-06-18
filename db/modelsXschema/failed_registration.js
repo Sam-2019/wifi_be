@@ -10,7 +10,7 @@ const dataSchema = new Schema(
     registrationFee: { type: Number },
     totalCost: { type: Number },
     clientReference: { type: String },
-    email: { type: String },
+    email: { type: String, lowercase: true },
     dateOfBirth: { type: Date },
     blockCourt: { type: String },
     roomType: { type: String },
@@ -30,4 +30,3 @@ const dataSchema = new Schema(
 
 const FailedRegistration = model("FailedRegistration", dataSchema);
 export default FailedRegistration;
-

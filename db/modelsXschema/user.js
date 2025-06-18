@@ -3,12 +3,12 @@ import { model, Schema } from "mongoose";
 const dataSchema = new Schema(
   {
     userId: { type: String },
-    fullName: { type: String, required: true, },
+    fullName: { type: String, required: true },
     email: {
       type: String,
       required: true,
-      unique: true
-
+      unique: true,
+      lowercase: true,
     },
     encryptedPassword: {
       type: String,

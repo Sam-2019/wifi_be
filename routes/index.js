@@ -1,14 +1,12 @@
 import "dotenv/config";
 import path from "path";
 import express from "express";
-import { writeToSheet } from "../config/gSheet.js";
-import { addSale, getSales } from "../db/repository/sale.js";
 import {
   hubtel,
   apiUrl,
   success,
-  __dirname,
   authToken,
+  __dirname,
   internalServerError,
 } from "../config/constants.js";
 import {
@@ -26,6 +24,8 @@ import {
   findPendingRegistration,
   getPendingRegistrations,
 } from "../db/repository/pending_registration.js";
+import { writeToSheet } from "../config/gSheet.js";
+import { addSale, getSales } from "../db/repository/sale.js";
 
 const router = express.Router();
 router.get("/", async (req, res) => {
@@ -40,13 +40,13 @@ router.get("/", async (req, res) => {
 
 router.get("/api/registrations", async (req, res) => {
   try {
-    const results = await getRegistrations();
-    if (!results || results.length === 0) {
+    const registrations = await getRegistrations();
+    if (!registrations || registrations.length === 0) {
       return res
         .status(404)
         .json({ message: "No records found", data: [] });
     }
-    res.status(200).json({ message: "Registrations found", data: results });
+    res.status(200).json({ message: "Registrations found", data: registrations });
   } catch (error) {
     console.error("Error in /registrations:", error);
     res.status(500).send(internalServerError);
@@ -57,10 +57,10 @@ router.post("/api/registrant", async (req, res) => {
   const results = req.body;
 
   if (
-    (results === undefined || results === null,
-    results.phoneNumber === undefined || results.phoneNumber === null,
-    results.email === undefined || results.email === null,
-    results.userName === undefined || results.userName === null)
+    (results === undefined || results === null ||
+      results.phoneNumber === undefined || results.phoneNumber === null ||
+      results.email === undefined || results.email === null ||
+      results.userName === undefined || results.userName === null)
     // results.clientReference === undefined || results.clientReference === null
   ) {
     console.error("Received with no data");
@@ -68,13 +68,13 @@ router.post("/api/registrant", async (req, res) => {
   }
 
   try {
-    const response = await findRegistration(results);
-    if (!response || response.length === 0) {
-      return res.status(404).json({ message: "No record found", data: null });
+    const registrant = await findRegistration(results);
+    if (!registrant || registrant.length === 0) {
+      return res.status(404).json({ message: "No registrant found", data: null });
     }
-    res.status(200).json({ message: "Record found", data: response });
+    res.status(200).json({ message: "Registrant found", data: registrant });
   } catch (error) {
-    console.error("Error in /registration:", error);
+    console.error("Error in /registrant:", error);
     res.status(500).send(internalServerError);
   }
 });
@@ -93,10 +93,10 @@ router.post("/api/registration", async (req, res) => {
   }
 
   try {
-    const response = await addRegistration(results);
+    const registration = await addRegistration(results);
     res
       .status(200)
-      .json({ message: "Registration Successful", data: response });
+      .json({ message: "Registration Successful", data: registration });
   } catch (error) {
     console.error("Error in /registration", error);
     res.status(500).send(internalServerError);
@@ -107,7 +107,7 @@ router.get("/api/sales", async (req, res) => {
   try {
     const sales = await getSales();
     if (!sales || sales.length === 0) {
-      return res.status(404).json({ message: "No records found", data: [] });
+      return res.status(404).json({ message: "No sales found", data: [] });
     }
     res.status(200).json({ message: sales });
   } catch (error) {
@@ -145,9 +145,9 @@ router.get("/api/pending-registrations", async (req, res) => {
     if (!pending_registrations || pending_registrations.length === 0) {
       return res
         .status(404)
-        .json({ message: "No records found", data: [] });
+        .json({ message: "No pending registrations found", data: [] });
     }
-    res.status(200).json({ message: "Pending registrations found", data : pending_registrations });
+    res.status(200).json({ message: "Pending registrations found", data: pending_registrations });
   } catch (error) {
     console.error("Error in /pending-registrations", error);
     res.status(500).send(internalServerError);
@@ -170,7 +170,7 @@ router.post("/api/pending-registration", async (req, res) => {
   try {
     await addPendingRegistration(results);
     await writeToSheet(results);
-    res.status(200).json({ message: "Registration Successful" });
+    res.status(200).json({ message: "Pending Registration Successful" });
   } catch (error) {
     console.error("Error in /pending-registration:", error);
     res.status(500).send(internalServerError);
@@ -181,9 +181,9 @@ router.get("/api/failed-registrations", async (req, res) => {
   try {
     const failed_registrations = await getFailedRegistrations();
     if (!failed_registrations || failed_registrations.length === 0) {
-      return res.status(404).json({ message: "No records found", data: [] });
+      return res.status(404).json({ message: "No failed registrations found", data: [] });
     }
-    res.status(200).json({  message: "Failed registrations found", data : failed_registrations });
+    res.status(200).json({ message: "Failed registrations found", data: failed_registrations });
   } catch (error) {
     console.error("Error in /failed-registrations:", error);
     res.status(500).send(internalServerError);
@@ -194,20 +194,21 @@ router.get("/api/failed-registration", async (req, res) => {
   const results = req.body;
 
   if (
-    (results === undefined || results === null,
-    results.phoneNumber === undefined || results.phoneNumber === null,
-    results.email === undefined || results.email === null)
-    // results.clientReference === undefined || results.clientReference === null
+    (results === undefined || results === null ||
+      results.phoneNumber === undefined || results.phoneNumber === null ||
+      results.email === undefined || results.email === null
+      // results.clientReference === undefined || results.clientReference === null
+    )
   ) {
     console.error("Received with no data");
     return res.status(400).send("Received with no data");
   }
   try {
-    const response = await findFailedRegistration(results);
-    if (!response || response.length === 0) {
-      return res.status(404).json({ message: "No record found", data: '' });
+    const failedRegistration = await findFailedRegistration(results);
+    if (!failedRegistration || failedRegistration.length === 0) {
+      return res.status(404).json({ message: "No failed registration found", data: null });
     }
-    res.status(200).json({ message: "Failed registration found", data : response });
+    res.status(200).json({ message: "Failed registration found", data: failedRegistration });
   } catch (error) {
     console.error("Error in /failed-registrations:", error);
     res.status(500).send(internalServerError);
@@ -229,7 +230,7 @@ router.post("/api/failed-registration", async (req, res) => {
 
   try {
     await addFailedRegistration(results);
-    res.status(200).json({ message: "Failed Payment recorded" });
+    res.status(200).json({ message: "Failed registration recorded" });
   } catch (error) {
     console.error("Error in /failed-registration:", error);
     res.status(500).send(internalServerError);

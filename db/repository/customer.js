@@ -19,7 +19,6 @@ const getCustomer = async (data) => {
             "credentials.userName": userName,
             phoneNumber: phoneNumber,
             email: email,
-            registrationType: registration
         },
         excludeItems
     ).lean();

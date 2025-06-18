@@ -10,7 +10,7 @@ const addSale = async (data) => {
 };
 
 const findSale = async (data) => {
-  const clientReference = data.clientReference;
+  const clientReference = data?.clientReference;
 
   return await Sale.findOne(
     {

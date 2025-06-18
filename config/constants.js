@@ -65,11 +65,15 @@ const adminCredentials = {
   password: password,
 };
 
+const topup = "Top Up";
+const registration = "Registration";
+
 export {
   ttl,
   salt,
   dbUri,
   admin,
+  topup,
   gsUri,
   apiUrl,
   cookie,
@@ -93,6 +97,7 @@ export {
   server_down,
   development,
   unauthorized,
+  registration,
   dbCollection,
   excludeItems,
   authorization,

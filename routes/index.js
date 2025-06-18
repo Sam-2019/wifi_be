@@ -44,22 +44,23 @@ router.get("/api/registrations", async (req, res) => {
     if (!results || results.length === 0) {
       return res
         .status(404)
-        .json({ message: "No registration found", data: [] });
+        .json({ message: "No records found", data: [] });
     }
-    res.status(200).json({ message: results });
+    res.status(200).json({ message: "Registrations found", data: results });
   } catch (error) {
     console.error("Error in /registrations:", error);
     res.status(500).send(internalServerError);
   }
 });
 
-router.get("/api/registration", async (req, res) => {
+router.post("/api/registrant", async (req, res) => {
   const results = req.body;
 
   if (
     (results === undefined || results === null,
     results.phoneNumber === undefined || results.phoneNumber === null,
-    results.email === undefined || results.email === null)
+    results.email === undefined || results.email === null,
+    results.userName === undefined || results.userName === null)
     // results.clientReference === undefined || results.clientReference === null
   ) {
     console.error("Received with no data");
@@ -67,11 +68,11 @@ router.get("/api/registration", async (req, res) => {
   }
 
   try {
-    const result = await findRegistration(results);
-    if (!result || result.length === 0) {
+    const response = await findRegistration(results);
+    if (!response || response.length === 0) {
       return res.status(404).json({ message: "No record found", data: null });
     }
-    res.status(200).json({ message: result });
+    res.status(200).json({ message: "Record found", data: response });
   } catch (error) {
     console.error("Error in /registration:", error);
     res.status(500).send(internalServerError);
@@ -106,7 +107,7 @@ router.get("/api/sales", async (req, res) => {
   try {
     const sales = await getSales();
     if (!sales || sales.length === 0) {
-      return res.status(404).json({ message: "No sales found", data: [] });
+      return res.status(404).json({ message: "No records found", data: [] });
     }
     res.status(200).json({ message: sales });
   } catch (error) {
@@ -144,9 +145,9 @@ router.get("/api/pending-registrations", async (req, res) => {
     if (!pending_registrations || pending_registrations.length === 0) {
       return res
         .status(404)
-        .json({ message: "No pending registrations found", data: [] });
+        .json({ message: "No records found", data: [] });
     }
-    res.status(200).json({ message: pending_registrations });
+    res.status(200).json({ message: "Pending registrations found", data : pending_registrations });
   } catch (error) {
     console.error("Error in /pending-registrations", error);
     res.status(500).send(internalServerError);
@@ -178,11 +179,11 @@ router.post("/api/pending-registration", async (req, res) => {
 
 router.get("/api/failed-registrations", async (req, res) => {
   try {
-    const results = await getFailedRegistrations();
-    if (!results || results.length === 0) {
-      return res.status(404).json({ message: "No record found", data: [] });
+    const failed_registrations = await getFailedRegistrations();
+    if (!failed_registrations || failed_registrations.length === 0) {
+      return res.status(404).json({ message: "No records found", data: [] });
     }
-    res.status(200).json({ message: results });
+    res.status(200).json({  message: "Failed registrations found", data : failed_registrations });
   } catch (error) {
     console.error("Error in /failed-registrations:", error);
     res.status(500).send(internalServerError);
@@ -202,11 +203,11 @@ router.get("/api/failed-registration", async (req, res) => {
     return res.status(400).send("Received with no data");
   }
   try {
-    const result = await findFailedRegistration(results);
-    if (!result || result.length === 0) {
-      return res.status(404).json({ message: "No record found", data: result });
+    const response = await findFailedRegistration(results);
+    if (!response || response.length === 0) {
+      return res.status(404).json({ message: "No record found", data: '' });
     }
-    res.status(200).json({ message: result });
+    res.status(200).json({ message: "Failed registration found", data : response });
   } catch (error) {
     console.error("Error in /failed-registrations:", error);
     res.status(500).send(internalServerError);

@@ -17,7 +17,7 @@ const start = async () => {
     cors({
       origin: "*",
       methods: ["GET", "POST"],
-    })
+    }),
   );
 
   connectDB();

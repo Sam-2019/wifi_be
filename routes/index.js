@@ -348,12 +348,20 @@ router
       res.status(200).json({ message: "Customer added" });
     } catch (error) {
       console.error("Error in /customer:", error.message);
-      if (error.code == 11000) {
-        console.log(error);
-        console.log(error.keyPattern?.email);
-        console.log(error.keyValue["email"]);
-        console.log(error.errmsg.includes("email"));
-        res.status(422).json({ message: "Username already exists" });
+      if (error.code === 11000) {
+        const emailMessage = error?.errmsg?.includes("email")
+          ? "Email already exists"
+          : null;
+        const userNameMessage = error?.errmsg?.includes("credentials.userName")
+          ? "Username already exists"
+          : null;
+
+        const message = {
+          email: emailMessage,
+          userName: userNameMessage,
+        };
+
+        res.status(422).json({ message: "Duplicate error", data: message });
       } else {
         console.error("Error in /customer:", error);
         res.status(500).send(internalServerError);
@@ -381,9 +389,8 @@ router.post("/api/payment/callback", async (req, res) => {
   const clientReference = responseData.ClientReference;
 
   try {
-    const foundPendingRegistration = await getPendingRegistration(
-      clientReference
-    );
+    const foundPendingRegistration =
+      await getPendingRegistration(clientReference);
 
     if (!foundPendingRegistration) {
       return res.status(404).send("Registration not found");
@@ -438,7 +445,7 @@ router.post("/api/payment/status", async (req, res) => {
       if (!response.ok) {
         console.error(
           "Failed to fetch transaction status:",
-          response.statusText
+          response.statusText,
         );
         return res
           .status(400)

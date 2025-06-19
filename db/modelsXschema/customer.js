@@ -1,5 +1,4 @@
 import { model, Schema } from "mongoose";
-import beautify from "mongoose-beautiful-unique-validation";
 
 const dataSchema = new Schema(
   {
@@ -29,8 +28,6 @@ const dataSchema = new Schema(
     timestamps: true,
   }
 );
-
-dataSchema.plugin(beautify);
 
 const Customer = model("Customer", dataSchema);
 export default Customer;

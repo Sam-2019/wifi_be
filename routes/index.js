@@ -349,6 +349,10 @@ router
     } catch (error) {
       console.error("Error in /customer:", error.message);
       if (error.code == 11000) {
+        console.log(error);
+        console.log(error.keyPattern?.email);
+        console.log(error.keyValue["email"]);
+        console.log(error.errmsg.includes("email"));
         res.status(422).json({ message: "Username already exists" });
       } else {
         console.error("Error in /customer:", error);

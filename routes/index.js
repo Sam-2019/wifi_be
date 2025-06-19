@@ -347,8 +347,13 @@ router
       await addCustomer(results);
       res.status(200).json({ message: "Customer added" });
     } catch (error) {
-      console.error("Error in /customer:", error);
-      res.status(500).send(internalServerError);
+      console.error("Error in /customer:", error.message);
+      if (error.code == 11000) {
+        res.status(422).json({ message: "Username already exists" });
+      } else {
+        console.error("Error in /customer:", error);
+        res.status(500).send(internalServerError);
+      }
     }
   });
 
@@ -372,8 +377,9 @@ router.post("/api/payment/callback", async (req, res) => {
   const clientReference = responseData.ClientReference;
 
   try {
-    const foundPendingRegistration =
-      await getPendingRegistration(clientReference);
+    const foundPendingRegistration = await getPendingRegistration(
+      clientReference
+    );
 
     if (!foundPendingRegistration) {
       return res.status(404).send("Registration not found");
@@ -428,7 +434,7 @@ router.post("/api/payment/status", async (req, res) => {
       if (!response.ok) {
         console.error(
           "Failed to fetch transaction status:",
-          response.statusText,
+          response.statusText
         );
         return res
           .status(400)

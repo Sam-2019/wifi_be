@@ -17,8 +17,8 @@ dbConn.on("connected", () => {
   console.log("Mongoose connected");
 });
 
-const connectDB = () => {
-  mongoose.connect(dbUri, {
+const connectDB = async () => {
+  await mongoose.connect(dbUri, {
     dbName: dbName,
     autoIndex: true,
   });

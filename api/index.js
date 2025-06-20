@@ -2,6 +2,7 @@ import path from "path";
 import cors from "cors";
 import { ping } from "./pinger.js";
 import bodyParser from "body-parser";
+import compression from "compression";
 import express, { json } from "express";
 import router from "../routes/index.js";
 import { connectDB } from "../db/index.js";
@@ -25,7 +26,9 @@ const start = async () => {
   ping();
   app.use(json());
   app.use("/", router);
+  app.use(compression());
   app.use(bodyParser.json());
+  app.disable("x-powered-by");
   app.use(adminjs.options.rootPath, adminRouter);
   app.use(bodyParser.urlencoded({ extended: false }));
   app.use(express.static(path.join(__dirname, "/public")));

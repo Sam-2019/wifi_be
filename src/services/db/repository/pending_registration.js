@@ -1,4 +1,4 @@
-import { excludeItems } from "../../config/constants.js";
+import { excludeItems } from "../../../config/constants.js";
 import PendingRegistration from "../modelsXschema/pending_registration.js";
 
 const getPendingRegistrations = async () => {

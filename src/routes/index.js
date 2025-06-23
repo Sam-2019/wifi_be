@@ -13,24 +13,24 @@ import {
   addRegistration,
   getRegistration,
   getRegistrations,
-} from "../db/repository/registration.js";
+} from "../services/db/repository/registration.js";
 import {
   addFailedRegistration,
   getFailedRegistration,
   getFailedRegistrations,
-} from "../db/repository/failed_registration.js";
+} from "../services/db/repository/failed_registration.js";
 import {
   addPendingRegistration,
   getPendingRegistration,
   getPendingRegistrations,
-} from "../db/repository/pending_registration.js";
+} from "../services/db/repository/pending_registration.js";
 import {
   addCustomer,
   getCustomer,
   getCustomers,
-} from "../db/repository/customer.js";
-import { writeToSheet } from "../config/gSheet.js";
-import { addSale, findSale, getSales } from "../db/repository/sale.js";
+} from "../services/db/repository/customer.js";
+import { writeToSheet } from "../services/gSheet.js";
+import { addSale, findSale, getSales } from "../services/db/repository/sale.js";
 
 const router = express.Router();
 router.get("/", async (req, res) => {

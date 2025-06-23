@@ -1,5 +1,5 @@
 import Sale from "../modelsXschema/sale.js";
-import { excludeItems } from "../../config/constants.js";
+import { excludeItems } from "../../../config/constants.js";
 
 const getSales = async () => {
   return await Sale.find({}, excludeItems).lean();

@@ -2,12 +2,12 @@ import bcrypt from "bcrypt";
 import { dbSession } from "../db/index.js";
 import loggerFeature from '@adminjs/logger';
 import AdminJSExpress from "@adminjs/express";
-import { dashboard } from "../config/filePath.js";
 import AdminJS, { ComponentLoader } from "adminjs";
 import { findUser } from "../db/repository/user.js";
 import * as AdminJSMongoose from "@adminjs/mongoose";
-import { cookie, cookiePass } from "../config/constants.js";
-import { adminCredentials, admin, companyName, salt } from "../config/constants.js";
+import { dashboard } from "../../config/filePath.js";
+import { cookie, cookiePass } from "../../config/constants.js";
+import { adminCredentials, admin, companyName, salt } from "../../config/constants.js";
 
 import Sms from "../db/modelsXschema/sms.js";
 import Sale from "../db/modelsXschema/sale.js";
@@ -49,7 +49,7 @@ AdminJS.registerAdapter({
 
 const componentLoader = new ComponentLoader();
 const Components = {
-  Dashboard: componentLoader.add("Dashboard", dashboard),
+  // Dashboard: componentLoader.add("Dashboard", dashboard),
 };
 
 const logger = loggerFeature({

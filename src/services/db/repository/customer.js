@@ -1,5 +1,5 @@
 import Customer from "../modelsXschema/customer.js";
-import { excludeItems } from "../../config/constants.js";
+import { excludeItems } from "../../../config/constants.js";
 
 const getCustomers = async () => {
     return await Customer.find({}, excludeItems).lean();

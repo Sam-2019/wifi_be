@@ -15,8 +15,8 @@ const development = "development";
 const companyName = "PenatgonWifi";
 const unauthorized = "Unauthorized";
 const server_down = "server is down";
-const componentPath = "./components/";
 const authorization = "authorization";
+const componentPath = "src/ui/components/";
 
 const clientID = process.env.MERCHANT;
 const authToken = process.env.BASIC_AUTH;

@@ -1,4 +1,4 @@
-import { gsUri } from "./constants.js";
+import { gsUri } from "../config/constants.js";
 
 export const writeToSheet = async (payload) => {
   fetch(gsUri, {

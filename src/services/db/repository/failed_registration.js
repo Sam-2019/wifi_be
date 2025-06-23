@@ -1,4 +1,4 @@
-import { excludeItems } from "../../config/constants.js";
+import { excludeItems } from "../../../config/constants.js";
 import FailedRegistration from "../modelsXschema/failed_registration.js";
 
 const getFailedRegistrations = async () => {

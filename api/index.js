@@ -1,13 +1,14 @@
 import path from "path";
 import cors from "cors";
-import { ping } from "./pinger.js";
+import { ping } from "../src/services/pinger.js";
 import bodyParser from "body-parser";
 import compression from "compression";
 import express, { json } from "express";
-import router from "../routes/index.js";
-import { connectDB } from "../db/index.js";
-import { __dirname } from "../config/constants.js";
-import { adminjs, adminRouter } from "../admin/index.js";
+import router from "../src/routes/index.js";
+import { connectDB } from "../src/services/db/index.js";
+import { __dirname } from "../src/config/constants.js";
+import { adminjs, adminRouter } from "../src/services/admin/index.js";
+import { dashboard } from "../src/config/filePath.js";
 // import { authMiddleware } from "../config/middleware.js";
 
 const port = process.env.PORT || 4000;

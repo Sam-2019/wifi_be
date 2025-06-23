@@ -24,14 +24,17 @@
     "dotenv": "^16.5.0",
     "express": "^4.21.2",
     "express-session": "^1.18.1",
-    "mikro-client": "^0.5.3",
-    "mongoose": "^8.15.1",
+    "mongoose": "^8.16.0",
     "path": "^0.12.7"
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
     "@faker-js/faker": "^9.8.0",
-    "@types/express": "^5.0.2",
+    "@types/express": "^5.0.3",
     "nodemon": "^3.1.10"
+  },
+  "resolutions": {
+    "@tiptap/core": "2.22.3",
+    "@tiptap/pm": "2.22.3"
   }
 }

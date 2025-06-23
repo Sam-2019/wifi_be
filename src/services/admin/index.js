@@ -305,7 +305,6 @@ const CustomerResource = {
       "roomType",
       "roomNumber",
       "isCustodian",
-      "dataTime",
     ],
     filterProperties: [
       "fullName",
@@ -315,7 +314,6 @@ const CustomerResource = {
       "roomType",
       "roomNumber",
       "isCustodian",
-      "dataTime",
     ],
     editProperties: [
       "fullName",
@@ -325,7 +323,6 @@ const CustomerResource = {
       "roomType",
       "roomNumber",
       "isCustodian",
-      "dataTime",
     ],
     showProperties: [
       "fullName",
@@ -335,7 +332,6 @@ const CustomerResource = {
       "roomType",
       "roomNumber",
       "isCustodian",
-      "dataTime",
     ],
 
     actions: {

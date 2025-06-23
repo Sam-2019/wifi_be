@@ -1,21 +1,27 @@
 import bcrypt from "bcrypt";
 import { dbSession } from "../db/index.js";
-import loggerFeature from '@adminjs/logger';
+import loggerFeature from "@adminjs/logger";
 import AdminJSExpress from "@adminjs/express";
 import AdminJS, { ComponentLoader } from "adminjs";
 import { findUser } from "../db/repository/user.js";
 import * as AdminJSMongoose from "@adminjs/mongoose";
 import { dashboard } from "../../config/filePath.js";
 import { cookie, cookiePass } from "../../config/constants.js";
-import { adminCredentials, admin, companyName, salt } from "../../config/constants.js";
+import {
+  salt,
+  admin,
+  companyName,
+  adminCredentials,
+} from "../../config/constants.js";
 
 import Sms from "../db/modelsXschema/sms.js";
 import Sale from "../db/modelsXschema/sale.js";
 import User from "../db/modelsXschema/user.js";
+import Logger from "../db/modelsXschema/log.js";
+import Customer from "../db/modelsXschema/customer.js";
 import Registration from "../db/modelsXschema/registration.js";
 import FailedRegistration from "../db/modelsXschema/failed_registration.js";
 import PendingRegistration from "../db/modelsXschema/pending_registration.js";
-import Logger from "../db/modelsXschema/log.js";
 
 // const authenticate = async (email, password) => {
 //   if (
@@ -55,16 +61,14 @@ const Components = {
 const logger = loggerFeature({
   componentLoader,
   propertiesMapping: {
-    user: 'userId',
+    user: "userId",
   },
-  userIdAttribute: '_id',
+  userIdAttribute: "_id",
 });
 
 const RegistrationResource = {
   resource: Registration,
-  features: [
-    logger
-  ],
+  features: [logger],
   options: {
     id: "registrations",
     listProperties: ["regID", "fullName", "dateTime"],
@@ -92,9 +96,7 @@ const RegistrationResource = {
 
 const PendingRegistrationResource = {
   resource: PendingRegistration,
-  features: [
-    logger
-  ],
+  features: [logger],
   options: {
     id: "pending_registrations",
     listProperties: ["regID", "fullName", "dateTime"],
@@ -122,9 +124,7 @@ const PendingRegistrationResource = {
 
 const SaleResource = {
   resource: Sale,
-  features: [
-    logger
-  ],
+  features: [logger],
   options: {
     id: "sales",
     listProperties: ["regID", "fullName", "dateTime"],
@@ -152,9 +152,7 @@ const SaleResource = {
 
 const FailedRegistrationResource = {
   resource: FailedRegistration,
-  features: [
-    logger
-  ],
+  features: [logger],
   options: {
     id: "failed_registrations",
     listProperties: ["regID", "fullName", "dateTime"],
@@ -182,9 +180,7 @@ const FailedRegistrationResource = {
 
 const SmsResource = {
   resource: Sms,
-  features: [
-    logger
-  ],
+  features: [logger],
   options: {
     id: "sms_receipts",
     listProperties: ["mobileNumber", "message", "provider", "payload"],
@@ -212,9 +208,7 @@ const SmsResource = {
 
 const UserResource = {
   resource: User,
-  features: [
-    logger
-  ],
+  features: [logger],
   options: {
     id: "users",
     properties: {
@@ -240,7 +234,7 @@ const UserResource = {
               ...request.payload,
               encryptedPassword: await bcrypt.hash(
                 request.payload.password,
-                salt
+                salt,
               ),
               password: undefined,
             };
@@ -264,7 +258,7 @@ const UserResource = {
                 ...request.payload,
                 encryptedPassword: await bcrypt.hash(
                   request.payload.password,
-                  salt
+                  salt,
                 ),
                 password: undefined,
               };
@@ -298,13 +292,74 @@ const UserResource = {
   },
 };
 
+const CustomerResource = {
+  resource: Customer,
+  features: [logger],
+  options: {
+    id: "customers",
+    listProperties: [
+      "fullName",
+      "phoneNumber",
+      "email",
+      "blockCourt",
+      "roomType",
+      "roomNumber",
+      "isCustodian",
+      "dataTime",
+    ],
+    filterProperties: [
+      "fullName",
+      "phoneNumber",
+      "email",
+      "blockCourt",
+      "roomType",
+      "roomNumber",
+      "isCustodian",
+      "dataTime",
+    ],
+    editProperties: [
+      "fullName",
+      "phoneNumber",
+      "email",
+      "blockCourt",
+      "roomType",
+      "roomNumber",
+      "isCustodian",
+      "dataTime",
+    ],
+    showProperties: [
+      "fullName",
+      "phoneNumber",
+      "email",
+      "blockCourt",
+      "roomType",
+      "roomNumber",
+      "isCustodian",
+      "dataTime",
+    ],
+
+    actions: {
+      edit: {
+        isAccessible: false,
+        isVisible: true,
+      },
+      delete: {
+        isAccessible: ({ currentAdmin }) => currentAdmin.role === admin,
+      },
+      bulkDelete: {
+        isAccessible: ({ currentAdmin }) => currentAdmin.role === admin,
+      },
+    },
+  },
+};
+
 const LogResource = {
   resource: Logger,
   featureOptions: {
     propertiesMapping: {
-      recordTitle: 'title',
-      userIdAttribute: '_id',
-    }
+      recordTitle: "title",
+      userIdAttribute: "_id",
+    },
   },
   options: {
     actions: {
@@ -328,8 +383,7 @@ const LogResource = {
       },
     },
   },
-
-}
+};
 
 const adminOptions = {
   branding: {
@@ -346,6 +400,7 @@ const adminOptions = {
     SmsResource,
     UserResource,
     SaleResource,
+    CustomerResource,
     RegistrationResource,
     FailedRegistrationResource,
     PendingRegistrationResource,
@@ -360,6 +415,7 @@ const adminOptions = {
         Registration: "Registration",
         PendingRegistration: "Pending Revenue",
         FailedRegistration: "Failed Registration",
+        Customer: "Customer",
       },
       resources: {
         PendingRegistration: {
@@ -393,6 +449,11 @@ const adminOptions = {
             noRecordsInResource: "There are no failed registrations to display",
           },
         },
+        Customer: {
+          messages: {
+            noRecordsInResource: "There are no failed cunstomers to display",
+          },
+        },
       },
     },
   },
@@ -409,7 +470,7 @@ const adminRouter = AdminJSExpress.buildAuthenticatedRouter(
     cookiePassword: cookiePass,
   },
   null,
-  dbSession
+  dbSession,
 );
 
 export { adminjs, adminRouter };

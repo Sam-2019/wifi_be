@@ -49,7 +49,7 @@ AdminJS.registerAdapter({
 
 const componentLoader = new ComponentLoader();
 const Components = {
-  // Dashboard: componentLoader.add("Dashboard", dashboard),
+  Dashboard: componentLoader.add("Dashboard", dashboard),
 };
 
 const logger = loggerFeature({

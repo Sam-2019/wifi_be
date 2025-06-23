@@ -13,10 +13,17 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@adminjs/express": "^6.1.1",
+    "@adminjs/logger": "^5.0.1",
+    "@adminjs/mongoose": "^4.1.0",
+    "adminjs": "^7.8.16",
+    "bcrypt": "^6.0.0",
+    "compression": "^1.8.0",
+    "connect-mongo": "^5.1.0",
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
     "express": "^4.21.2",
-    "helmet": "^8.1.0",
+    "express-session": "^1.18.1",
     "mikro-client": "^0.5.3",
     "mongoose": "^8.15.1",
     "path": "^0.12.7"

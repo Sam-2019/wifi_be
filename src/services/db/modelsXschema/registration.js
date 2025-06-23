@@ -10,24 +10,23 @@ const dataSchema = new Schema(
     registrationFee: { type: Number },
     totalCost: { type: Number },
     clientReference: { type: String },
-    email: { type: String },
+    email: { type: String, lowercase: true },
     dateOfBirth: { type: Date },
     blockCourt: { type: String },
     roomType: { type: String },
     roomNumber: { type: String },
     isCustodian: { type: Boolean, default: false },
     dateTime: { type: Date, default: Date.now() },
+    credentials: { type: Object },
     provider: { type: String },
-    providerResponse: { type: String },
-    credentials: { type: String },
     registrationType: { type: String },
     purchaseInfo: { type: String },
-    transactionId: { type: String },
-    externalTransactionId: { type: String },
   },
   {
     timestamps: true,
   }
 );
 
-export default model("Sales", dataSchema);
+const Registration = model("Registration", dataSchema);
+export default Registration;
+

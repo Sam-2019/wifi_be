@@ -1,32 +1,43 @@
-import router from "../routes/index.js";
-import express, { json } from "express";
-import bodyParser from "body-parser";
-// import { authMiddleware } from "../config/middleware.js";
+import path from "path";
 import cors from "cors";
-import { connectDB } from "../db/index.js";
-import { ping } from "./pinger.js";
+import { ping } from "../src/services/pinger.js";
+import bodyParser from "body-parser";
+import compression from "compression";
+import express, { json } from "express";
+import router from "../src/routes/index.js";
+import { connectDB } from "../src/services/db/index.js";
+import { __dirname } from "../src/config/constants.js";
+import { adminjs, adminRouter } from "../src/services/admin/index.js";
+import { dashboard } from "../src/config/filePath.js";
+// import { authMiddleware } from "../config/middleware.js";
 
-const app = express();
 const port = process.env.PORT || 4000;
 
-app.use(
-  cors({
-    origin: "*",
-    methods: ["GET", "POST"],
-  }),
-);
+const start = async () => {
+  const app = express();
+  app.use(
+    cors({
+      origin: "*",
+      methods: ["GET", "POST"],
+    }),
+  );
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(json());
-// app.use(authMiddleware);
+  connectDB();
 
-connectDB();
-app.use(express.static("./public"));
+  ping();
+  app.use(json());
+  app.use("/", router);
+  app.use(compression());
+  app.use(bodyParser.json());
+  app.disable("x-powered-by");
+  app.use(adminjs.options.rootPath, adminRouter);
+  app.use(bodyParser.urlencoded({ extended: false }));
+  app.use(express.static(path.join(__dirname, "/public")));
 
-app.use("/", router);
-ping();
+  app.listen(port, () => {
+    console.log(`Server is running on port ${port}`);
+    console.log(`AdminJS started on ${port}${adminjs.options.rootPath}`);
+  });
+};
 
-app.listen(port, () => console.log(`Server is running on port ${port}`));
-
-export default app;
+start();

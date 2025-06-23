@@ -1,15 +1,15 @@
-import Model from "../modelsXschema/sms";
+import Sms from "../modelsXschema/sms";
 
 const getSms = async () => {
-  return await Model.find({});
+  return await Sms.find({});
 };
 
 const addSms = async (data) => {
-  return await Model.create(data);
+  return await Sms.create(data);
 };
 
 const findSms = async (id) => {
-  return await Model.findOne({
+  return await Sms.findOne({
     id: id,
   });
 };

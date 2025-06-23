@@ -10,14 +10,14 @@ const dataSchema = new Schema(
     registrationFee: { type: Number },
     totalCost: { type: Number },
     clientReference: { type: String },
-    email: { type: String },
+    email: { type: String, lowercase: true },
     dateOfBirth: { type: Date },
     blockCourt: { type: String },
     roomType: { type: String },
     roomNumber: { type: String },
     isCustodian: { type: Boolean, default: false },
     dateTime: { type: Date, default: Date.now() },
-    credentials: { type: String },
+    credentials: { type: Object },
     provider: { type: String },
     providerResponse: { type: String },
     registrationType: { type: String },
@@ -28,4 +28,5 @@ const dataSchema = new Schema(
   }
 );
 
-export default model("FailedRegistration", dataSchema);
+const FailedRegistration = model("FailedRegistration", dataSchema);
+export default FailedRegistration;

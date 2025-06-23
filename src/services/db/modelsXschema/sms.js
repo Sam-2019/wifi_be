@@ -2,7 +2,7 @@ import { model, Schema } from "mongoose";
 
 const dataSchema = new Schema(
   {
-    mobile_number: {
+    mobileNumber: {
       type: String,
     },
     message: {
@@ -21,4 +21,5 @@ const dataSchema = new Schema(
   { timestamps: true }
 );
 
-export default model("SmsReceipt", dataSchema);
+const Sms = model("SmsReceipt", dataSchema);
+export default Sms;

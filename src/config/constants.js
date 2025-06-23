@@ -1,18 +1,22 @@
 import path from "path";
 import "dotenv/config";
 
+const admin = "admin";
 const hubtel = "hubtel";
 const success = "success";
 const paystack = "paystack";
 const forbidden = "Forbidden";
+const assetPath = "./assets/";
 const successful = "successful";
 const production = "production";
 const __dirname = path.resolve();
 const server_up = "server is up";
 const development = "development";
+const companyName = "PenatgonWifi";
 const unauthorized = "Unauthorized";
 const server_down = "server is down";
 const authorization = "authorization";
+const componentPath = "src/ui/components/";
 
 const clientID = process.env.MERCHANT;
 const authToken = process.env.BASIC_AUTH;
@@ -27,15 +31,19 @@ const PROD_DB_NAME = process.env.PROD_DB_NAME;
 const DEV_GSHEET = process.env.GOOGLE_SCRIPTS_TEST;
 const PROD_GSHEET = process.env.GOOGLE_SCRIPTS_LIVE;
 
+const secret = process.env.SESSION_SECRET;
+const crypto = process.env.SESSION_CRYPTO_SECRET;
+const dbCollection = process.env.SESSION_COLLECTION;
+
 const apiUrl = `${hostUrl}/${clientID}/status`;
 const internalServerError = "Internal Server Error";
 const isDevelopment = process.env.NODE_ENV === development;
 const serverMode = isDevelopment ? "Development Mode" : "Production Mode";
 
-const db_uri = isDevelopment ? DEV_DB : PROD_DB;
-const gs_uri = isDevelopment ? DEV_GSHEET : PROD_GSHEET;
-const db_name = isDevelopment ? DEV_DB_NAME : PROD_DB_NAME;
-
+const ttl = 14 * 24 * 60 * 60;
+const dbUri = isDevelopment ? DEV_DB : PROD_DB;
+const gsUri = isDevelopment ? DEV_GSHEET : PROD_GSHEET;
+const dbName = isDevelopment ? DEV_DB_NAME : PROD_DB_NAME;
 const excludeItems = {
   _id: 0,
   regID: 0,
@@ -45,27 +53,56 @@ const excludeItems = {
   __v: 0,
 };
 
+const salt = Number(process.env.SALT);
+const cookie = process.env.COOKIE_NAME;
+const cookiePass = process.env.COOKIE_PASSWORD;
+
+const email = process.env.USER_EMAIL;
+const password = process.env.USER_PASSWORD;
+
+const adminCredentials = {
+  email: email,
+  password: password,
+};
+
+const topup = "Top Up";
+const registration = "Registration";
+
 export {
-  hubtel,
+  ttl,
+  salt,
+  dbUri,
+  admin,
+  topup,
+  gsUri,
   apiUrl,
-  db_uri,
-  gs_uri,
-  db_name,
+  cookie,
+  dbName,
+  secret,
+  crypto,
+  hubtel,
   success,
   paystack,
   __dirname,
+  assetPath,
   forbidden,
   authToken,
   server_up,
+  cookiePass,
   server_url,
   successful,
   serverMode,
   production,
+  companyName,
   server_down,
   development,
   unauthorized,
+  registration,
+  dbCollection,
   excludeItems,
   authorization,
+  componentPath,
   isDevelopment,
+  adminCredentials,
   internalServerError,
 };

@@ -129,18 +129,18 @@ async function createAdmin() {
 }
 
 export const seed = async () => {
-  const admin = await createAdmin();
-  // const user = createRandomRegistration();
-  // const customer = createCustomer();
+  // const admin = await createAdmin();
+  const user = createRandomRegistration();
+  const customer = createCustomer();
 
   try {
-    // console.log({ admin });
-    // const registrationRecord = await addRegistration(user);
-    // const customerRecord = await addCustomer(customer);
-    await addUser(admin);
-    // console.log({ registrationRecord });
-    // console.log({ customerRecord });
+    // const adminRecord = await addUser(admin);
+    const customerRecord = await addCustomer(customer);
+    const registrationRecord = await addRegistration(user);
+
     // console.log({ adminRecord });
+    console.log({ customerRecord });
+    console.log({ registrationRecord });
   } catch (error) {
     console.error("Error seeding records", error);
   }

@@ -13,7 +13,7 @@ import { seed } from "../../config/seed.js";
 
 const dbConn = mongoose.connection;
 dbConn.on("connected", () => {
-  seed();
+  if (isDevelopment) seed();
   console.log("Mongoose connected");
 });
 

@@ -1,7 +1,10 @@
 import { faker } from "@faker-js/faker";
-import { hubtel, paystack } from "./constants.js";
+import bcrypt from "bcrypt";
+import { admin, hubtel, paystack } from "./constants.js";
 import { addCustomer } from "../services/db/repository/customer.js";
 import { addRegistration } from "../services/db/repository/registration.js";
+import { addUser } from "../services/db/repository/user.js";
+import { adminCredentials, salt } from "./constants.js";
 
 const registrationFee = 50;
 const planPrices = {
@@ -109,14 +112,35 @@ function createCustomer() {
   };
 }
 
+async function createAdmin() {
+  const userId = adminCredentials.userID;
+  const fullName = adminCredentials.fullName;
+  const email = adminCredentials.email;
+  const password = bcrypt.hashSync(adminCredentials.password, salt);
+  const role = adminCredentials.role;
+
+  return {
+    userId: userId,
+    fullName: fullName,
+    email: email,
+    encryptedPassword: password,
+    role: role,
+  };
+}
+
 export const seed = async () => {
-  const user = createRandomRegistration();
-  const customer = createCustomer();
+  const admin = await createAdmin();
+  // const user = createRandomRegistration();
+  // const customer = createCustomer();
+
   try {
-    const registrationRecord = await addRegistration(user);
-    const customerRecord = await addCustomer(customer);
-    console.log({ registrationRecord });
-    console.log({ customerRecord });
+    // console.log({ admin });
+    // const registrationRecord = await addRegistration(user);
+    // const customerRecord = await addCustomer(customer);
+    await addUser(admin);
+    // console.log({ registrationRecord });
+    // console.log({ customerRecord });
+    // console.log({ adminRecord });
   } catch (error) {
     console.error("Error seeding records", error);
   }

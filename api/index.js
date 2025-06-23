@@ -27,7 +27,7 @@ const start = async () => {
   ping();
   app.use(json());
   app.use("/", router);
-  app.use(compression());
+  // app.use(compression());
   app.use(bodyParser.json());
   app.disable("x-powered-by");
   app.use(adminjs.options.rootPath, adminRouter);

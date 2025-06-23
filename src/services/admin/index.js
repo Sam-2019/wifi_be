@@ -17,26 +17,26 @@ import FailedRegistration from "../db/modelsXschema/failed_registration.js";
 import PendingRegistration from "../db/modelsXschema/pending_registration.js";
 import Logger from "../db/modelsXschema/log.js";
 
-// const authenticate = async (email, password) => {
-//   if (
-//     email === adminCredentials.email &&
-//     password === adminCredentials.password
-//   ) {
-//     return Promise.resolve(adminCredentials);
-//   }
-//   return null;
-// };
-
 const authenticate = async (email, password) => {
-  const user = await findUser(email);
-  if (user) {
-    const matched = await bcrypt.compare(password, user.encryptedPassword);
-    if (matched) {
-      return user;
-    }
+  if (
+    email === adminCredentials.email &&
+    password === adminCredentials.password
+  ) {
+    return Promise.resolve(adminCredentials);
   }
-  return false;
+  return null;
 };
+
+// const authenticate = async (email, password) => {
+//   const user = await findUser(email);
+//   if (user) {
+//     const matched = await bcrypt.compare(password, user.encryptedPassword);
+//     if (matched) {
+//       return user;
+//     }
+//   }
+//   return false;
+// };
 
 const isAdminRole = ({ currentAdmin }) => {
   return currentAdmin && currentAdmin.role === admin;

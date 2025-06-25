@@ -16,12 +16,12 @@ const getRegistration = async (data) => {
 
   return await Registration.findOne(
     {
-      "credentials.userName": userName,
-      phoneNumber: phoneNumber,
       email: email,
+      phoneNumber: phoneNumber,
       registrationType: registration,
+      "credentials.userName": userName,
     },
-    excludeItems
+    excludeItems,
   ).lean();
 };
 

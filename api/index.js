@@ -2,13 +2,10 @@ import path from "path";
 import cors from "cors";
 import { ping } from "../src/services/pinger.js";
 import bodyParser from "body-parser";
-import compression from "compression";
 import express, { json } from "express";
 import router from "../src/routes/index.js";
 import { connectDB } from "../src/services/db/index.js";
 import { __dirname } from "../src/config/constants.js";
-import { adminjs, adminRouter } from "../src/services/admin/index.js";
-import { dashboard } from "../src/config/filePath.js";
 // import { authMiddleware } from "../config/middleware.js";
 
 const port = process.env.PORT || 4000;
@@ -30,13 +27,11 @@ const start = async () => {
   // app.use(compression());
   app.use(bodyParser.json());
   app.disable("x-powered-by");
-  app.use(adminjs.options.rootPath, adminRouter);
   app.use(bodyParser.urlencoded({ extended: false }));
   app.use(express.static(path.join(__dirname, "/public")));
 
   app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
-    console.log(`AdminJS started on ${port}${adminjs.options.rootPath}`);
   });
 };
 

@@ -1,8 +1,5 @@
-import bcrypt from "bcrypt";
 import { faker } from "@faker-js/faker";
 import { hubtel, paystack } from "./constants.js";
-import { adminCredentials, salt } from "./constants.js";
-import { addUser } from "../services/db/repository/user.js";
 import { addCustomer } from "../services/db/repository/customer.js";
 import { addRegistration } from "../services/db/repository/registration.js";
 
@@ -112,33 +109,14 @@ function createCustomer() {
   };
 }
 
-async function createAdmin() {
-  const userId = adminCredentials.userID;
-  const fullName = adminCredentials.fullName;
-  const email = adminCredentials.email;
-  const password = bcrypt.hashSync(adminCredentials.password, salt);
-  const role = adminCredentials.role;
-
-  return {
-    userId: userId,
-    fullName: fullName,
-    email: email,
-    encryptedPassword: password,
-    role: role,
-  };
-}
-
 export const seed = async () => {
-  // const admin = await createAdmin();
   const user = createRandomRegistration();
   const customer = createCustomer();
 
   try {
-    // const adminRecord = await addUser(admin);
     const customerRecord = await addCustomer(customer);
     const registrationRecord = await addRegistration(user);
 
-    // console.log({ adminRecord });
     console.log({ customerRecord });
     console.log({ registrationRecord });
   } catch (error) {

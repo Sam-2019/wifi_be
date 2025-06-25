@@ -27,14 +27,8 @@ const dbUri = process.env.DB_URL;
 const dbName = process.env.DB_NAME;
 const gsUri = process.env.GOOGLE_SCRIPTS;
 
-const secret = process.env.SESSION_SECRET;
-const crypto = process.env.SESSION_CRYPTO_SECRET;
-const dbCollection = process.env.SESSION_COLLECTION;
-
 const apiUrl = `${hostUrl}/${clientID}/status`;
 const internalServerError = "Internal Server Error";
-
-const ttl = 14 * 24 * 60 * 60;
 
 const excludeItems = {
   _id: 0,
@@ -45,33 +39,16 @@ const excludeItems = {
   __v: 0,
 };
 
-const salt = Number(process.env.SALT);
-const cookie = process.env.COOKIE_NAME;
-const cookiePass = process.env.COOKIE_PASSWORD;
-
-const adminCredentials = {
-  role: process.env.USER_ROLE,
-  email: process.env.USER_EMAIL,
-  userID: process.env.USER_ID,
-  fullName: process.env.USER_NAME,
-  password: process.env.USER_PASSWORD,
-};
-
 const topup = "Top Up";
 const registration = "Registration";
 
 export {
-  ttl,
-  salt,
   dbUri,
   admin,
   topup,
   gsUri,
   apiUrl,
-  cookie,
   dbName,
-  secret,
-  crypto,
   hubtel,
   success,
   paystack,
@@ -80,7 +57,6 @@ export {
   forbidden,
   authToken,
   server_up,
-  cookiePass,
   server_url,
   successful,
   production,
@@ -89,10 +65,8 @@ export {
   development,
   unauthorized,
   registration,
-  dbCollection,
   excludeItems,
   authorization,
   componentPath,
-  adminCredentials,
   internalServerError,
 };

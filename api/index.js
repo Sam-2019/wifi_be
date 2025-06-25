@@ -1,6 +1,5 @@
 import path from "path";
 import cors from "cors";
-import { ping } from "../src/services/pinger.js";
 import bodyParser from "body-parser";
 import express, { json } from "express";
 import router from "../src/routes/index.js";
@@ -21,7 +20,6 @@ const start = async () => {
 
   connectDB();
 
-  ping();
   app.use(json());
   app.use("/", router);
   app.use(bodyParser.json());

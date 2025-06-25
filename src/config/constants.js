@@ -23,13 +23,9 @@ const authToken = process.env.BASIC_AUTH;
 const server_url = process.env.SERVER_URL;
 const hostUrl = process.env.TRANSACTION_STATUS_CHECK_URL;
 
-const DEV_DB = process.env.DEV_DB;
-const PROD_DB = process.env.PROD_DB;
-const DEV_DB_NAME = process.env.DEV_DB_NAME;
-const PROD_DB_NAME = process.env.PROD_DB_NAME;
-
-const DEV_GSHEET = process.env.GOOGLE_SCRIPTS_TEST;
-const PROD_GSHEET = process.env.GOOGLE_SCRIPTS_LIVE;
+const dbUri = process.env.DB_URL;
+const dbName = process.env.DB_NAME;
+const gsUri = process.env.GOOGLE_SCRIPTS;
 
 const secret = process.env.SESSION_SECRET;
 const crypto = process.env.SESSION_CRYPTO_SECRET;
@@ -37,13 +33,9 @@ const dbCollection = process.env.SESSION_COLLECTION;
 
 const apiUrl = `${hostUrl}/${clientID}/status`;
 const internalServerError = "Internal Server Error";
-const isDevelopment = process.env.NODE_ENV === development;
-const serverMode = isDevelopment ? "Development Mode" : "Production Mode";
 
 const ttl = 14 * 24 * 60 * 60;
-const dbUri = isDevelopment ? DEV_DB : PROD_DB;
-const gsUri = isDevelopment ? DEV_GSHEET : PROD_GSHEET;
-const dbName = isDevelopment ? DEV_DB_NAME : PROD_DB_NAME;
+
 const excludeItems = {
   _id: 0,
   regID: 0,
@@ -57,18 +49,12 @@ const salt = Number(process.env.SALT);
 const cookie = process.env.COOKIE_NAME;
 const cookiePass = process.env.COOKIE_PASSWORD;
 
-const role = process.env.USER_ROLE;
-const userId = process.env.USER_ID;
-const email = process.env.USER_EMAIL;
-const userName = process.env.USER_NAME;
-const password = process.env.USER_PASSWORD;
-
 const adminCredentials = {
-  role: role,
-  email: email,
-  userID: userId,
-  fullName: userName,
-  password: password,
+  role: process.env.USER_ROLE,
+  email: process.env.USER_EMAIL,
+  userID: process.env.USER_ID,
+  fullName: process.env.USER_NAME,
+  password: process.env.USER_PASSWORD,
 };
 
 const topup = "Top Up";
@@ -97,7 +83,6 @@ export {
   cookiePass,
   server_url,
   successful,
-  serverMode,
   production,
   companyName,
   server_down,
@@ -108,7 +93,6 @@ export {
   excludeItems,
   authorization,
   componentPath,
-  isDevelopment,
   adminCredentials,
   internalServerError,
 };

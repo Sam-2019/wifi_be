@@ -18,8 +18,8 @@ const getRegistration = async (data) => {
     {
       email: email,
       phoneNumber: phoneNumber,
-      "credentials.userName": userName,
       registrationType: registration,
+      "credentials.userName": userName,
     },
     excludeItems
   ).lean();

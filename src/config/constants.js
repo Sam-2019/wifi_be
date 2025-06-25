@@ -1,5 +1,5 @@
-import path from "path";
 import "dotenv/config";
+import path from "path";
 
 const admin = "admin";
 const hubtel = "hubtel";

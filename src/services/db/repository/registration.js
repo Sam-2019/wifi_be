@@ -16,9 +16,9 @@ const getRegistration = async (data) => {
 
   return await Registration.findOne(
     {
-      "credentials.userName": userName,
-      phoneNumber: phoneNumber,
       email: email,
+      phoneNumber: phoneNumber,
+      "credentials.userName": userName,
       registrationType: registration,
     },
     excludeItems

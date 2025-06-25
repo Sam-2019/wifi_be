@@ -17,7 +17,6 @@ const start = async () => {
       methods: ["GET", "POST"],
     }),
   );
-
   connectDB();
 
   app.use(json());

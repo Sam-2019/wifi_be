@@ -8,11 +8,9 @@ import {
 } from "../../config/constants.js";
 import mongoose from "mongoose";
 import MongoStore from "connect-mongo";
-import { seed } from "../../config/seed.js";
 
 const dbConn = mongoose.connection;
 dbConn.on("connected", () => {
-  seed();
   console.log("Mongoose connected");
 });
 

@@ -322,6 +322,7 @@ const CustomerResource = {
       "roomType",
       "roomNumber",
       "isCustodian",
+      "cardPrinted",
     ],
     filterProperties: [
       "fullName",
@@ -331,6 +332,7 @@ const CustomerResource = {
       "roomType",
       "roomNumber",
       "isCustodian",
+      "cardPrinted",
     ],
     editProperties: [
       "fullName",
@@ -340,6 +342,7 @@ const CustomerResource = {
       "roomType",
       "roomNumber",
       "isCustodian",
+      "cardPrinted",
     ],
     showProperties: [
       "fullName",
@@ -349,6 +352,7 @@ const CustomerResource = {
       "roomType",
       "roomNumber",
       "isCustodian",
+      "cardPrinted",
     ],
 
     actions: {
@@ -359,7 +363,7 @@ const CustomerResource = {
         isAccessible: true,
       },
       edit: {
-        isAccessible: false,
+        isAccessible: true,
       },
       delete: {
         isAccessible: false,

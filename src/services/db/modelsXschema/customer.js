@@ -23,10 +23,11 @@ const dataSchema = new Schema(
         required: true,
       },
     },
+    cardPrinted: { type: Boolean, default: false },
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 const Customer = model("Customer", dataSchema);

@@ -1,10 +1,10 @@
-import { faker } from "@faker-js/faker";
 import bcrypt from "bcrypt";
-import { admin, hubtel, paystack } from "./constants.js";
+import { faker } from "@faker-js/faker";
+import { hubtel, paystack } from "./constants.js";
+import { adminCredentials, salt } from "./constants.js";
+import { addUser } from "../services/db/repository/user.js";
 import { addCustomer } from "../services/db/repository/customer.js";
 import { addRegistration } from "../services/db/repository/registration.js";
-import { addUser } from "../services/db/repository/user.js";
-import { adminCredentials, salt } from "./constants.js";
 
 const registrationFee = 50;
 const planPrices = {

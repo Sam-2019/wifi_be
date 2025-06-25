@@ -49,18 +49,12 @@ const salt = Number(process.env.SALT);
 const cookie = process.env.COOKIE_NAME;
 const cookiePass = process.env.COOKIE_PASSWORD;
 
-const role = process.env.USER_ROLE;
-const userId = process.env.USER_ID;
-const email = process.env.USER_EMAIL;
-const userName = process.env.USER_NAME;
-const password = process.env.USER_PASSWORD;
-
 const adminCredentials = {
-  role: role,
-  email: email,
-  userID: userId,
-  fullName: userName,
-  password: password,
+  role: process.env.USER_ROLE,
+  email: process.env.USER_EMAIL,
+  userID: process.env.USER_ID,
+  fullName: process.env.USER_NAME,
+  password: process.env.USER_PASSWORD,
 };
 
 const topup = "Top Up";

@@ -80,15 +80,18 @@ const RegistrationResource = {
       direction: "desc",
     },
     actions: {
+      new: {
+        isAccessible: ({ currentAdmin }) => isAdminRole({ currentAdmin }),
+      },
       edit: {
         isAccessible: false,
         isVisible: true,
       },
       delete: {
-        isAccessible: ({ currentAdmin }) => currentAdmin.role === admin,
+        isAccessible: ({ currentAdmin }) => isAdminRole({ currentAdmin }),
       },
       bulkDelete: {
-        isAccessible: ({ currentAdmin }) => currentAdmin.role === admin,
+        isAccessible: ({ currentAdmin }) => isAdminRole({ currentAdmin }),
       },
     },
   },
@@ -108,15 +111,18 @@ const PendingRegistrationResource = {
       direction: "desc",
     },
     actions: {
+      new: {
+        isAccessible: ({ currentAdmin }) => isAdminRole({ currentAdmin }),
+      },
       edit: {
         isAccessible: false,
         isVisible: true,
       },
       delete: {
-        isAccessible: ({ currentAdmin }) => currentAdmin.role === admin,
+        isAccessible: ({ currentAdmin }) => isAdminRole({ currentAdmin }),
       },
       bulkDelete: {
-        isAccessible: ({ currentAdmin }) => currentAdmin.role === admin,
+        isAccessible: ({ currentAdmin }) => isAdminRole({ currentAdmin }),
       },
     },
   },
@@ -136,15 +142,18 @@ const SaleResource = {
       direction: "desc",
     },
     actions: {
+      new: {
+        isAccessible: ({ currentAdmin }) => isAdminRole({ currentAdmin }),
+      },
       edit: {
         isAccessible: false,
         isVisible: true,
       },
       delete: {
-        isAccessible: ({ currentAdmin }) => currentAdmin.role === admin,
+        isAccessible: ({ currentAdmin }) => isAdminRole({ currentAdmin }),
       },
       bulkDelete: {
-        isAccessible: ({ currentAdmin }) => currentAdmin.role === admin,
+        isAccessible: ({ currentAdmin }) => isAdminRole({ currentAdmin }),
       },
     },
   },
@@ -164,15 +173,18 @@ const FailedRegistrationResource = {
       direction: "desc",
     },
     actions: {
+      new: {
+        isAccessible: ({ currentAdmin }) => isAdminRole({ currentAdmin }),
+      },
       edit: {
         isAccessible: false,
         isVisible: true,
       },
       delete: {
-        isAccessible: ({ currentAdmin }) => currentAdmin.role === admin,
+        isAccessible: ({ currentAdmin }) => isAdminRole({ currentAdmin }),
       },
       bulkDelete: {
-        isAccessible: ({ currentAdmin }) => currentAdmin.role === admin,
+        isAccessible: ({ currentAdmin }) => isAdminRole({ currentAdmin }),
       },
     },
   },
@@ -192,15 +204,20 @@ const SmsResource = {
       direction: "desc",
     },
     actions: {
+      new: {
+        isAccessible: false,
+      },
+      show: {
+        isAccessible: true,
+      },
       edit: {
         isAccessible: false,
-        isVisible: true,
       },
       delete: {
-        isAccessible: ({ currentAdmin }) => currentAdmin.role === admin,
+        isAccessible: false,
       },
       bulkDelete: {
-        isAccessible: ({ currentAdmin }) => currentAdmin.role === admin,
+        isAccessible: false,
       },
     },
   },
@@ -227,7 +244,7 @@ const UserResource = {
     },
     actions: {
       new: {
-        isAccessible: ({ currentAdmin }) => currentAdmin.role === admin,
+        isAccessible: ({ currentAdmin }) => isAdminRole({ currentAdmin }),
         before: async (request) => {
           if (request.payload?.password) {
             request.payload = {
@@ -243,14 +260,14 @@ const UserResource = {
         },
       },
       show: {
-        isAccessible: ({ currentAdmin }) => currentAdmin.role === admin,
+        isAccessible: ({ currentAdmin }) => isAdminRole({ currentAdmin }),
         after: async (response) => {
           response.record.params.password = "";
           return response;
         },
       },
       edit: {
-        isAccessible: ({ currentAdmin }) => currentAdmin.role === admin,
+        isAccessible: ({ currentAdmin }) => isAdminRole({ currentAdmin }),
         before: async (request) => {
           if (request.method === "post") {
             if (request.payload?.password) {
@@ -283,7 +300,7 @@ const UserResource = {
         },
       },
       delete: {
-        isAccessible: ({ currentAdmin }) => currentAdmin.role === admin,
+        isAccessible: ({ currentAdmin }) => isAdminRole({ currentAdmin }),
       },
       bulkDelete: {
         isAccessible: ({ currentAdmin }) => isAdminRole({ currentAdmin }),
@@ -335,15 +352,20 @@ const CustomerResource = {
     ],
 
     actions: {
+      new: {
+        isAccessible: false,
+      },
+      show: {
+        isAccessible: true,
+      },
       edit: {
         isAccessible: false,
-        isVisible: true,
       },
       delete: {
-        isAccessible: ({ currentAdmin }) => currentAdmin.role === admin,
+        isAccessible: false,
       },
       bulkDelete: {
-        isAccessible: ({ currentAdmin }) => currentAdmin.role === admin,
+        isAccessible: false,
       },
     },
   },
@@ -360,22 +382,22 @@ const LogResource = {
   options: {
     actions: {
       new: {
-        isAccessible: ({ currentAdmin }) => currentAdmin.role === admin,
+        isAccessible: false,
       },
       show: {
-        isAccessible: ({ currentAdmin }) => currentAdmin.role === admin,
+        isAccessible: ({ currentAdmin }) => isAdminRole({ currentAdmin }),
       },
       edit: {
-        isAccessible: ({ currentAdmin }) => currentAdmin.role === admin,
+        isAccessible: false,
       },
       list: {
-        isAccessible: ({ currentAdmin }) => currentAdmin.role === admin,
+        isAccessible: ({ currentAdmin }) => isAdminRole({ currentAdmin }),
       },
       delete: {
-        isAccessible: ({ currentAdmin }) => currentAdmin.role === admin,
+        isAccessible: false,
       },
       bulkDelete: {
-        isAccessible: ({ currentAdmin }) => currentAdmin.role === admin,
+        isAccessible: false,
       },
     },
   },

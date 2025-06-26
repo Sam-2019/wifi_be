@@ -427,58 +427,6 @@ const adminOptions = {
     FailedRegistrationResource,
     PendingRegistrationResource,
   ],
-  locale: {
-    language: "en",
-    translations: {
-      labels: {
-        User: "Users",
-        Sale: "Revenue",
-        Sms: "Sms Receipts",
-        Registration: "Registration",
-        PendingRegistration: "Pending Revenue",
-        FailedRegistration: "Failed Registration",
-        Customer: "Customer",
-      },
-      resources: {
-        PendingRegistration: {
-          messages: {
-            noRecordsInResource:
-              "There are no pending registrations to display",
-          },
-        },
-        Sale: {
-          messages: {
-            noRecordsInResource: "There are no sales to display",
-          },
-        },
-        User: {
-          messages: {
-            noRecordsInResource: "There are no users to display",
-          },
-        },
-        Sms: {
-          messages: {
-            noRecordsInResource: "There are no sms receipts to display",
-          },
-        },
-        Registration: {
-          messages: {
-            noRecordsInResource: "There are no registrations to display",
-          },
-        },
-        FailedRegistration: {
-          messages: {
-            noRecordsInResource: "There are no failed registrations to display",
-          },
-        },
-        Customer: {
-          messages: {
-            noRecordsInResource: "There are no failed cunstomers to display",
-          },
-        },
-      },
-    },
-  },
 };
 
 const adminjs = new AdminJS(adminOptions);

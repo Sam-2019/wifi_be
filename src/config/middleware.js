@@ -16,7 +16,10 @@ export const authMiddleware = (req, res, next) => {
 
   if (authorization?.startsWith("Bearer ")) {
     const token = authorization.split(" ")[1];
-    if (token !== AUTHORIZATION) {
+    const decodeToken = Buffer.from(token, "base64");
+    const strinfigy = decodeToken.toString();
+
+    if (strinfigy !== AUTHORIZATION) {
       return res.status(403).json({ message: forbidden });
     }
   }

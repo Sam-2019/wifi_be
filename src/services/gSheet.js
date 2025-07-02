@@ -2,10 +2,10 @@ import { gsUri } from "../config/constants.js";
 
 export const writeToSheet = async (payload, path) => {
   const updatedPayload =
-    path === "pendingRegistration"
+    path === "Pending Registration"
       ? {
           ...payload,
-          path,
+          path: path,
         }
       : payload;
 

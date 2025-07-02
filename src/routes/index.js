@@ -96,7 +96,7 @@ router
 
     try {
       await addSale(results);
-      await writeToSheet(results, "sales");
+      await writeToSheet(results, "Sales");
       res.status(200).json({ message: "Sale added" });
     } catch (error) {
       console.error("Error in /sale:", error);
@@ -225,7 +225,7 @@ router
 
     try {
       await addPendingRegistration(results);
-      await writeToSheet(results, "pendingRegistration");
+      await writeToSheet(results, "Pending Registration");
       res.status(200).json({ message: "Pending Registration added" });
     } catch (error) {
       console.error("Error in /pending-registration:", error);

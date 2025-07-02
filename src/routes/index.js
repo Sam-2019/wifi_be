@@ -34,6 +34,7 @@ import {
 } from "../services/db/repository/customer.js";
 import { writeToSheet } from "../services/gSheet.js";
 import { addSale, findSale, getSales } from "../services/db/repository/sale.js";
+import { authMiddleware } from "../config/middleware.js";
 
 const router = express.Router();
 router.get("/", async (req, res) => {
@@ -58,6 +59,7 @@ router.get("/api/sales", async (req, res) => {
     res.status(500).send(internalServerError);
   }
 });
+
 router
   .route("/api/sale")
   .get(async (req, res) => {
@@ -118,9 +120,10 @@ router.get("/api/registrations", async (req, res) => {
     res.status(500).send(internalServerError);
   }
 });
+
 router
   .route("/api/registration")
-  .get(async (req, res) => {
+  .get(authMiddleware, async (req, res) => {
     const results = req.query;
 
     if (results === undefined || results === null) {
@@ -142,7 +145,7 @@ router
       res.status(500).send(internalServerError);
     }
   })
-  .post(async (req, res) => {
+  .post(authMiddleware, async (req, res) => {
     const results = req.body;
 
     if (
@@ -164,7 +167,7 @@ router
     }
   });
 
-router.get("/api/pending-registrations", async (req, res) => {
+router.get("/api/pending-registrations", authMiddleware, async (req, res) => {
   try {
     const pending_registrations = await getPendingRegistrations();
     if (!pending_registrations || pending_registrations.length === 0) {
@@ -181,9 +184,10 @@ router.get("/api/pending-registrations", async (req, res) => {
     res.status(500).send(internalServerError);
   }
 });
+
 router
   .route("/api/pending-registration")
-  .get(async (req, res) => {
+  .get(authMiddleware, async (req, res) => {
     const results = req.query;
 
     if (results === undefined || results === null) {
@@ -206,7 +210,7 @@ router
       res.status(500).send(internalServerError);
     }
   })
-  .post(async (req, res) => {
+  .post(authMiddleware, async (req, res) => {
     const results = req.body;
 
     if (
@@ -229,7 +233,7 @@ router
     }
   });
 
-router.get("/api/failed-registrations", async (req, res) => {
+router.get("/api/failed-registrations", authMiddleware, async (req, res) => {
   try {
     const failed_registrations = await getFailedRegistrations();
     if (!failed_registrations || failed_registrations.length === 0) {
@@ -246,9 +250,10 @@ router.get("/api/failed-registrations", async (req, res) => {
     res.status(500).send(internalServerError);
   }
 });
+
 router
   .route("/api/failed-registration")
-  .get(async (req, res) => {
+  .get(authMiddleware, async (req, res) => {
     const results = req.query;
 
     if (results === undefined || results === null) {
@@ -272,7 +277,7 @@ router
       res.status(500).send(internalServerError);
     }
   })
-  .post(async (req, res) => {
+  .post(authMiddleware, async (req, res) => {
     const results = req.body;
 
     if (
@@ -294,7 +299,7 @@ router
     }
   });
 
-router.get("/api/customers", async (req, res) => {
+router.get("/api/customers", authMiddleware, async (req, res) => {
   try {
     const customers = await getCustomers();
     if (!customers || customers.length === 0) {
@@ -306,9 +311,10 @@ router.get("/api/customers", async (req, res) => {
     res.status(500).send(internalServerError);
   }
 });
+
 router
   .route("/api/customer")
-  .get(async (req, res) => {
+  .get(authMiddleware, async (req, res) => {
     const results = req.query;
 
     if (
@@ -338,7 +344,7 @@ router
       res.status(500).send(internalServerError);
     }
   })
-  .post(async (req, res) => {
+  .post(authMiddleware, async (req, res) => {
     const results = req.body;
 
     if (results === undefined || results === null) {
@@ -372,7 +378,7 @@ router
     }
   });
 
-router.get("/api/customer/availabilty", async (req, res) => {
+router.get("/api/customer/availabilty", authMiddleware, async (req, res) => {
   const results = req.query;
   if (
     results === undefined ||

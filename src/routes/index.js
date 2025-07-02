@@ -8,6 +8,8 @@ import {
   authToken,
   __dirname,
   internalServerError,
+  emailExists,
+  userExists,
 } from "../config/constants.js";
 import {
   addRegistration,
@@ -351,10 +353,10 @@ router
       console.error("Error in /customer:", error.message);
       if (error.code === 11000) {
         const emailMessage = error?.errmsg?.includes("email")
-          ? "Email already exists"
+          ? emailExists
           : null;
         const userNameMessage = error?.errmsg?.includes("credentials.userName")
-          ? "Username already exists"
+          ? userExists
           : null;
 
         const message = {
@@ -387,9 +389,7 @@ router.get("/api/customer/availabilty", async (req, res) => {
     if (!customer || customer.length === 0) {
       return res.status(200).json({ message: "", data: null });
     }
-    res
-      .status(200)
-      .json({ message: "Duplicate error", data: "Username already exists" });
+    res.status(200).json({ message: "Duplicate error", data: userExists });
   } catch (error) {
     console.error("Error in /customer:", error);
     res.status(500).send(internalServerError);

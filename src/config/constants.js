@@ -16,7 +16,9 @@ const companyName = "PentagonWifi";
 const unauthorized = "Unauthorized";
 const server_down = "server is down";
 const authorization = "authorization";
+const emailExists = "Email already exist";
 const componentPath = "src/ui/components/";
+const userExists = "Username already exist";
 
 const clientID = process.env.MERCHANT;
 const authToken = process.env.BASIC_AUTH;
@@ -60,7 +62,9 @@ export {
   server_url,
   successful,
   production,
+  userExists,
   companyName,
+  emailExists,
   server_down,
   development,
   unauthorized,

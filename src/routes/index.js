@@ -28,6 +28,7 @@ import {
   addCustomer,
   getCustomer,
   getCustomers,
+  checkUsernameAvailability,
 } from "../services/db/repository/customer.js";
 import { writeToSheet } from "../services/gSheet.js";
 import { addSale, findSale, getSales } from "../services/db/repository/sale.js";
@@ -384,9 +385,11 @@ router.get("/api/customer/availabilty", async (req, res) => {
   try {
     const customer = await checkUsernameAvailability(results);
     if (!customer || customer.length === 0) {
-      return res.status(404).json({ message: "", data: null });
+      return res.status(200).json({ message: "", data: null });
     }
-    res.status(200).json({ message: "Duplicate error", data: "Username already exists" });
+    res
+      .status(200)
+      .json({ message: "Duplicate error", data: "Username already exists" });
   } catch (error) {
     console.error("Error in /customer:", error);
     res.status(500).send(internalServerError);

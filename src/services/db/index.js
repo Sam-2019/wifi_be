@@ -9,7 +9,7 @@ dbConn.on("connected", () => {
 const connectDB = async () => {
   await mongoose.connect(dbUri, {
     dbName: dbName,
-    autoIndex: true,
+    // autoIndex: true,
   });
 };
 

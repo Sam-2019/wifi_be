@@ -9,6 +9,6 @@ export const writeToSheet = async (payload) => {
       "Content-Type": "application/json",
     },
   }).then(() => {
-    console.log("Data sent to Google Scripts successfully");
+    // console.log("Data sent to Google Scripts successfully");
   });
 };

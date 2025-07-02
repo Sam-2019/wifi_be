@@ -2,7 +2,6 @@ import { forbidden, unauthorized } from "./constants.js";
 
 export const authMiddleware = (req, res, next) => {
   const authorization = req.headers.authorization;
-  console.log(authorization)
   const AUTHORIZATION = process.env.AUTHORIZATION;
 
   if (

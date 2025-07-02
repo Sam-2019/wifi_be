@@ -369,6 +369,30 @@ router
     }
   });
 
+router.get("/api/customer/availabilty", async (req, res) => {
+  const results = req.query;
+  if (
+    results === undefined ||
+    results === null ||
+    results.userName === undefined ||
+    results.userName === null
+  ) {
+    console.error("Received with no data");
+    return res.status(400).send("Received with no data");
+  }
+
+  try {
+    const customer = await checkUsernameAvailability(results);
+    if (!customer || customer.length === 0) {
+      return res.status(404).json({ message: "", data: null });
+    }
+    res.status(200).json({ message: "Duplicate error", data: "Username already exists" });
+  } catch (error) {
+    console.error("Error in /customer:", error);
+    res.status(500).send(internalServerError);
+  }
+});
+
 router.post("/api/payment/callback", async (req, res) => {
   const results = req.body;
 

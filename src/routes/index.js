@@ -99,7 +99,7 @@ router
     try {
       await addSale(results);
       await writeToSheet(results, "Sales");
-      await ntfy({ route: "Sale", payload: results });
+      await ntfy({ route: "/sale", payload: results });
       res.status(200).json({ message: "Sale added" });
     } catch (error) {
       console.error("Error in /sale:", error);
@@ -163,7 +163,7 @@ router
 
     try {
       await addRegistration(results);
-      await ntfy({ route: "Registration", payload: results });
+      await ntfy({ route: "/registration", payload: results });
       res.status(200).json({ message: "Registration added" });
     } catch (error) {
       console.error("Error in /registration", error);
@@ -230,7 +230,7 @@ router
     try {
       await addPendingRegistration(results);
       await writeToSheet(results, "Pending Registration");
-      await ntfy({ route: "Pending Registration", payload: results });
+      await ntfy({ route: "/pending-registration", payload: results });
       res.status(200).json({ message: "Pending Registration added" });
     } catch (error) {
       console.error("Error in /pending-registration:", error);
@@ -297,7 +297,7 @@ router
 
     try {
       await addFailedRegistration(results);
-      await ntfy({ route: "Failed Registration", payload: results });
+      await ntfy({ route: "/failed-registration", payload: results });
       res.status(200).json({ message: "Failed registration added" });
     } catch (error) {
       console.error("Error in /failed-registration:", error);
@@ -360,7 +360,7 @@ router
 
     try {
       await addCustomer(results);
-      await ntfy({ route: "Customer", payload: results });
+      await ntfy({ route: "/customer", payload: results });
       res.status(200).json({ message: "Customer added" });
     } catch (error) {
       console.error("Error in /customer:", error.message);
@@ -446,7 +446,7 @@ router.post("/api/payment/callback", async (req, res) => {
     };
     await addSale(updatedData);
     await writeToSheet(results, "Pending Registration");
-    await ntfy({ route: "Payment Callback", payload: results });
+    await ntfy({ route: "/payment/callback", payload: results });
     res.status(200).json({ message: success });
   } catch (error) {
     console.error("Error processing payment callback:", error);
@@ -493,7 +493,7 @@ router.post("/api/payment/status", authMiddleware, async (req, res) => {
           .json({ message: "Failed to fetch transaction status" });
       }
       const data = await response.json();
-      await ntfy({ route: "Payment Status", payload: data });
+      await ntfy({ route: "/payment/status", payload: data });
       res.status(200).json(data);
     })
     .catch((error) => {
@@ -558,7 +558,7 @@ router.post('/api/payment/sync', authMiddleware, async (req, res) => {
       }
       await addSale(saleRecord)
       await writeToSheet(saleRecord, "Sales");
-      await ntfy({ route: "Data Sync", payload: saleRecord });
+      await ntfy({ route: "/payment/sync", payload: saleRecord });
       res.status(200).json(responseData);
     })
     .catch((error) => {

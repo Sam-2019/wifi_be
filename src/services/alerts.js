@@ -75,21 +75,21 @@ export const ntfy = async ({ payload, route }) => {
 
   const getPayload = (route) => {
     switch (route) {
-      case 'Sale':
+      case '/sale':
         return saleAlert(getInfo);
-      case 'Data Sync':
+      case '/payment/sync':
         return syncAlert(getInfo);
-      case 'Failed Registration':
+      case '/failed-registration':
         return failedAlert(getInfo);
-      case 'Pending Registration':
+      case '/pending-registration':
         return pendingAlert(getInfo);
-      case 'Customer':
+      case '/customer':
         return customerAlert(getInfo);
-      case 'Payment Callback':
+      case '/payment/callback':
         return callbackAlert(getInfo);
-      case 'Payment Status':
+      case '/payment/status':
         return statusCheckAlert(getInfo);
-      case 'Registration':
+      case '/registration':
         return registrationAlert(getInfo);
       default:
         console.error("Invalid alert type provided.");

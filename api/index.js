@@ -6,7 +6,6 @@ import router from "../src/routes/index.js";
 import { ping } from "../src/services/pinger.js";
 import { __dirname } from "../src/config/constants.js";
 import { connectDB } from "../src/services/db/index.js";
-// import { authMiddleware } from "../config/middleware.js";
 
 const port = process.env.PORT || 4000;
 

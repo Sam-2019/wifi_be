@@ -538,20 +538,19 @@ router.post('/api/payment/sync', authMiddleware, async (req, res) => {
           .status(400)
           .json({ message: "Failed to fetch transaction status" });
       }
-      const data = await response.json();
-      const responseData = results.data;
+      const responseData = await response.json();
+      const dataPayload = responseData.data;
 
       const saleRecord = {
         ...registrationByRef,
         provider: hubtel.toUpperCase(),
-        providerResponse: data,
-        transactionId: responseData.transactionId,
-        externalTransactionId: responseData.externalTransactionId,
-
+        providerResponse: responseData,
+        transactionId: dataPayload.transactionId,
+        externalTransactionId: dataPayload.externalTransactionId,
       }
       await addSale(saleRecord)
       await writeToSheet(results, "Sales");
-      res.status(200).json(data);
+      res.status(200).json(responseData);
     })
     .catch((error) => {
       console.error("Error fetching transaction status:", error);

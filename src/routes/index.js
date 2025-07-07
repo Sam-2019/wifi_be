@@ -436,11 +436,11 @@ router.post("/api/payment/callback", async (req, res) => {
       return res.status(404).send("Registration not found");
     }
 
-    const stringifyResponse = JSON.stringify(results);
+    // const stringifyResponse = JSON.stringify(results);
     const updatedData = {
       ...foundPendingRegistration,
       provider: hubtel.toUpperCase(),
-      providerResponse: stringifyResponse,
+      providerResponse: results,
       transactionId: responseData.transactionId,
       externalTransactionId: responseData.externalTransactionId,
     };

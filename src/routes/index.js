@@ -549,7 +549,7 @@ router.post('/api/payment/sync', authMiddleware, async (req, res) => {
         externalTransactionId: dataPayload.externalTransactionId,
       }
       await addSale(saleRecord)
-      await writeToSheet(results, "Sales");
+      await writeToSheet(saleRecord, "Sales");
       res.status(200).json(responseData);
     })
     .catch((error) => {

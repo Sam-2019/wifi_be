@@ -14,7 +14,6 @@ const setupAlert = (title, message) => {
   };
 }
 
-
 const saleAlert = (payload) => {
   return setupAlert("New Sale", payload);
 }

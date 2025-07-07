@@ -507,6 +507,10 @@ router.post('/api/payment/sync', authMiddleware, async (req, res) => {
   }
 
   const registrationByRef = await getRegistrationByReference(results.clientReference)
+  if (registrationByRef === null || registrationByRef === undefined) {
+    console.error("Registration not found for client reference:", results.clientReference);
+    return res.status(404).send("Registration not found");
+  }
 
   const queryParams = {
     clientReference: results.clientReference,
@@ -535,7 +539,7 @@ router.post('/api/payment/sync', authMiddleware, async (req, res) => {
           .json({ message: "Failed to fetch transaction status" });
       }
       const data = await response.json();
-      const responseData = results.Data;
+      const responseData = results.data;
 
       const saleRecord = {
         ...registrationByRef,

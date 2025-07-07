@@ -15,6 +15,7 @@ import {
   addRegistration,
   getRegistration,
   getRegistrations,
+  getRegistrationByReference
 } from "../services/db/repository/registration.js";
 import {
   addFailedRegistration,
@@ -47,7 +48,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.get("/api/sales", async (req, res) => {
+router.get("/api/sales", authMiddleware, async (req, res) => {
   try {
     const sales = await getSales();
     if (!sales || sales.length === 0) {
@@ -62,7 +63,7 @@ router.get("/api/sales", async (req, res) => {
 
 router
   .route("/api/sale")
-  .get(async (req, res) => {
+  .get(authMiddleware, async (req, res) => {
     const results = req.query;
 
     if (results === undefined || results === null) {
@@ -81,7 +82,7 @@ router
       res.status(500).send(internalServerError);
     }
   })
-  .post(async (req, res) => {
+  .post(authMiddleware, async (req, res) => {
     const results = req.body;
 
     if (
@@ -104,7 +105,7 @@ router
     }
   });
 
-router.get("/api/registrations", async (req, res) => {
+router.get("/api/registrations", authMiddleware, async (req, res) => {
   try {
     const registrations = await getRegistrations();
     if (!registrations || registrations.length === 0) {
@@ -438,7 +439,7 @@ router.post("/api/payment/callback", async (req, res) => {
       externalTransactionId: responseData.externalTransactionId,
     };
     await addSale(updatedData);
-
+    await writeToSheet(results, "Pending Registration");
     res.status(200).json({ message: success });
   } catch (error) {
     console.error("Error processing payment callback:", error);
@@ -446,7 +447,7 @@ router.post("/api/payment/callback", async (req, res) => {
   }
 });
 
-router.post("/api/payment/status", async (req, res) => {
+router.post("/api/payment/status", authMiddleware, async (req, res) => {
   const results = req.body;
 
   if (
@@ -492,5 +493,66 @@ router.post("/api/payment/status", async (req, res) => {
       res.status(500).send(internalServerError);
     });
 });
+
+router.post('/api/payment/sync', authMiddleware, async (req, res) => {
+  const results = req.body;
+
+  if (
+    results === undefined ||
+    results === null ||
+    results.clientReference === undefined ||
+    results.clientReference === null
+  ) {
+    return res.status(400).send("Received with no data");
+  }
+
+  const registrationByRef = await getRegistrationByReference(results.clientReference)
+
+  const queryParams = {
+    clientReference: results.clientReference,
+    transactionId: results.transactionId,
+    externalTransactionId: results.externalTransactionId,
+  };
+
+  const queryString = new URLSearchParams(queryParams).toString();
+  const endpoint = `${apiUrl}?${queryString}`;
+
+  fetch(endpoint, {
+    method: "GET",
+    headers: {
+      Authorization: `Basic ${authToken}`,
+      "Content-Type": "application/json",
+    },
+  })
+    .then(async (response) => {
+      if (!response.ok) {
+        console.error(
+          "Failed to fetch transaction status:",
+          response.statusText,
+        );
+        return res
+          .status(400)
+          .json({ message: "Failed to fetch transaction status" });
+      }
+      const data = await response.json();
+      const responseData = results.Data;
+
+      const saleRecord = {
+        ...registrationByRef,
+        provider: hubtel.toUpperCase(),
+        providerResponse: data,
+        transactionId: responseData.transactionId,
+        externalTransactionId: responseData.externalTransactionId,
+
+      }
+      await addSale(saleRecord)
+      await writeToSheet(results, "Sales");
+      res.status(200).json(data);
+    })
+    .catch((error) => {
+      console.error("Error fetching transaction status:", error);
+      res.status(500).send(internalServerError);
+    });
+})
 
 export default router;

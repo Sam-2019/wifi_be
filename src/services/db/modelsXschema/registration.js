@@ -20,7 +20,7 @@ const dataSchema = new Schema(
     credentials: { type: Object },
     provider: { type: String },
     registrationType: { type: String },
-    purchaseInfo: { type: String },
+    purchaseInfo: { type: Object },
   },
   {
     timestamps: true,
@@ -29,4 +29,3 @@ const dataSchema = new Schema(
 
 const Registration = model("Registration", dataSchema);
 export default Registration;
-

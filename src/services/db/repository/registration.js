@@ -25,4 +25,15 @@ const getRegistration = async (data) => {
   ).lean();
 };
 
-export { addRegistration, getRegistration, getRegistrations };
+const getRegistrationByReference = async (data) => {
+  const clientReference = data;
+  return await Registration.findOne(
+    {
+      clientReference: clientReference
+    },
+    excludeItems
+  )
+    .sort({ $natural: -1 })
+    .lean();
+}
+export { addRegistration, getRegistration, getRegistrations, getRegistrationByReference };

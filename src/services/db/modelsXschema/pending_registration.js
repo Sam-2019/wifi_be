@@ -20,7 +20,7 @@ const dataSchema = new Schema(
     credentials: { type: Object },
     provider: { type: String },
     registrationType: { type: String },
-    purchaseInfo: { type: String },
+    purchaseInfo: { type: Object },
   },
   {
     timestamps: true,

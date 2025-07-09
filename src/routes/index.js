@@ -2,7 +2,7 @@ import "dotenv/config";
 import path from "path";
 import express from "express";
 import { __dirname } from "../config/constants.js";
-import { getUsers, getUser, disableUser, enableUser } from "../services/mikrotik/index.js";
+import { getUsers, getUser, disableUser, enableUser, addUser } from "../services/mikrotik/index.js";
 
 const router = express.Router();
 router.get("/", async (req, res) => {
@@ -87,6 +87,24 @@ router.post("/api/mikrotik/user/enable", async (req, res) => {
   } catch (error) {
     console.error("Error enabling user:", error);
     res.status(500).json({ error: "Failed to enable user" });
+  }
+});
+
+// Add a new user
+// Endpoint: POST /api/mikrotik/user/add
+// Adds a new user to the Mikrotik hotspot with the provided details
+router.post("/api/mikrotik/user/add", async (req, res) => {
+  const results = req.body;
+  if (!results || !results.username || !results.password || !results.profile) {
+    return res.status(400).send({ error: "Name, password and profile are required" });
+  }
+
+  try {
+    const user = await addUser(results);
+    res.status(201).json({ data: user, message: "User added successfully" });
+  } catch (error) {
+    console.error("Error adding user:", error);
+    res.status(500).json({ error: "Failed to add user" });
   }
 });
 

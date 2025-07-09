@@ -1,11 +1,9 @@
 import RouterOSClient from "ros-client";
+import { mikrotikCredentials, defaultMikrotikServer } from "../../config/constants";
 
 // Create API client instance
 const api = new RouterOSClient({
-    host: "XXX.XXX.XXX.XXX",
-    port: "XXXX",
-    username: "xxxxx",
-    password: "xxxxx",
+    ...mikrotikCredentials,
     tls: false, // Set to true for encrypted connection
 });
 
@@ -71,7 +69,6 @@ const enableUser = async (username) => {
 }
 
 const addUser = async (userData) => {
-    const defaultServer = process.env.MIKROTIK_DEFAULT_SERVER || "hotspot1";
     try {
         await api.connect();
         const user = await api.send([
@@ -80,7 +77,7 @@ const addUser = async (userData) => {
             `=password=${userData?.password}`,
             `=email=${userData?.email || ""}`,
             `=profile=${userData?.profile}`,
-            `=server=${defaultServer}`,
+            `=server=${defaultMikrotikServer}`,
             `=comment=${userData?.comment || new Date().toISOString()}`,
         ]);
         await api.close();
@@ -89,6 +86,5 @@ const addUser = async (userData) => {
         console.error("❌ Error:", err.message);
     }
 }
-
 
 export { getUsers, getUser, disableUser, enableUser, addUser }

@@ -57,6 +57,14 @@ const adminCredentials = {
   password: process.env.USER_PASSWORD,
 };
 
+const mikrotikCredentials = {
+  port: process.env.MIKROTIK_PORT,
+  host: process.env.MIKROTIK_HOST,
+  username: process.env.MIKROTIK_USERNAME,
+  password: process.env.MIKROTIK_PASSWORD,
+};
+const defaultMikrotikServer = process.env.MIKROTIK_DEFAULT_SERVER || "hotspot1";
+
 const topup = "Top Up";
 const registration = "Registration";
 
@@ -94,5 +102,7 @@ export {
   authorization,
   componentPath,
   adminCredentials,
+  mikrotikCredentials,
   internalServerError,
+  defaultMikrotikServer
 };

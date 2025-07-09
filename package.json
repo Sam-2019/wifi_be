@@ -25,10 +25,11 @@
     "express": "^4.21.2",
     "express-session": "^1.18.1",
     "mongoose": "^8.16.0",
-    "path": "^0.12.7"
+    "path": "^0.12.7",
+    "ros-client": "^1.1.2"
   },
   "devDependencies": {
-    "@biomejs/biome": "1.9.4",
+    "@biomejs/biome": "2.0.6",
     "@faker-js/faker": "^9.8.0",
     "@types/express": "^5.0.3",
     "nodemon": "^3.1.10"

@@ -70,5 +70,25 @@ const enableUser = async (username) => {
     }
 }
 
+const addUser = async (userData) => {
+    const defaultServer = process.env.MIKROTIK_DEFAULT_SERVER || "hotspot1";
+    try {
+        await api.connect();
+        const user = await api.send([
+            "/ip/hotspot/user/add",
+            `=name=${userData?.username}`,
+            `=password=${userData?.password}`,
+            `=email=${userData?.email || ""}`,
+            `=profile=${userData?.profile}`,
+            `=server=${defaultServer}`,
+            `=comment=${userData?.comment || new Date().toISOString()}`,
+        ]);
+        await api.close();
+        return modifiedUser(user);
+    } catch (err) {
+        console.error("❌ Error:", err.message);
+    }
+}
 
-export { getUsers, getUser, disableUser, enableUser };
+
+export { getUsers, getUser, disableUser, enableUser, addUser }

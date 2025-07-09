@@ -1,5 +1,5 @@
-import Registration from "../modelsXschema/registration.js";
 import { excludeItems, registration } from "../../../config/constants.js";
+import Registration from "../modelsXschema/registration.js";
 
 const getRegistrations = async () => {
   return await Registration.find({}, excludeItems).lean();
@@ -25,4 +25,15 @@ const getRegistration = async (data) => {
   ).lean();
 };
 
-export { addRegistration, getRegistration, getRegistrations };
+const getTodaysRegistrations = async () => {
+  const today = new Date();
+  const startOfDay = new Date(today.setHours(0, 0, 0, 0));
+  const endOfDay = new Date(today.setHours(23, 59, 59, 999));
+
+  return await Registration
+    .where('createdAt').gte(startOfDay).lte(endOfDay)
+    .where('registrationType', /^Registration/i)
+    .lean();
+};
+
+export { addRegistration, getRegistration, getRegistrations, getTodaysRegistrations };

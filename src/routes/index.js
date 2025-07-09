@@ -5,7 +5,6 @@ import {
   hubtel,
   apiUrl,
   success,
-  authToken,
   __dirname,
   internalServerError,
   emailExists,
@@ -33,10 +32,11 @@ import {
   getCustomers,
   checkUsernameAvailability,
 } from "../services/db/repository/customer.js";
-import { writeToSheet } from "../services/gSheet.js";
-import { addSale, findSale, getSales } from "../services/db/repository/sale.js";
-import { authMiddleware } from "../config/middleware.js";
 import { ntfy } from "../services/alerts.js";
+import { writeToSheet } from "../services/gSheet.js";
+import { authMiddleware } from "../config/middleware.js";
+import { fetchRequest, modifiedSalesRecord } from "../config/utils.js";
+import { addSale, findSale, getSales } from "../services/db/repository/sale.js";
 
 const router = express.Router();
 router.get("/", async (req, res) => {
@@ -466,40 +466,26 @@ router.post("/api/payment/status", authMiddleware, async (req, res) => {
     return res.status(400).send("Payment status received with no data");
   }
 
-  const queryParams = {
-    clientReference: results.clientReference,
-    transactionId: results.transactionId,
-    externalTransactionId: results.externalTransactionId,
-  };
+  try {
+    const response = await fetchRequest(results);
+    if (!response.ok) {
+      console.error(
+        "Failed to fetch transaction status:",
+        response.statusText,
+      );
+      return res
+        .status(400)
+        .json({ message: "Failed to fetch transaction status" });
+    }
 
-  const queryString = new URLSearchParams(queryParams).toString();
-  const endpoint = `${apiUrl}?${queryString}`;
-
-  fetch(endpoint, {
-    method: "GET",
-    headers: {
-      Authorization: `Basic ${authToken}`,
-      "Content-Type": "application/json",
-    },
-  })
-    .then(async (response) => {
-      if (!response.ok) {
-        console.error(
-          "Failed to fetch transaction status:",
-          response.statusText,
-        );
-        return res
-          .status(400)
-          .json({ message: "Failed to fetch transaction status" });
-      }
-      const data = await response.json();
-      await ntfy({ route: "/payment/status", payload: data });
-      res.status(200).json(data);
-    })
-    .catch((error) => {
-      console.error("Error fetching transaction status:", error);
-      res.status(500).send(internalServerError);
-    });
+    const responseData = await response.json();
+    const dataPayload = responseData.data;
+    await ntfy({ route: "/payment/status", payload: dataPayload });
+    res.status(200).json(responseData);
+  } catch (error) {
+    console.error("Error in /payment/status:", error);
+    res.status(500).send(internalServerError);
+  }
 });
 
 router.post('/api/payment/sync', authMiddleware, async (req, res) => {
@@ -520,51 +506,29 @@ router.post('/api/payment/sync', authMiddleware, async (req, res) => {
     return res.status(404).send("Registration not found");
   }
 
-  const queryParams = {
-    clientReference: results.clientReference,
-    transactionId: results.transactionId,
-    externalTransactionId: results.externalTransactionId,
-  };
+  try {
+    const response = await fetchRequest(results);
+    if (!response.ok) {
+      console.error(
+        "Failed to fetch transaction status:",
+        response.statusText,
+      );
+      return res
+        .status(400)
+        .json({ message: "Failed to fetch transaction status" });
+    }
 
-  const queryString = new URLSearchParams(queryParams).toString();
-  const endpoint = `${apiUrl}?${queryString}`;
+    const responseData = await response.json();
+    const modData = modifiedSalesRecord(registrationByRef, responseData);
 
-  fetch(endpoint, {
-    method: "GET",
-    headers: {
-      Authorization: `Basic ${authToken}`,
-      "Content-Type": "application/json",
-    },
-  })
-    .then(async (response) => {
-      if (!response.ok) {
-        console.error(
-          "Failed to fetch transaction status:",
-          response.statusText,
-        );
-        return res
-          .status(400)
-          .json({ message: "Failed to fetch transaction status" });
-      }
-      const responseData = await response.json();
-      const dataPayload = responseData.data;
-
-      const saleRecord = {
-        ...registrationByRef,
-        provider: hubtel.toUpperCase(),
-        providerResponse: responseData,
-        transactionId: dataPayload.transactionId,
-        externalTransactionId: dataPayload.externalTransactionId,
-      }
-      await addSale(saleRecord)
-      await writeToSheet(saleRecord, "Sales");
-      await ntfy({ route: "/payment/sync", payload: saleRecord });
-      res.status(200).json(responseData);
-    })
-    .catch((error) => {
-      console.error("Error fetching transaction status:", error);
-      res.status(500).send(internalServerError);
-    });
+    await addSale(modData)
+    await writeToSheet(modData, "Sales");
+    await ntfy({ route: "/payment/sync", payload: modData });
+    res.status(200).json(responseData);
+  } catch (error) {
+    console.error("Error in /payment/sync:", error);
+    res.status(500).send(internalServerError);
+  }
 })
 
 export default router;

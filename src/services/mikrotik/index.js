@@ -2,7 +2,7 @@ import RouterOSClient from "ros-client";
 import {
     mikrotikCredentials,
     defaultMikrotikServer,
-} from "../../config/constants";
+} from "../../config/constants.js";
 
 // Create API client instance
 const api = new RouterOSClient({

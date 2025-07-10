@@ -3,7 +3,7 @@ import path from "path";
 import Cabin from "cabin";
 import Graceful from "@ladjs/graceful";
 import Signale from "signale/signale.js";
-import { disconnectDB } from "../db";
+import { disconnectDB } from "../db/index.js";
 
 // initialize cabin
 const cabin = new Cabin({

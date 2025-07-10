@@ -2,7 +2,7 @@ import "dotenv/config";
 import path from "path";
 import express from "express";
 import { __dirname } from "../config/constants.js";
-import { getUsers, getUser, disableUser, enableUser, addUser } from "../services/mikrotik/index.js";
+import { getUsers, getUser, disableUser, enableUser, createUser } from "../services/mikrotik/index.js";
 
 const router = express.Router();
 router.get("/", async (req, res) => {
@@ -100,7 +100,7 @@ router.post("/api/mikrotik/user/add", async (req, res) => {
   }
 
   try {
-    const user = await addUser(results);
+    const user = await createUser(results);
     res.status(201).json({ data: user, message: "User added successfully" });
   } catch (error) {
     console.error("Error adding user:", error);

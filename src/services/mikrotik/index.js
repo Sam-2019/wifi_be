@@ -1,5 +1,8 @@
 import RouterOSClient from "ros-client";
-import { mikrotikCredentials, defaultMikrotikServer } from "../../config/constants";
+import {
+    mikrotikCredentials,
+    defaultMikrotikServer,
+} from "../../config/constants";
 
 // Create API client instance
 const api = new RouterOSClient({
@@ -9,19 +12,19 @@ const api = new RouterOSClient({
 
 const modifiedUser = (user) => {
     return {
-        "id": user[0]?.id,
-        "name": user[0]?.name,
-        "server": user[0]?.server,
-        "profile": user[0]?.profile,
-        "uptime": user[0]?.uptime,
-        "bytesIn": user[0]?.["bytes-in"],
-        "bytesOut": user[0]?.["bytes-out"],
-        "packetsIn": user[0]?.["packets-in"],
-        "packetsOut": user[0]?.["packets-out"],
-        "dynamic": user[0]?.dynamic,
-        "disabled": user[0]?.disabled,
-        "comment": user[0]?.comment,
-    }
+        id: user[0]?.id,
+        name: user[0]?.name,
+        server: user[0]?.server,
+        profile: user[0]?.profile,
+        uptime: user[0]?.uptime,
+        bytesIn: user[0]?.["bytes-in"],
+        bytesOut: user[0]?.["bytes-out"],
+        packetsIn: user[0]?.["packets-in"],
+        packetsOut: user[0]?.["packets-out"],
+        dynamic: user[0]?.dynamic,
+        disabled: user[0]?.disabled,
+        comment: user[0]?.comment,
+    };
 };
 
 const getUsers = async () => {
@@ -33,48 +36,59 @@ const getUsers = async () => {
     } catch (err) {
         console.error("❌ Error:", err.message);
     }
-}
+};
 
 const getUser = async (username) => {
     try {
         await api.connect();
-        const user = await api.send(["/ip/hotspot/user/print", `?name=${username}`]);
+        const user = await api.send([
+            "/ip/hotspot/user/print",
+            `?name=${username}`,
+        ]);
         await api.close();
         return modifiedUser(user);
     } catch (err) {
         console.error("❌ Error:", err.message);
     }
-}
+};
 
 const disableUser = async (username) => {
     try {
         await api.connect();
-        const user = await api.send(["/ip/hotspot/user/set", `=.id=${username}`, "=disabled=true"]);
+        const user = await api.send([
+            "/ip/hotspot/user/set",
+            `=.id=${username}`,
+            "=disabled=true",
+        ]);
         await api.close();
         return modifiedUser(user);
     } catch (err) {
         console.error("❌ Error:", err.message);
     }
-}
+};
 
 const enableUser = async (username) => {
     try {
         await api.connect();
-        const user = await api.send(["/ip/hotspot/user/set", `=.id=${username}`, "=disabled=false"]);
+        const user = await api.send([
+            "/ip/hotspot/user/set",
+            `=.id=${username}`,
+            "=disabled=false",
+        ]);
         await api.close();
         return modifiedUser(user);
     } catch (err) {
         console.error("❌ Error:", err.message);
     }
-}
+};
 
-const addUser = async (userData) => {
+const createUser = async (userData) => {
     try {
         await api.connect();
         const user = await api.send([
             "/ip/hotspot/user/add",
-            `=name=${userData?.username}`,
-            `=password=${userData?.password}`,
+            `=name=${userData?.credentials?.username}`,
+            `=password=${userData?.credentials?.password}`,
             `=email=${userData?.email || ""}`,
             `=profile=${userData?.profile}`,
             `=server=${defaultMikrotikServer}`,
@@ -85,6 +99,6 @@ const addUser = async (userData) => {
     } catch (err) {
         console.error("❌ Error:", err.message);
     }
-}
+};
 
-export { getUsers, getUser, disableUser, enableUser, addUser }
+export { getUsers, getUser, disableUser, enableUser, createUser };

@@ -26,6 +26,9 @@ const hostUrl = process.env.TRANSACTION_STATUS_CHECK_URL;
 const dbUri = process.env.DB_URL;
 const dbName = process.env.DB_NAME;
 const gsUri = process.env.GOOGLE_SCRIPTS;
+const ntfyUri = process.env.NTFY_URL;
+const ntfyTopic = process.env.NTFY_TOPIC;
+const ntfyAuthorization = process.env.NTFY_AUTHORIZATION;
 
 const secret = process.env.SESSION_SECRET;
 const crypto = process.env.SESSION_CRYPTO_SECRET;
@@ -68,6 +71,18 @@ const defaultMikrotikServer = process.env.MIKROTIK_DEFAULT_SERVER || "hotspot1";
 const topup = "Top Up";
 const registration = "Registration";
 
+const getSelectedPlan = (data) => {
+  if (data.includes("WEEKLY")) {
+    return "Weekly"
+  }
+
+  if (data.includes("MONTHLY")) {
+    return "Monthly"
+  }
+
+  return "Daily"
+}
+
 export {
   ttl,
   salt,
@@ -87,6 +102,7 @@ export {
   assetPath,
   forbidden,
   authToken,
+  getSelectedPlan,
   server_up,
   cookiePass,
   server_url,
@@ -103,6 +119,9 @@ export {
   componentPath,
   adminCredentials,
   mikrotikCredentials,
+  ntfyAuthorization,
+  ntfyUri,
+  ntfyTopic,
   internalServerError,
   defaultMikrotikServer
 };

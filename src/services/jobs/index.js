@@ -7,27 +7,28 @@ import { disconnectDB } from "../db/index.js";
 
 // initialize cabin
 const cabin = new Cabin({
-    axe: {
-        logger: new Signale()
-    }
+  axe: {
+    logger: new Signale(),
+  },
 });
 
 const bree = new Bree({
-    logger: cabin,
-    root: path.resolve("./src/services/jobs"),
-    jobs: [
-        // runs `./jobs/worker-1.js` after 1 minute and every 1 minutes thereafter
-        {
-            name: "provisionAccount",
-            timeout: "1m",
-            interval: "1m",
-        },
-    ],
+  removeCompleted: true,
+  closeWorkerAfterMs: ms("5m"),
+  logger: cabin,
+  root: path.resolve("./src/services/jobs"),
+  jobs: [
+    // runs `./jobs/worker-1.js` after 1 minute and every 1 minutes thereafter
+    {
+      name: "provisionAccount",
+      cron: "0 6 * * *",
+    },
+  ],
 });
 
 const graceful = new Graceful({
-    brees: [bree],
-    mongooses: [disconnectDB]
+  brees: [bree],
+  mongooses: [disconnectDB],
 });
 graceful.listen();
 

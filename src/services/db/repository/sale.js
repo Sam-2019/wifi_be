@@ -16,19 +16,22 @@ const findSale = async (data) => {
     {
       clientReference: clientReference,
     },
-    excludeItems
+    excludeItems,
   ).lean();
 };
 
-const todaySales = async () => {
+const yesterdaySales = async () => {
   const today = new Date();
-  const startOfDay = new Date(today.setHours(0, 0, 0, 0));
-  const endOfDay = new Date(today.setHours(23, 59, 59, 999));
+  const yesterday = new Date(today);
+  yesterday.setDate(yesterday.getDate() - 1);
+  const startOfDay = new Date(yesterday.setHours(0, 0, 0, 0));
+  const endOfDay = new Date(yesterday.setHours(23, 59, 59, 999));
 
-  return await Sale
-    .where('createdAt').gte(startOfDay).lte(endOfDay)
-    .where('registrationType', /^Registration/i)
+  return await Sale.where("createdAt")
+    .gte(startOfDay)
+    .lte(endOfDay)
+    .where("registrationType", /^Registration/i)
     .lean();
 };
 
-export { getSales, addSale, findSale, todaySales };
+export { getSales, addSale, findSale, yesterdaySales };

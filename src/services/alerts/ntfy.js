@@ -19,11 +19,11 @@ const setupAlert = (title, message) => {
 };
 
 const successAlert = (payload) => {
-  return setupAlert("Account Provisioned", payload);
+  return setupAlert("Account Creation", payload);
 };
 
 const failAlert = (payload) => {
-  return setupAlert("Account Provisioned", payload);
+  return setupAlert("Account Creation Failed", payload);
 };
 
 export const ntfy = async ({ payload, route }) => {

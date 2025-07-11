@@ -1,4 +1,8 @@
-import { ntfyUri, ntfyTopic, ntfyAuthorization } from "../config/constants.js";
+import {
+  ntfyUri,
+  ntfyTopic,
+  ntfyAuthorization,
+} from "../../config/constants.js";
 
 const priority = 4;
 const topic = ntfyTopic;

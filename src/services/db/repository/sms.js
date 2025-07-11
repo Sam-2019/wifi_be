@@ -1,4 +1,4 @@
-import Sms from "../modelsXschema/sms";
+import Sms from "../modelsXschema/sms.js";
 
 const getSms = async () => {
   return await Sms.find({});

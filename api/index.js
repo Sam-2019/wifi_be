@@ -1,6 +1,5 @@
 import path from "path";
 import cors from "cors";
-import debug from "debug";
 import Cabin from "cabin";
 import bodyParser from "body-parser";
 import express, { json } from "express";
@@ -53,10 +52,22 @@ const start = async () => {
   await bree.start();
 
   process.on("SIGTERM", () => {
-    debug("SIGTERM signal received: closing HTTP server");
+    console.log("SIGTERM signal received: closing HTTP server");
     server.close(() => {
-      debug("HTTP server closed");
+      console.log("HTTP server closed");
     });
+  });
+
+  process.on("uncaughtException", (err) => {
+    console.log(err, "uncaught exception detected");
+    server.close(() => {
+      process.exit(1);
+    });
+
+    setTimeout(() => {
+      process.abort();
+    }, 1000).unref();
+    process.exit(1);
   });
 };
 

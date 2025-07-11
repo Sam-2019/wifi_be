@@ -1,9 +1,9 @@
+import { connectDB } from "../db.js";
+import { ntfy } from "../alerts/ntfy.js";
 import { parentPort } from "node:worker_threads";
-import { connectDB } from "../db";
 import { createUser } from "../mikrotik/index.js";
 import { yesterdaySales } from "../db/repository/sale.js";
 import { getSelectedPlan } from "../../config/constants.js";
-import { ntfy } from "../alerts/ntfy.js";
 
 const setupUser = async () => {
   await connectDB();

@@ -1,5 +1,5 @@
-import { excludeItems, registration } from "../../../config/constants.js";
 import Registration from "../modelsXschema/registration.js";
+import { excludeItems, registration } from "../../../config/constants.js";
 
 const getRegistrations = async () => {
   return await Registration.find({}, excludeItems).lean();

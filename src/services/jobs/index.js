@@ -13,7 +13,7 @@ const cabin = new Cabin({
 
 const bree = new Bree({
   removeCompleted: true,
-  closeWorkerAfterMs: "5m",
+  closeWorkerAfterMs: "2m",
   logger: cabin,
   root: path.resolve("./src/services/jobs"),
   jobs: [

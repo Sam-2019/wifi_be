@@ -7,7 +7,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "bun --env-file=env/.local.env api/index.js",
-    "dev": "nodemon --env-file=env/.development.local.env api/index.js"
+    "dev": "bun --watch --env-file=env/.development.local.env api/index.js"
   },
   "keywords": [],
   "author": "",
@@ -24,6 +24,7 @@
     "compression": "^1.8.0",
     "connect-mongo": "^5.1.0",
     "cors": "^2.8.5",
+    "debug": "^4.4.1",
     "dotenv": "^16.5.0",
     "express": "^4.21.2",
     "express-request-id": "^3.0.0",
@@ -38,8 +39,7 @@
   "devDependencies": {
     "@biomejs/biome": "2.0.6",
     "@faker-js/faker": "^9.8.0",
-    "@types/express": "^5.0.3",
-    "nodemon": "^3.1.10"
+    "@types/express": "^5.0.3"
   },
   "resolutions": {
     "@tiptap/core": "2.22.3",

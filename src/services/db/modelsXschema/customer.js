@@ -24,6 +24,7 @@ const dataSchema = new Schema(
       },
     },
     cardPrinted: { type: Boolean, default: false },
+    profileCreated: { type: Boolean, default: false },
   },
   {
     timestamps: true,

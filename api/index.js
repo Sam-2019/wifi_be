@@ -9,16 +9,17 @@ import { adminjs, adminRouter } from "../src/services/admin/index.js";
 import { bree } from "../src/services/jobs/index.js";
 import Cabin from "cabin";
 import Signale from "signale/signale.js";
-import requestId from 'express-request-id';
-import requestReceived from 'request-received';
-import responseTime from 'response-time';
+import requestId from "express-request-id";
+import requestReceived from "request-received";
+import responseTime from "response-time";
+
 const port = process.env.PORT || 4000;
 
 // initialize cabin
 const cabin = new Cabin({
   axe: {
-    logger: new Signale()
-  }
+    logger: new Signale(),
+  },
 });
 
 const start = async () => {
@@ -30,6 +31,7 @@ const start = async () => {
     }),
   );
   await connectDB();
+
   app.use(json());
 
   app.use(requestReceived);

@@ -1,3 +1,4 @@
+import { parentPort } from "node:worker_threads";
 import { connectDB } from "../db";
 import { createUser } from "../mikrotik/index.js";
 import { yesterdaySales } from "../db/repository/sale.js";
@@ -30,4 +31,5 @@ const setupUser = async () => {
   }
 };
 
-setupUser();
+setupUser();      
+if (parentPort) parentPort.postMessage("done");

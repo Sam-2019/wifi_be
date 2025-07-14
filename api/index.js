@@ -30,8 +30,6 @@ const start = async () => {
   app.use(requestId());
   app.use(cabin.middleware);
   app.use("/", router);
-  app.use(responseTime());
-  app.use(requestReceived);
   app.use(bodyParser.json());
   app.disable("x-powered-by");
   app.use(bodyParser.urlencoded({ extended: false }));

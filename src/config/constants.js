@@ -73,14 +73,14 @@ const defaultMikrotikServer = process.env.MIKROTIK_DEFAULT_SERVER || "hotspot1";
 const topup = "Top Up";
 const registration = "Registration";
 
-const getSelectedPlan = (data) => {
-  if (data.includes("WEEKLY")) {
-    return "Weekly"
-  }
+const getSelectedPlan = () => {
+  // if (data.includes("WEEKLY")) {
+  //   return "Weekly"
+  // }
 
-  if (data.includes("MONTHLY")) {
-    return "Monthly"
-  }
+  // if (data.includes("MONTHLY")) {
+  //   return "Monthly"
+  // }
 
   return "Daily"
 }

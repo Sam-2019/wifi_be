@@ -33,7 +33,8 @@ const getTodaysRegistrations = async () => {
   return await Registration
     .where('createdAt').gte(startOfDay).lte(endOfDay)
     .where('registrationType', /^Registration/i)
-    .lean();
+    .lean()
+    
 };
 
 export { addRegistration, getRegistration, getRegistrations, getTodaysRegistrations };

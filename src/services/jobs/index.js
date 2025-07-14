@@ -25,7 +25,7 @@ const bree = new Bree({
   jobs: [
     {
       name: "provisionAccount",
-      interval: "at 6:00 pm",
+      interval: "at 12:00 pm",
     },
   ],
 });

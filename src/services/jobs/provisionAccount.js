@@ -4,15 +4,15 @@ import { ntfy } from "../alerts/ntfy.js";
 import { connectDB } from "../db/index.js";
 import { parentPort } from "node:worker_threads";
 import { createUser } from "../mikrotik/index.js";
-import { yesterdaySales } from "../db/repository/sale.js";
 import { getSelectedPlan } from "../../config/constants.js";
+import { getUnprovisionedCustomers } from "../db/repository/customer.js";
 
 const provisionAccount = async () => {
   await connectDB();
-  const paidRegistrants = await yesterdaySales();
-  if (paidRegistrants.length > 0) {
-    paidRegistrants.forEach((user) => {
-      const profile = getSelectedPlan(user.subscriptionPlan);
+  const customers = await getUnprovisionedCustomers();
+  if (customers.length > 0) {
+    customers.forEach((user) => {
+      const profile = getSelectedPlan();
       const results = {
         ...user,
         profile: profile,
@@ -27,7 +27,7 @@ const provisionAccount = async () => {
         });
     });
   } else {
-    cabin.info("No sales found for today.");
+    cabin.info("All customers provisioned");
   }
 
   if (parentPort) parentPort.postMessage("done");

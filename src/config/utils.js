@@ -1,4 +1,4 @@
-import { authToken, hubtel, apiUrl } from "./constants";
+import { authToken, hubtel, apiUrl } from "./constants.js";
 
 export const getFetchOption = {
 	method: "GET",

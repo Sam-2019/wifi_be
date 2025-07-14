@@ -11,9 +11,7 @@ const fetchOption = {
 
 export const fetchRequest = async (results) => {
   const queryParams = {
-    clientReference: results.clientReference,
-    transactionId: results.transactionId || null,
-    externalTransactionId: results.externalTransactionId || null,
+    clientReference: results.clientReference
   };
 
   const queryString = new URLSearchParams(queryParams).toString();

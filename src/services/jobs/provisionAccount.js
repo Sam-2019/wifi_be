@@ -1,3 +1,4 @@
+import { cabin } from "./index.js";
 import process from "node:process";
 import { ntfy } from "../alerts/ntfy.js";
 import { connectDB } from "../db/index.js";
@@ -26,7 +27,7 @@ const provisionAccount = async () => {
         });
     });
   } else {
-    console.log("No sales found for today.");
+    cabin.info("No sales found for today.");
   }
 
   if (parentPort) parentPort.postMessage("done");

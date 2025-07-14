@@ -12,7 +12,6 @@ import { __dirname } from "../src/config/constants.js";
 import { connectDB } from "../src/services/db/index.js";
 import { adminjs, adminRouter } from "../src/services/admin/index.js";
 
-
 const port = process.env.PORT || 4000;
 
 const start = async () => {
@@ -39,21 +38,21 @@ const start = async () => {
   app.use(express.static(path.join(__dirname, "/public")));
 
   app.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
-    console.log(`AdminJS started on ${port}${adminjs.options.rootPath}`);
+    cabin.info(`Server is running on port ${port}`);
+    cabin.info(`AdminJS started on ${port}${adminjs.options.rootPath}`);
   });
 
   await bree.start();
 
   process.on("SIGTERM", () => {
-    console.log("SIGTERM signal received: closing HTTP server");
+    cabin.info("SIGTERM signal received: closing HTTP server");
     server.close(() => {
-      console.log("HTTP server closed");
+      cabin.info("HTTP server closed");
     });
   });
 
   process.on("uncaughtException", (err) => {
-    console.log(err, "uncaught exception detected");
+    cabin.info(err, "uncaught exception detected");
     server.close(() => {
       process.exit(1);
     });

@@ -36,4 +36,4 @@ const graceful = new Graceful({
 });
 graceful.listen();
 
-export { bree, logger, cabin };
+export { bree, cabin };

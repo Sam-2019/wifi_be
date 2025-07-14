@@ -8,10 +8,11 @@ import {
 } from "../../config/constants.js";
 import mongoose from "mongoose";
 import MongoStore from "connect-mongo";
+import { cabin } from "../jobs/index.js";
 
 const dbConn = mongoose.connection;
 dbConn.on("connected", () => {
-  console.log("Mongoose connected");
+  cabin.info("Mongoose connected");
 });
 
 const connectDB = async () => {

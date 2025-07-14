@@ -1,10 +1,9 @@
 import mongoose from "mongoose";
-import { cabin } from "../logger/index.js";
 import { dbUri, dbName } from "../../config/constants.js";
 
 const dbConn = mongoose.connection;
 dbConn.on("connected", () => {
-  cabin.info("Mongoose connected");
+  console.log("Mongoose connected");
 });
 
 const connectDB = async () => {

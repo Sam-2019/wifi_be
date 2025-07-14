@@ -1,10 +1,9 @@
-import { cabin } from "./logger/index.js";
 import { server_url } from "../config/constants.js";
 
 async function pingServer() {
   fetch(server_url)
     .then((response) => {
-      cabin.info("Server is up:", response.status);
+      console.log("Server is up:", response.status);
     })
     .catch((error) => {
       cabin.err("Server is down:", error.message);
@@ -13,13 +12,13 @@ async function pingServer() {
 
 function pinger(callback, timer) {
   setInterval(async () => {
-    cabin.info("Pinger running");
+    console.log("Pinger running");
     await callback();
   }, timer);
 }
 
 const ping = () => {
-  cabin.info("Pinger started");
+  console.log("Pinger started");
   pinger(pingServer, 13 * 60 * 1000);
 };
 

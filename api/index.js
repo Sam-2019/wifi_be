@@ -6,7 +6,6 @@ import router from "../src/routes/index.js";
 import { ping } from "../src/services/pinger.js";
 import { __dirname } from "../src/config/constants.js";
 import { connectDB } from "../src/services/db/index.js";
-import { cabin } from "../src/services/logger/index.js";
 
 const port = process.env.PORT || 4000;
 
@@ -22,7 +21,6 @@ const start = async () => {
 
   ping();
   app.use(json());
-  app.use(cabin.middleware);
   app.use("/", router);
   app.use(bodyParser.json());
   app.disable("x-powered-by");
@@ -30,7 +28,7 @@ const start = async () => {
   app.use(express.static(path.join(__dirname, "/public")));
 
   app.listen(port, () => {
-    cabin.info(`Server is running on port ${port}`);
+    console.log(`Server is running on port ${port}`);
   });
 };
 

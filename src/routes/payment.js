@@ -83,6 +83,7 @@ router.post("/payment/status", authMiddleware, async (req, res) => {
   console.log({ endpoint });
   console.log({ authToken });
 
+  
   try {
     const response = await fetch(endpoint, {
       method: "GET",

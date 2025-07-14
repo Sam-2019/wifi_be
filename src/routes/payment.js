@@ -3,12 +3,14 @@ import express from "express";
 import {
 	hubtel,
 	success,
+	registration,
 	internalServerError,
 } from "../config/constants.js";
 import { ntfy } from "../services/alerts.js";
 import { writeToSheet } from "../services/gSheet.js";
 import { authMiddleware } from "../config/middleware.js";
 import { addSale } from "../services/db/repository/sale.js";
+import { addCustomer } from "../services/db/repository/customer.js";
 import { fetchRequest, modifiedSalesRecord } from "../config/utils.js";
 import { getRegistrationByReference } from "../services/db/repository/registration.js";
 import { getPendingRegistration } from "../services/db/repository/pending_registration.js";
@@ -122,13 +124,15 @@ router.post("/payment/sync", authMiddleware, async (req, res) => {
 				.status(400)
 				.json({ message: "Failed to fetch transaction status" });
 		}
-
 		const responseData = await response.json();
-		const modData = modifiedSalesRecord(registrationByRef, responseData);
 
-		await addSale(modData);
-		await writeToSheet(modData, "Sales");
-		await ntfy({ route: "/payment/sync", payload: modData });
+		if (responseData?.data?.status === "Paid") {
+			const modData = modifiedSalesRecord(registrationByRef, responseData);
+			await addSale(modData);
+			if (registrationByRef.registrationType === registration) addCustomer(registrationByRef);
+			await writeToSheet(modData, "Sales");
+			await ntfy({ route: "/payment/sync", payload: modData });
+		}
 		res.status(200).json(responseData);
 	} catch (error) {
 		console.error("Error in /payment/sync:", error);

@@ -6,7 +6,7 @@ import {
   registration,
   internalServerError,
   apiUrl,
-  authToken
+  authToken,
 } from "../config/constants.js";
 import { ntfy } from "../services/alerts.js";
 import { writeToSheet } from "../services/gSheet.js";
@@ -81,23 +81,26 @@ router.post("/payment/status", authMiddleware, async (req, res) => {
 
   const queryString = new URLSearchParams(queryParams).toString();
   const endpoint = `${apiUrl}?${queryString}`;
-  console.log({ endpoint });
-  console.log({ authToken });
+  const fetchOption = {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${authToken}`,
+      Accept: "application/json",
+    },
+  };
 
+  await ntfy({ route: "/payment/status", payload: authToken });
+  await ntfy({ route: "/payment/status", payload: queryString });
+  await ntfy({ route: "/payment/status", payload: endpoint });
+  await ntfy({ route: "/payment/status", payload: fetchOption });
 
   try {
-    const response = await fetch(endpoint, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${authToken}`,
-        "Content-Type": "application/json",
-      },
-    });
-    console.log({ response });
-    return response;
+    const response = await fetch(endpoint, fetchOption);
+    await ntfy({ route: "/payment/status", payload: response });
+    res.status(200).json(response);
   } catch (error) {
-    console.error("Fetch error:", error);
-    throw error;
+    console.error("Error in /payment/status:", error);
+    res.status(500).send(internalServerError);
   }
 });
 

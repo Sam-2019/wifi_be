@@ -29,7 +29,6 @@
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
-    "@faker-js/faker": "^9.8.0",
     "@types/express": "^5.0.3",
     "nodemon": "^3.1.10"
   },

@@ -6,6 +6,7 @@ import {
   registration,
   internalServerError,
   apiUrl,
+  authToken
 } from "../config/constants.js";
 import { ntfy } from "../services/alerts.js";
 import { writeToSheet } from "../services/gSheet.js";
@@ -83,7 +84,7 @@ router.post("/payment/status", authMiddleware, async (req, res) => {
   console.log({ endpoint });
   console.log({ authToken });
 
-  
+
   try {
     const response = await fetch(endpoint, {
       method: "GET",

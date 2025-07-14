@@ -1,26 +1,19 @@
 import path from "path";
 import cors from "cors";
-import Cabin from "cabin";
 import bodyParser from "body-parser";
 import express, { json } from "express";
-import Signale from "signale/signale.js";
 import responseTime from "response-time";
 import requestId from "express-request-id";
 import router from "../src/routes/index.js";
 import requestReceived from "request-received";
 import { bree } from "../src/services/jobs/index.js";
+import { cabin } from "../src/services/jobs/index.js";
 import { __dirname } from "../src/config/constants.js";
 import { connectDB } from "../src/services/db/index.js";
 import { adminjs, adminRouter } from "../src/services/admin/index.js";
 
-const port = process.env.PORT || 4000;
 
-// initialize cabin
-const cabin = new Cabin({
-  axe: {
-    logger: new Signale(),
-  },
-});
+const port = process.env.PORT || 4000;
 
 const start = async () => {
   const app = express();
@@ -49,6 +42,7 @@ const start = async () => {
     console.log(`Server is running on port ${port}`);
     console.log(`AdminJS started on ${port}${adminjs.options.rootPath}`);
   });
+
   await bree.start();
 
   process.on("SIGTERM", () => {

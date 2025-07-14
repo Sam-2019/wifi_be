@@ -24,10 +24,12 @@ const server_url = process.env.SERVER_URL;
 const hostUrl = process.env.TRANSACTION_STATUS_CHECK_URL;
 
 const dbUri = process.env.DB_URL;
+const bearer = process.env.BEARER;
 const dbName = process.env.DB_NAME;
-const gsUri = process.env.GOOGLE_SCRIPTS;
 const ntfyUri = process.env.NTFY_URL;
+const gsUri = process.env.GOOGLE_SCRIPTS;
 const ntfyTopic = process.env.NTFY_TOPIC;
+const baseURL = process.env.BASE_PROD_URL;
 const ntfyAuthorization = process.env.NTFY_AUTHORIZATION;
 
 const secret = process.env.SESSION_SECRET;
@@ -96,8 +98,12 @@ export {
   secret,
   crypto,
   hubtel,
+  bearer,
   success,
+  ntfyUri,
+  baseURL,
   paystack,
+  ntfyTopic,
   __dirname,
   assetPath,
   forbidden,
@@ -120,8 +126,6 @@ export {
   adminCredentials,
   mikrotikCredentials,
   ntfyAuthorization,
-  ntfyUri,
-  ntfyTopic,
   internalServerError,
   defaultMikrotikServer
 };

@@ -5,6 +5,7 @@ import {
   success,
   registration,
   internalServerError,
+  apiUrl,
 } from "../config/constants.js";
 import { ntfy } from "../services/alerts.js";
 import { writeToSheet } from "../services/gSheet.js";

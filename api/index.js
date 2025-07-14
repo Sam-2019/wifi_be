@@ -21,7 +21,6 @@ const start = async () => {
       methods: ["GET", "POST"],
     }),
   );
-
   await connectDB();
 
   ping();

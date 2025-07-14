@@ -1,7 +1,7 @@
 import "dotenv/config";
 import { authToken, hubtel, apiUrl } from "./constants.js";
 
-export const fetchOption = {
+const fetchOption = {
   method: "GET",
   headers: {
     Authorization: `Bearer ${authToken}`,
@@ -12,15 +12,21 @@ export const fetchOption = {
 export const fetchRequest = async (results) => {
   const queryParams = {
     clientReference: results.clientReference,
-    transactionId: results.transactionId,
-    externalTransactionId: results.externalTransactionId,
+    transactionId: results.transactionId || null,
+    externalTransactionId: results.externalTransactionId || null,
   };
 
   const queryString = new URLSearchParams(queryParams).toString();
   const endpoint = `${apiUrl}?${queryString}`;
 
   try {
-    const response = await fetch(endpoint, fetchOption);
+    const response = await fetch(endpoint, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+        "Content-Type": "application/json",
+      },
+    });
     return response;
   } catch (error) {
     console.error("Fetch error:", error);

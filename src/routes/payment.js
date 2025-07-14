@@ -76,6 +76,7 @@ router.post("/payment/status", authMiddleware, async (req, res) => {
 
 	try {
 		const response = await fetchRequest(results);
+
 		if (!response.ok) {
 			console.error("Failed to fetch transaction status:", response.statusText);
 			return res

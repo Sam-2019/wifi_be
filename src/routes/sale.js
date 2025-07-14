@@ -56,7 +56,7 @@ router
 
     try {
       await addSale(results);
-      if (results.registrationType === registration) addCustomer(results);
+      if (results.registrationType === registration) { addCustomer(results) }
       await writeToSheet(results, "Sales");
       await ntfy({ route: "/sale", payload: results });
       res.status(200).json({ message: "Sale added" });

@@ -5,8 +5,6 @@ import {
   success,
   registration,
   internalServerError,
-  apiUrl,
-  authToken,
 } from "../config/constants.js";
 import { ntfy } from "../services/alerts.js";
 import { writeToSheet } from "../services/gSheet.js";
@@ -132,8 +130,7 @@ router.post("/payment/sync", authMiddleware, async (req, res) => {
     if (responseData?.data?.status === "Paid") {
       const modData = modifiedSalesRecord(registrationByRef, responseData);
       await addSale(modData);
-      if (registrationByRef.registrationType === registration)
-        addCustomer(registrationByRef);
+      if (registrationByRef.registrationType === registration) { addCustomer(registrationByRef) }
       await writeToSheet(modData, "Sales");
       await ntfy({ route: "/payment/sync", payload: modData });
     }

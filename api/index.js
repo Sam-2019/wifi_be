@@ -2,10 +2,7 @@ import path from "path";
 import cors from "cors";
 import bodyParser from "body-parser";
 import express, { json } from "express";
-import responseTime from "response-time";
-import requestId from "express-request-id";
 import router from "../src/routes/index.js";
-import requestReceived from "request-received";
 import { ping } from "../src/services/pinger.js";
 import { __dirname } from "../src/config/constants.js";
 import { connectDB } from "../src/services/db/index.js";
@@ -25,9 +22,6 @@ const start = async () => {
 
   ping();
   app.use(json());
-  app.use(requestReceived);
-  app.use(responseTime());
-  app.use(requestId());
   app.use(cabin.middleware);
   app.use("/", router);
   app.use(bodyParser.json());

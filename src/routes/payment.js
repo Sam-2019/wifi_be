@@ -75,29 +75,21 @@ router.post("/payment/status", authMiddleware, async (req, res) => {
   ) {
     return res.status(400).send("Payment status received with no data");
   }
-  const queryParams = {
-    clientReference: results.clientReference,
-  };
-
-  const queryString = new URLSearchParams(queryParams).toString();
-  const endpoint = `${apiUrl}?${queryString}`;
-  const fetchOption = {
-    method: "GET",
-    headers: {
-      Authorization: `Bearer ${authToken}`,
-      Accept: "application/json",
-    },
-  };
-
-  await ntfy({ route: "/payment/status", payload: authToken });
-  await ntfy({ route: "/payment/status", payload: queryString });
-  await ntfy({ route: "/payment/status", payload: endpoint });
-  await ntfy({ route: "/payment/status", payload: fetchOption });
-
+  
   try {
-    const response = await fetch(endpoint, fetchOption);
-    await ntfy({ route: "/payment/status", payload: response });
-    res.status(200).json(response);
+    const response = await fetchRequest(results);
+
+    if (!response.ok) {
+      console.error("Failed to fetch transaction status:", response.statusText);
+      return res
+        .status(400)
+        .json({ message: "Failed to fetch transaction status" });
+    }
+
+    const responseData = await response.json();
+    const dataPayload = responseData.data;
+    await ntfy({ route: "/payment/status", payload: dataPayload });
+    res.status(200).json(responseData);
   } catch (error) {
     console.error("Error in /payment/status:", error);
     res.status(500).send(internalServerError);

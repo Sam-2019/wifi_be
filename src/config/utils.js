@@ -4,27 +4,21 @@ import { authToken, hubtel, apiUrl } from "./constants.js";
 const fetchOption = {
   method: "GET",
   headers: {
-    Authorization: `Bearer ${authToken}`,
+    Authorization: `Basic ${authToken}`,
     "Content-Type": "application/json",
   },
 };
 
 export const fetchRequest = async (results) => {
   const queryParams = {
-    clientReference: results.clientReference
+    clientReference: results.clientReference,
   };
 
   const queryString = new URLSearchParams(queryParams).toString();
   const endpoint = `${apiUrl}?${queryString}`;
 
   try {
-    const response = await fetch(endpoint, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${authToken}`,
-        "Content-Type": "application/json",
-      },
-    });
+    const response = await fetch(endpoint, fetchOption);
     return response;
   } catch (error) {
     console.error("Fetch error:", error);

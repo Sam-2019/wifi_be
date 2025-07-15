@@ -21,7 +21,7 @@ const provisionAccount = async () => {
       createUser(results)
         .then(async (response) => {
           await updateProfileCreated(user);
-          await ntfy({ route: "/provisionSuccess", payload: response });
+          await ntfy({ route: "/provisionSuccess", payload: results });
         })
         .catch(async (error) => {
           await ntfy({ route: "/provisionFailed", payload: error });

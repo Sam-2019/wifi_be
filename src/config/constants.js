@@ -44,6 +44,14 @@ const excludeItems = {
   __v: 0,
 };
 
+const excludeItemsRegistrations = {
+  _id: 0,
+  regID: 0,
+  createdAt: 0,
+  updatedAt: 0,
+  __v: 0,
+};
+
 const topup = "Top Up";
 const registration = "Registration";
 
@@ -79,4 +87,5 @@ export {
   componentPath,
   ntfyAuthorization,
   internalServerError,
+  excludeItemsRegistrations
 };

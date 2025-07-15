@@ -1,5 +1,5 @@
 import Registration from "../modelsXschema/registration.js";
-import { excludeItems, registration } from "../../../config/constants.js";
+import { excludeItems, registration, excludeItemsRegistrations } from "../../../config/constants.js";
 
 const getRegistrations = async () => {
   return await Registration.find({}, excludeItems).lean();
@@ -31,7 +31,7 @@ const getRegistrationByReference = async (data) => {
     {
       clientReference: clientReference
     },
-    excludeItems
+    excludeItemsRegistrations
   )
     .sort({ $natural: -1 })
     .lean();

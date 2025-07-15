@@ -5,7 +5,7 @@ import { connectDB } from "../db/index.js";
 import { parentPort } from "node:worker_threads";
 import { createUser } from "../mikrotik/index.js";
 import { getSelectedPlan } from "../../config/constants.js";
-import { getUnprovisionedCustomers } from "../db/repository/customer.js";
+import { getUnprovisionedCustomers, updateProfileCreated } from "../db/repository/customer.js";
 
 const provisionAccount = async () => {
   await connectDB();
@@ -20,7 +20,8 @@ const provisionAccount = async () => {
       };
       createUser(results)
         .then(async (response) => {
-          await ntfy({ route: "/provisionSuccess", payload: results });
+          await updateProfileCreated(user);
+          await ntfy({ route: "/provisionSuccess", payload: response });
         })
         .catch(async (error) => {
           await ntfy({ route: "/provisionFailed", payload: error });

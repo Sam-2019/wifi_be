@@ -46,7 +46,7 @@ export const ntfy = async ({ payload, route }) => {
     blockCourt: payload?.blockCourt,
     roomNumber: payload?.roomNumber,
     clientReference: payload?.clientReference,
-    userName: payload?.credentials?.username,
+    userName: payload?.credentials?.userName,
     registrationType: payload?.registrationType,
   };
 

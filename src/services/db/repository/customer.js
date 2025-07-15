@@ -30,4 +30,9 @@ const getUnprovisionedCustomers = async () => {
         .lean();
 };
 
-export { getCustomers, addCustomer, getCustomer, getUnprovisionedCustomers };
+const updateProfileCreated = async (user) => {
+    const query = { "credentials.userName": user?.credentials?.userName };
+    return await Customer.findOneAndUpdate(query, { profileCreated: true });
+}
+
+export { getCustomers, addCustomer, getCustomer, getUnprovisionedCustomers, updateProfileCreated };

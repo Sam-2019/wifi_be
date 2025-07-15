@@ -73,7 +73,7 @@ router.post("/payment/status", authMiddleware, async (req, res) => {
   ) {
     return res.status(400).send("Payment status received with no data");
   }
-  
+
   try {
     const response = await fetchRequest(results);
 
@@ -116,7 +116,6 @@ router.post("/payment/sync", authMiddleware, async (req, res) => {
     );
     return res.status(404).send("Registration not found");
   }
-
   try {
     const response = await fetchRequest(results);
     if (!response.ok) {

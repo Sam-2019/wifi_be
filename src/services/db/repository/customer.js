@@ -27,12 +27,13 @@ const getCustomer = async (data) => {
 const getUnprovisionedCustomers = async () => {
     return await Customer
         .where('profileCreated').equals(false)
-        .lean();
 };
 
 const updateProfileCreated = async (user) => {
-    const query = { "credentials.userName": user?.credentials?.userName };
-    return await Customer.findOneAndUpdate(query, { profileCreated: true });
+    const query = { "credentials.userName": userName };
+    return await Customer.findOneAndUpdate(query, { profileCreated: true }, {
+        new: true
+    });
 }
 
 export { getCustomers, addCustomer, getCustomer, getUnprovisionedCustomers, updateProfileCreated };

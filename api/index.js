@@ -40,7 +40,7 @@ const start = async () => {
     console.log(`AdminJS started on ${port}${adminjs.options.rootPath}`);
   });
 
-  await bree.start();
+  await bree.start(); 
 
   process.on("SIGTERM", () => {
     console.log("SIGTERM signal received: closing HTTP server");

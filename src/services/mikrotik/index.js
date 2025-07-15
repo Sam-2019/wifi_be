@@ -92,7 +92,7 @@ const enableUser = async (userName) => {
 const createUser = async (userData) => {
   try {
     await api.connect();
-    const user = await api.send([
+    await api.send([
       "/ip/hotspot/user/add",
       `=name=${userData?.credentials?.userName}`,
       `=password=${userData?.credentials?.password}`,
@@ -102,7 +102,7 @@ const createUser = async (userData) => {
       `=comment=${userData?.comment}`,
     ]);
     await api.close();
-    return modifiedUser(user);
+    return;
   } catch (err) {
     throw (err.message)
   }

@@ -38,12 +38,12 @@ const getUsers = async () => {
   }
 };
 
-const getUser = async (username) => {
+const getUser = async (userName) => {
   try {
     await api.connect();
     const user = await api.send([
       "/ip/hotspot/user/print",
-      `?name=${username}`,
+      `?name=${userName}`,
     ]);
     await api.close();
     return modifiedUser(user);
@@ -52,31 +52,29 @@ const getUser = async (username) => {
   }
 };
 
-const disableUser = async (username) => {
+const disableUser = async (userName) => {
   try {
     await api.connect();
     const user = await api.send([
       "/ip/hotspot/user/set",
-      `=.id=${username}`,
+      `=.id=${userName}`,
       "=disabled=true",
     ]);
     await api.close();
-    return modifiedUser(user);
   } catch (err) {
     console.error("❌ Error:", err.message);
   }
 };
 
-const enableUser = async (username) => {
+const enableUser = async (userName) => {
   try {
     await api.connect();
     const user = await api.send([
       "/ip/hotspot/user/set",
-      `=.id=${username}`,
+      `=.id=${userName}`,
       "=disabled=false",
     ]);
     await api.close();
-    return modifiedUser(user);
   } catch (err) {
     console.error("❌ Error:", err.message);
   }

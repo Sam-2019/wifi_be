@@ -26,18 +26,18 @@ mikrotikRouter.get("/mikrotik/users", authMiddleware, async (req, res) => {
   }
 });
 
-// Get a specific user by username
+// Get a specific user by userName
 // Endpoint: GET /api/mikrotik/user
-// Returns the user details for the specified username
+// Returns the user details for the specified userName
 mikrotikRouter.get("/mikrotik/user", authMiddleware, async (req, res) => {
   const results = req.body;
 
-  if (!results || !results.username) {
+  if (!results || !results.userName) {
     return res.status(400).json({ error: "Username is required" });
   }
-  const { username } = results;
+  const { userName } = results;
   try {
-    const user = await getUser(username);
+    const user = await getUser(userName);
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
@@ -57,16 +57,16 @@ mikrotikRouter.post(
   async (req, res) => {
     const results = req.body;
 
-    if (!results || !results.username) {
+    if (!results || !results.userName) {
       return res.status(400).json({ error: "Username is required" });
     }
-    const { username } = results;
+    const { userName } = results;
 
     try {
-      const user = await disableUser(username);
+      await disableUser(userName);
       res
         .status(200)
-        .json({ data: user, message: "User disabled successfully" });
+        .json({ message: "User disabled successfully" });
     } catch (error) {
       console.error("Error disabling user:", error);
       res.status(500).json({ error: "Failed to disable user" });
@@ -82,15 +82,15 @@ mikrotikRouter.post(
   authMiddleware,
   async (req, res) => {
     const results = req.body;
-    if (!results || !results.username) {
+    if (!results || !results.userName) {
       return res.status(400).json({ error: "Username is required" });
     }
-    const { username } = results;
+    const { userName } = results;
     try {
-      const user = await enableUser(username);
+      await enableUser(userName);
       res
         .status(200)
-        .json({ data: user, message: "User enabled successfully" });
+        .json({ message: "User enabled successfully" });
     } catch (error) {
       console.error("Error enabling user:", error);
       res.status(500).json({ error: "Failed to enable user" });
@@ -103,7 +103,7 @@ mikrotikRouter.post(
 // Adds a new user to the Mikrotik hotspot with the provided details
 mikrotikRouter.post("/mikrotik/user/add", authMiddleware, async (req, res) => {
   const results = req.body;
-  if (!results || !results.username || !results.password || !results.profile) {
+  if (!results || !results.userName || !results.password || !results.profile) {
     return res
       .status(400)
       .send({ error: "Name, password and profile are required" });

@@ -6,7 +6,7 @@ import { createUser } from "../mikrotik/index.js";
 import { getSelectedPlan } from "../../config/constants.js";
 import { getUnprovisionedCustomers, updateProfileCreated } from "../db/repository/customer.js";
 
-const provisionAccount = async () => {
+module.exports = async () => {
   await connectDB();
   const customers = await getUnprovisionedCustomers();
 
@@ -31,5 +31,3 @@ const provisionAccount = async () => {
 
   if (parentPort) parentPort.postMessage("done");
 };
-
-provisionAccount();

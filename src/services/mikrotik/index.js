@@ -27,6 +27,15 @@ const modifiedUser = (user) => {
   };
 };
 
+const pingMikrotik = async () => {
+  try {
+    return await api.connect();
+  }
+  catch (err) {
+    throw (err.message)
+  }
+}
+
 const getUsers = async () => {
   try {
     await api.connect();
@@ -34,7 +43,7 @@ const getUsers = async () => {
     await api.close();
     return users;
   } catch (err) {
-    console.error("❌ Error:", err.message);
+    throw (err.message)
   }
 };
 
@@ -48,21 +57,21 @@ const getUser = async (userName) => {
     await api.close();
     return modifiedUser(user);
   } catch (err) {
-    console.error("❌ Error:", err.message);
+    throw (err.message)
   }
 };
 
 const disableUser = async (userName) => {
   try {
     await api.connect();
-    const user = await api.send([
+    await api.send([
       "/ip/hotspot/user/set",
       `=.id=${userName}`,
       "=disabled=true",
     ]);
     await api.close();
   } catch (err) {
-    console.error("❌ Error:", err.message);
+    throw (err.message)
   }
 };
 
@@ -76,7 +85,7 @@ const enableUser = async (userName) => {
     ]);
     await api.close();
   } catch (err) {
-    console.error("❌ Error:", err.message);
+    throw (err.message)
   }
 };
 
@@ -95,8 +104,8 @@ const createUser = async (userData) => {
     await api.close();
     return modifiedUser(user);
   } catch (err) {
-    console.error("❌ Error:", err.message);
+    throw (err.message)
   }
 };
 
-export { getUsers, getUser, disableUser, enableUser, createUser };
+export { pingMikrotik, getUsers, getUser, disableUser, enableUser, createUser };

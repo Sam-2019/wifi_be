@@ -1,4 +1,4 @@
-import { cabin } from "./index.js";
+
 import { connectDB } from "../db/index.js";
 import { findSale } from "../db/repository/sale.js";
 import { bearer, baseURL } from "../../config/constants.js";
@@ -35,7 +35,7 @@ const paymentSync = async () => {
       })
     });
   } else {
-    cabin.info("All sales synced");
+   console.log("All sales synced");
   }
 };
 

@@ -1,4 +1,4 @@
-import { cabin } from "./index.js";
+
 import process from "node:process";
 import { ntfy } from "../alerts/ntfy.js";
 import { connectDB } from "../db/index.js";
@@ -11,14 +11,14 @@ const provisionAccount = async () => {
   await connectDB();
   const customers = await getUnprovisionedCustomers();
   if (customers.length > 0) {
-    customers.forEach((user) => {
+    customers.forEach(async (user) => {
       const profile = getSelectedPlan();
       const results = {
         ...user,
         profile: profile,
         comment: `Automated-${new Date().toISOString()}`,
       };
-      createUser(results)
+      await createUser(results)
         .then(async (response) => {
           await updateProfileCreated(user);
           await ntfy({ route: "/provisionSuccess", payload: results });
@@ -28,7 +28,7 @@ const provisionAccount = async () => {
         });
     });
   } else {
-    cabin.info("All customers provisioned");
+    console.log("All customers provisioned");
   }
 
   if (parentPort) parentPort.postMessage("done");

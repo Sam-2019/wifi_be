@@ -2,23 +2,18 @@ import Axe from "axe";
 import Bree from "bree";
 import path from "path";
 import Cabin from "cabin";
-import mongoose from "mongoose";
 import Graceful from "@ladjs/graceful";
 import Signale from "signale/signale.js";
 
-const logger = new Axe({
-  logger: new Signale(),
-  meta: {
-    show: false,
-  },
-});
-
-const cabin = new Cabin({
-  logger: logger,
-});
-
 const bree = new Bree({
-  logger: cabin,
+  logger: new Cabin({
+    logger: new Axe({
+      logger: new Signale(),
+      meta: {
+        show: false,
+      },
+    })
+  }),
   removeCompleted: true,
   outputWorkerMetadata: true,
   root: path.resolve("./src/services/jobs"),
@@ -31,9 +26,8 @@ const bree = new Bree({
 });
 
 const graceful = new Graceful({
-  mongooses: [mongoose],
   brees: [bree],
 });
 graceful.listen();
 
-export { bree, cabin };
+export { bree };

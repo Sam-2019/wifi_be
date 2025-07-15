@@ -7,7 +7,6 @@ import requestId from "express-request-id";
 import router from "../src/routes/index.js";
 import requestReceived from "request-received";
 import { bree } from "../src/services/jobs/index.js";
-import { cabin } from "../src/services/jobs/index.js";
 import { __dirname } from "../src/config/constants.js";
 import { connectDB } from "../src/services/db/index.js";
 import { adminjs, adminRouter } from "../src/services/admin/index.js";
@@ -29,7 +28,6 @@ const start = async () => {
   app.use(requestReceived);
   app.use(responseTime());
   app.use(requestId());
-  app.use(cabin.middleware);
   app.use("/", router);
   app.use(bodyParser.json());
   app.disable("x-powered-by");
@@ -38,21 +36,21 @@ const start = async () => {
   app.use(express.static(path.join(__dirname, "/public")));
 
   app.listen(port, () => {
-    cabin.info(`Server is running on port ${port}`);
-    cabin.info(`AdminJS started on ${port}${adminjs.options.rootPath}`);
+    console.log(`Server is running on port ${port}`);
+    console.log(`AdminJS started on ${port}${adminjs.options.rootPath}`);
   });
 
   await bree.start();
 
   process.on("SIGTERM", () => {
-    cabin.info("SIGTERM signal received: closing HTTP server");
+    console.log("SIGTERM signal received: closing HTTP server");
     server.close(() => {
-      cabin.info("HTTP server closed");
+      console.log("HTTP server closed");
     });
   });
 
   process.on("uncaughtException", (err) => {
-    cabin.info(err, "uncaught exception detected");
+    console.log(err, "uncaught exception detected");
     server.close(() => {
       process.exit(1);
     });

@@ -6,7 +6,6 @@ import {
 	getPendingRegistrations,
 } from "../services/db/repository/pending_registration.js";
 import { ntfy } from "../services/alerts.js";
-import { writeToSheet } from "../services/gSheet.js";
 import { authMiddleware } from "../config/middleware.js";
 import { internalServerError } from "../config/constants.js";
 
@@ -69,7 +68,6 @@ router
 
 		try {
 			await addPendingRegistration(results);
-			await writeToSheet(results, "Pending Registration");
 			await ntfy({ route: "/pending-registration", payload: results });
 			res.status(200).json({ message: "Pending Registration added" });
 		} catch (error) {

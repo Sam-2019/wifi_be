@@ -30,8 +30,10 @@ router
       return res.status(400).send("Received with no data");
     }
 
+    const clientReference = results.clientReference;
+
     try {
-      const sale = await findSale(results);
+      const sale = await findSale(clientReference);
       if (!sale || sale.length === 0) {
         return res.status(404).json({ message: "No sale found", data: null });
       }

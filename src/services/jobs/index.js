@@ -6,7 +6,7 @@ import { __dirname } from "../../config/constants.js";
 
 async function startBree() {
   const bree = new Bree({
-    root: path.join(__dirname, '/'),
+    root: path.join(__dirname, '/src/services/jobs'),
     removeCompleted: true,
     jobs: [
       {

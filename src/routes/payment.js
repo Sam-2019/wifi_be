@@ -9,11 +9,11 @@ import {
 import { ntfy } from "../services/alerts.js";
 import { writeToSheet } from "../services/gSheet.js";
 import { authMiddleware } from "../config/middleware.js";
-import { addSale } from "../services/db/repository/sale.js";
 import { addCustomer } from "../services/db/repository/customer.js";
-import { fetchRequest, modifiedSalesRecord } from "../config/utils.js";
+import { addCallback } from "../services/db/repository/callback.js";
+import { addSale, findSale } from "../services/db/repository/sale.js";
 import { getRegistrationByReference } from "../services/db/repository/registration.js";
-import { getPendingRegistration } from "../services/db/repository/pending_registration.js";
+import { fetchRequest, modifiedSalesRecord, modifiedSalesRecordII } from "../config/utils.js";
 
 const router = express.Router();
 
@@ -25,6 +25,7 @@ router.post("/payment/callback", async (req, res) => {
     return res.status(400).send("Payment callback received with no data");
   }
 
+  const logCallback = { provider: hubtel, response: results }
   const responseCode = results.ResponseCode;
   const message = results.Message;
 
@@ -37,24 +38,22 @@ router.post("/payment/callback", async (req, res) => {
   const clientReference = responseData.ClientReference;
 
   try {
-    const foundPendingRegistration =
-      await getPendingRegistration(clientReference);
-
-    if (!foundPendingRegistration) {
+    await addCallback(logCallback);
+    const registrationByRef = await getRegistrationByReference(clientReference);
+    if (!registrationByRef) {
+      console.error("Registration not found for client reference:", clientReference);
       return res.status(404).send("Registration not found");
     }
 
-    // const stringifyResponse = JSON.stringify(results);
-    const updatedData = {
-      ...foundPendingRegistration,
-      provider: hubtel.toUpperCase(),
-      providerResponse: results,
-      transactionId: responseData.transactionId,
-      externalTransactionId: responseData.externalTransactionId,
-    };
-    await addSale(updatedData);
-    await writeToSheet(results, "Pending Registration");
-    await ntfy({ route: "/payment/callback", payload: results });
+    const sale = await findSale(clientReference);
+    if (sale) { return res.status(200).json({ message: "Sale exists", data: sale }) }
+
+    const modData = modifiedSalesRecordII(registrationByRef, results);
+
+    await addSale(modData);
+    if (registrationByRef.registrationType === registration) { addCustomer(registrationByRef) }
+    await writeToSheet(modData, "Callback");
+    await ntfy({ route: "/payment/callback", payload: modData });
     res.status(200).json({ message: success });
   } catch (error) {
     console.error("Error processing payment callback:", error);
@@ -106,17 +105,18 @@ router.post("/payment/sync", authMiddleware, async (req, res) => {
     return res.status(400).send("Received with no data");
   }
 
-  const registrationByRef = await getRegistrationByReference(
-    results.clientReference,
-  );
-  if (registrationByRef === null || registrationByRef === undefined) {
-    console.error(
-      "Registration not found for client reference:",
-      results.clientReference,
-    );
-    return res.status(404).send("Registration not found");
-  }
+  const clientReference = results.clientReference;
+
   try {
+    const registrationByRef = await getRegistrationByReference(clientReference);
+    if (registrationByRef === null || registrationByRef === undefined) {
+      console.error("Registration not found for client reference:", clientReference);
+      return res.status(404).send("Registration not found");
+    }
+
+    const sale = await findSale(clientReference);
+    if (getSale) { return res.status(200).json({ message: "Sale exists", data: sale }) }
+
     const response = await fetchRequest(results);
     if (!response.ok) {
       console.error("Failed to fetch transaction status:", response.statusText);

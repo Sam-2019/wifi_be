@@ -3,7 +3,13 @@ import { model, Schema } from "mongoose";
 const dataSchema = new Schema(
     {
         provider: { type: String },
-        response: { type: Object }
+        providerResponse: { type: Object },
+        clientReference: { type: String },
+        responseCode: { type: String },
+        message: { type: String },
+        transactionId: { type: String },
+        externalTransactionId: { type: String },
+        paymentDate: { type: Date }
     },
     {
         timestamps: true,

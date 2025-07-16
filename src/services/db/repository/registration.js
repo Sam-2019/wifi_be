@@ -27,6 +27,7 @@ const getRegistration = async (data) => {
 
 const getRegistrationByReference = async (data) => {
   const clientReference = data;
+  
   return await Registration.findOne(
     {
       clientReference: clientReference

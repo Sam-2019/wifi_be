@@ -11,7 +11,7 @@ import MongoStore from "connect-mongo";
 
 const dbConn = mongoose.connection;
 dbConn.on("connected", () => {
- console.log("Mongoose connected");
+  console.log("Mongoose connected");
 });
 
 const connectDB = async () => {
@@ -21,8 +21,8 @@ const connectDB = async () => {
   });
 };
 
-const disconnectDB = () => {
-  mongoose.connection.close();
+const disconnectDB = async () => {
+  await mongoose.connection.close();
 };
 
 const dbSession = {

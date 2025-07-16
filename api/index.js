@@ -6,9 +6,9 @@ import responseTime from "response-time";
 import requestId from "express-request-id";
 import router from "../src/routes/index.js";
 import requestReceived from "request-received";
-import { bree } from "../src/services/jobs/index.js";
 import { __dirname } from "../src/config/constants.js";
 import { connectDB } from "../src/services/db/index.js";
+import { startBree } from "../src/services/jobs/index.js";
 import { adminjs, adminRouter } from "../src/services/admin/index.js";
 
 const port = process.env.PORT || 4000;
@@ -40,25 +40,13 @@ const start = async () => {
     console.log(`AdminJS started on ${port}${adminjs.options.rootPath}`);
   });
 
-  await bree.start(); 
+  await startBree()
 
   process.on("SIGTERM", () => {
     console.log("SIGTERM signal received: closing HTTP server");
     server.close(() => {
       console.log("HTTP server closed");
     });
-  });
-
-  process.on("uncaughtException", (err) => {
-    console.log(err, "uncaught exception detected");
-    server.close(() => {
-      process.exit(1);
-    });
-
-    setTimeout(() => {
-      process.abort();
-    }, 1000).unref();
-    process.exit(1);
   });
 };
 

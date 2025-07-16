@@ -52,7 +52,7 @@ mikrotikRouter.get("/mikrotik/user", authMiddleware, async (req, res) => {
   try {
     const user = await getUser(userName);
     if (!user) {
-      return res.status(404).json({ error: error || "User not found" });
+      return res.status(404).json({ message: "User not found" });
     }
     res.status(200).json({ data: user, message: "User fetched successfully" });
   } catch (error) {

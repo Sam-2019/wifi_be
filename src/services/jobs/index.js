@@ -1,25 +1,45 @@
 
 import Bree from "bree";
 import path from "path";
-import Cabin from "cabin";
 import Graceful from "@ladjs/graceful";
 
-const bree = new Bree({
-  logger: new Cabin(),
-  removeCompleted: true,
-  outputWorkerMetadata: true,
-  root: path.resolve("./src/services/jobs"),
-  jobs: [
-    {
-      name: "provisionAccount",
+async function startBree() {
+  const bree = new Bree({
+    root: path.join(__dirname, '/'),
+    removeCompleted: true,
+    jobs: [
+      {
+        name: 'provisionAccount',
       timeout: '2 hours'
-    },
-  ],
-});
+      },
+    ],
+    logger: console,
+  });
 
-const graceful = new Graceful({
-  brees: [bree],
-});
-graceful.listen();
+  try {
+    await bree.start();
+    console.log('Bree started successfully. Jobs scheduled.');
+  } catch (error) {
+    console.error('Error starting Bree:', error);
+  }
 
-export { bree };
+  // Optional: Graceful shutdown
+  process.on('SIGINT', async () => {
+    console.log('Stopping Bree...');
+    await bree.stop();
+    if (mongoose.connection.readyState === 1) {
+      await mongoose.disconnect();
+      console.log('Mongoose default connection disconnected through app termination');
+    }
+    process.exit(0);
+  });
+
+  const graceful = new Graceful({
+    brees: [bree],
+  });
+  graceful.listen();
+}
+
+
+
+export { startBree };

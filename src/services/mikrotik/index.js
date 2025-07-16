@@ -12,7 +12,7 @@ const api = new RouterOSClient({
 
 const modifiedUser = (user) => {
   return {
-    id: user[0]?.id,
+    id: user[0]?.id || null,
     name: user[0]?.name,
     server: user[0]?.server,
     profile: user[0]?.profile,
@@ -55,6 +55,8 @@ const getUser = async (userName) => {
       `?name=${userName}`,
     ]);
     await api.close();
+
+    if (user.length === 0) { return null }
     return modifiedUser(user);
   } catch (err) {
     throw (err.message)
@@ -94,15 +96,15 @@ const createUser = async (userData) => {
     await api.connect();
     await api.send([
       "/ip/hotspot/user/add",
-      `=name=${userData?.credentials?.userName}`,
-      `=password=${userData?.credentials?.password}`,
+      `=name=${userData?.name}`,
+      `=password=${userData?.password}`,
       `=email=${userData?.email}`,
       `=profile=${userData?.profile}`,
       `=server=${defaultMikrotikServer}`,
       `=comment=${userData?.comment}`,
     ]);
     await api.close();
-    return;
+    return true
   } catch (err) {
     throw (err.message)
   }

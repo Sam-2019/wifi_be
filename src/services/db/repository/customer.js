@@ -24,9 +24,8 @@ const getCustomer = async (data) => {
     ).lean();
 };
 
-const getUnprovisionedCustomers = async () => {
-    return await Customer
-        .where('profileCreated').equals(false)
+const getUnprovisionedCustomer = async () => {
+    return await Customer.findOne({ profileCreated: false })
 };
 
 const updateProfileCreated = async (user) => {
@@ -36,4 +35,4 @@ const updateProfileCreated = async (user) => {
     });
 }
 
-export { getCustomers, addCustomer, getCustomer, getUnprovisionedCustomers, updateProfileCreated };
+export { getCustomers, addCustomer, getCustomer, getUnprovisionedCustomer, updateProfileCreated };

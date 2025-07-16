@@ -56,6 +56,8 @@ export const ntfy = async ({ payload, route }) => {
         return successAlert(getInfo);
       case "/provisionFailed":
         return failAlert(payload);
+      case "/allProvisioned":
+        return setupAlert("All Provisioned", "All customers provisioned");
       default:
         console.error("Invalid alert type provided.");
         return null;

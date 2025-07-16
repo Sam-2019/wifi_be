@@ -1,33 +1,59 @@
 
 import { ntfy } from "../alerts/ntfy.js";
-import { connectDB } from "../db/index.js";
 import { parentPort } from "node:worker_threads";
-import { createUser } from "../mikrotik/index.js";
+import { createUser, getUser } from "../mikrotik/index.js";
+import { connectDB, disconnectDB } from "../db/index.js";
 import { getSelectedPlan } from "../../config/constants.js";
-import { getUnprovisionedCustomers, updateProfileCreated } from "../db/repository/customer.js";
+import { getUnprovisionedCustomer } from "../db/repository/customer.js";
 
-module.exports = async () => {
-  await connectDB();
-  const customers = await getUnprovisionedCustomers();
+const provisionAccount = async () => {
 
-  if (customers.length === 0) { return };
-  const firstCustomer = customers[0]
-  const profile = getSelectedPlan();
-  const results = {
-    ...firstCustomer,
-    profile: profile,
-    comment: `Automated-${new Date().toISOString()}`,
-  };
+  try {
+    console.log(`[${new Date().toISOString()}] accountProvision job started.`);
+    await connectDB();
+    const allProvisioned = "All customers provisioned";
+    const customer = await getUnprovisionedCustomer();
 
-  createUser(results)
-    .then(async (response) => {
-      const userName = firstCustomer?.credentials?.userName;
-      await updateProfileCreated(userName);
-      await ntfy({ route: "/provisionSuccess", payload: results });
-    })
-    .catch(async (error) => {
-      await ntfy({ route: "/provisionFailed", payload: error });
-    });
+    if (!customer) {
+      await ntfy({ route: "/allProvisioned", payload: allProvisioned });
+      return;
+    }
+
+    const results = {
+      name: customer.credentials.userName,
+      password: customer.credentials.password,
+      email: customer.email,
+      profile: getSelectedPlan(),
+      comment: `Automated-${new Date().toISOString()}`,
+    };
+
+    const customerStatus = await getUser(results.name);
+
+    if (customerStatus && customer.profileCreated === false) {
+      customer.profileCreated = true;
+      await customer.save();
+      const message = `Updated ${customer.fullName} profileCreated: true`;
+      console.log(message);
+      return;
+    }
+
+    await createUser(results);
+    customer.profileCreated = true;
+    await customer.save();
+    const message = `${customer.fullName}'s account provisioned`;
+    await ntfy({ route: "/provisionSuccess", payload: message });
+    console.log(`Updated ${customer.fullName} profileCreated: true`);
+
+  } catch (error) {
+    const message = `provisionAccount failed Error: ${error}`;
+    await ntfy({ route: "/provisionFailed", payload: message });
+    console.error(message);
+  } finally {
+    await disconnectDB()
+    console.log(`[${new Date().toISOString()}] accountProvision job finished.`);
+  }
 
   if (parentPort) parentPort.postMessage("done");
 };
+
+provisionAccount()

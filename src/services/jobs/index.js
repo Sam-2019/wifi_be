@@ -2,6 +2,7 @@
 import Bree from "bree";
 import path from "path";
 import Graceful from "@ladjs/graceful";
+import { __dirname } from "../../config/constants.js";
 
 async function startBree() {
   const bree = new Bree({

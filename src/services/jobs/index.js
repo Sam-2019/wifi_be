@@ -6,12 +6,12 @@ import { __dirname } from "../../config/constants.js";
 
 async function startBree() {
   const bree = new Bree({
-    root: path.join(__dirname, '/src/services/jobs'),
+    root: path.resolve("./src/services/jobs"),
     removeCompleted: true,
     jobs: [
       {
         name: 'provisionAccount',
-      timeout: '2 hours'
+        timeout: '2 hours'
       },
     ],
     logger: console,

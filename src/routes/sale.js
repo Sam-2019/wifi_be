@@ -57,6 +57,9 @@ router
     }
 
     try {
+      const sale = findSale(results.clientReference);
+      if (sale) { return res.status(200).json({ message: "Duplicate", data: sale }) }
+
       await addSale(results);
       if (results.registrationType === registration) { addCustomer(results) }
       await writeToSheet(results, "Sales");

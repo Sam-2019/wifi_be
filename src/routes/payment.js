@@ -46,7 +46,7 @@ router.post("/payment/callback", async (req, res) => {
     }
 
     const sale = await findSale(clientReference);
-    if (sale) { return res.status(200).json({ message: "Sale exists", data: sale }) }
+    if (sale) { return res.status(200).json({ message: "Duplicate", data: sale }) }
 
     const modData = modifiedSalesRecordII(registrationByRef, results);
 
@@ -115,7 +115,7 @@ router.post("/payment/sync", authMiddleware, async (req, res) => {
     }
 
     const sale = await findSale(clientReference);
-    if (sale) { return res.status(200).json({ message: "Sale exists", data: sale }) }
+    if (sale) { return res.status(200).json({ message: "Duplicate", data: sale }) }
 
     const response = await fetchRequest(results);
     if (!response.ok) {

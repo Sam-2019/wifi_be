@@ -19,7 +19,7 @@ const start = async () => {
     cors({
       origin: "*",
       methods: ["GET", "POST"],
-    }),
+    })
   );
   await connectDB();
 
@@ -40,8 +40,6 @@ const start = async () => {
     console.log(`AdminJS started on ${port}${adminjs.options.rootPath}`);
   });
 
-  await startBree()
-
   process.on("SIGTERM", () => {
     console.log("SIGTERM signal received: closing HTTP server");
     server.close(() => {
@@ -51,3 +49,5 @@ const start = async () => {
 };
 
 start();
+
+await startBree();

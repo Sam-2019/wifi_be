@@ -48,6 +48,5 @@ const start = async () => {
   });
 };
 
-start();
-
+await start();
 await startBree();

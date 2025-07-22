@@ -1,4 +1,3 @@
-
 import Bree from "bree";
 import path from "path";
 import Graceful from "@ladjs/graceful";
@@ -10,8 +9,9 @@ async function startBree() {
     removeCompleted: true,
     jobs: [
       {
-        name: 'provisionAccount',
-        timeout: '2 hours'
+        name: "provisionAccount",
+        timeout: "1h",
+        interval: "2h",
       },
     ],
     logger: console,
@@ -19,18 +19,20 @@ async function startBree() {
 
   try {
     await bree.start();
-    console.log('Bree started successfully. Jobs scheduled.');
+    console.log("Bree started successfully. Jobs scheduled.");
   } catch (error) {
-    console.error('Error starting Bree:', error);
+    console.error("Error starting Bree:", error);
   }
 
   // Optional: Graceful shutdown
-  process.on('SIGINT', async () => {
-    console.log('Stopping Bree...');
+  process.on("SIGINT", async () => {
+    console.log("Stopping Bree...");
     await bree.stop();
     if (mongoose.connection.readyState === 1) {
       await mongoose.disconnect();
-      console.log('Mongoose default connection disconnected through app termination');
+      console.log(
+        "Mongoose default connection disconnected through app termination"
+      );
     }
     process.exit(0);
   });
@@ -40,7 +42,5 @@ async function startBree() {
   });
   graceful.listen();
 }
-
-
 
 export { startBree };

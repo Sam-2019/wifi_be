@@ -12,7 +12,7 @@ const api = new RouterOSClient({
 
 const modifiedUser = (user) => {
   return {
-    id: user[0]?.id || null,
+    id: user[0]?.[".id"] || null,
     name: user[0]?.name,
     server: user[0]?.server,
     profile: user[0]?.profile,
@@ -93,6 +93,20 @@ const enableUser = async (userName) => {
   }
 };
 
+const resetCounter = async (userName) => {
+  try {
+    await api.connect();
+    await api.send([
+      "/ip/hotspot/user/reset-counters",
+      `?name=${userName}`,
+    ]);
+    await api.close();
+    return true;
+  } catch (err) {
+    throw err.message;
+  }
+};
+
 const createUser = async (userData) => {
   try {
     await api.connect();
@@ -112,4 +126,14 @@ const createUser = async (userData) => {
   }
 };
 
-export { pingMikrotik, getUsers, getUser, disableUser, enableUser, createUser };
+export {
+  getUser,
+  getUsers,
+  createUser,
+  enableUser,
+  disableUser,
+  pingMikrotik,
+  resetCounter,
+  modifiedUser,
+  api as mikrotikAPI,
+};

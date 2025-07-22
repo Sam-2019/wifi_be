@@ -16,7 +16,8 @@ const modifiedUser = (user) => {
     name: user[0]?.name,
     server: user[0]?.server,
     profile: user[0]?.profile,
-    uptime: user[0]?.uptime,
+    limitUptime: user[0]?.["limit-uptime"],
+    uptime: user[0]?.["uptime"],
     bytesIn: user[0]?.["bytes-in"],
     bytesOut: user[0]?.["bytes-out"],
     packetsIn: user[0]?.["packets-in"],
@@ -30,11 +31,10 @@ const modifiedUser = (user) => {
 const pingMikrotik = async () => {
   try {
     return await api.connect();
+  } catch (err) {
+    throw err.message;
   }
-  catch (err) {
-    throw (err.message)
-  }
-}
+};
 
 const getUsers = async () => {
   try {
@@ -43,7 +43,7 @@ const getUsers = async () => {
     await api.close();
     return users;
   } catch (err) {
-    throw (err.message)
+    throw err.message;
   }
 };
 
@@ -56,10 +56,12 @@ const getUser = async (userName) => {
     ]);
     await api.close();
 
-    if (user.length === 0) { return null }
+    if (user.length === 0) {
+      return null;
+    }
     return modifiedUser(user);
   } catch (err) {
-    throw (err.message)
+    throw err.message;
   }
 };
 
@@ -73,7 +75,7 @@ const disableUser = async (userName) => {
     ]);
     await api.close();
   } catch (err) {
-    throw (err.message)
+    throw err.message;
   }
 };
 
@@ -87,7 +89,7 @@ const enableUser = async (userName) => {
     ]);
     await api.close();
   } catch (err) {
-    throw (err.message)
+    throw err.message;
   }
 };
 
@@ -104,9 +106,9 @@ const createUser = async (userData) => {
       `=comment=${userData?.comment}`,
     ]);
     await api.close();
-    return true
+    return true;
   } catch (err) {
-    throw (err.message)
+    throw err.message;
   }
 };
 

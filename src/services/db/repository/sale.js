@@ -16,7 +16,7 @@ const findSale = async (data) => {
     {
       clientReference: clientReference,
     },
-    excludeItems,
+    excludeItems
   ).lean();
 };
 
@@ -34,4 +34,16 @@ const yesterdaySales = async () => {
     .lean();
 };
 
-export { getSales, addSale, findSale, yesterdaySales };
+const todaySales = async () => {
+  const today = new Date();
+  const startOfDay = new Date(today.setHours(0, 0, 0, 0));
+  const endOfDay = new Date(today.setHours(23, 59, 59, 999));
+
+  return await Sale.where("createdAt")
+    .gte(startOfDay)
+    .lte(endOfDay)
+    .where("registrationType", /^Top Up/i)
+    .lean();
+};
+
+export { getSales, addSale, findSale, yesterdaySales, todaySales };

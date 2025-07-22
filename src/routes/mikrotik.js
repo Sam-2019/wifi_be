@@ -5,7 +5,8 @@ import {
   disableUser,
   enableUser,
   createUser,
-  pingMikrotik
+  pingMikrotik,
+  resetCounter,
 } from "../services/mikrotik/index.js";
 import { authMiddleware } from "../config/middleware.js";
 
@@ -15,15 +16,12 @@ const mikrotikRouter = express.Router();
 mikrotikRouter.get("/mikrotik", authMiddleware, async (req, res) => {
   try {
     await pingMikrotik();
-    res
-      .status(200)
-      .json({ message: "ping successful" });
+    res.status(200).json({ message: "ping successful" });
   } catch (error) {
     console.error("ping failed:", error);
     res.status(500).json({ message: error });
   }
 });
-
 
 // Get all users
 // Endpoint: GET /api/mikrotik/users
@@ -76,13 +74,11 @@ mikrotikRouter.post(
 
     try {
       await disableUser(userName);
-      res
-        .status(200)
-        .json({ message: "User disabled successfully" });
+      res.status(200).json({ message: "User disabled successfully" });
     } catch (error) {
       res.status(500).json({ error: error || "Failed to disable user" });
     }
-  },
+  }
 );
 
 // Enable a user
@@ -99,13 +95,11 @@ mikrotikRouter.post(
     const { userName } = results;
     try {
       await enableUser(userName);
-      res
-        .status(200)
-        .json({ message: "User enabled successfully" });
+      res.status(200).json({ message: "User enabled successfully" });
     } catch (error) {
       res.status(500).json({ error: error || "Failed to enable user" });
     }
-  },
+  }
 );
 
 // Add a new user
@@ -126,5 +120,24 @@ mikrotikRouter.post("/mikrotik/user/add", authMiddleware, async (req, res) => {
     res.status(500).json({ error: error || "Failed to add user" });
   }
 });
+
+mikrotikRouter.post(
+  "/mikrotik/resetCounter",
+  authMiddleware,
+  async (req, res) => {
+    const results = req.body;
+    if (!results || !results.userName) {
+      return res.status(400).json({ error: "Username is required" });
+    }
+
+    const { userName } = results;
+    try {
+      await resetCounter(userName);
+      res.status(200).json({ message: "Counter reset successful" });
+    } catch (error) {
+      res.status(500).json({ error: error });
+    }
+  }
+);
 
 export default mikrotikRouter;

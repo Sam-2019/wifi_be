@@ -9,7 +9,7 @@ async function startBree() {
     root: path.resolve("./src/services/jobs"),
     jobs: [
       {
-        closeWorkerAfterMs: "8",
+        closeWorkerAfterMs: 10,
         name: "provisionAccount",
         timeout: false,
         interval: "2m",

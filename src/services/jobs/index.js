@@ -12,7 +12,7 @@ async function startBree() {
         closeWorkerAfterMs: 30000,
         name: "provisionAccount",
         timeout: false,
-        interval: "2m",
+        interval: "1h",
       },
     ],
     logger: console,

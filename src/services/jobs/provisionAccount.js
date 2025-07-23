@@ -1,4 +1,5 @@
 import { ntfy } from "../alerts/ntfy.js";
+import process from "node:process";
 import { parentPort } from "node:worker_threads";
 import { connectDB, disconnectDB } from "../db/index.js";
 import { createUser, getUser } from "../mikrotik/index.js";

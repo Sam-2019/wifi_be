@@ -23,6 +23,7 @@ const connectDB = async () => {
 
 const disconnectDB = async () => {
   await mongoose.connection.close();
+  console.log("Mongoose disconnected");
 };
 
 const dbSession = {

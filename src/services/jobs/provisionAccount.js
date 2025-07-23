@@ -1,4 +1,3 @@
-
 import { ntfy } from "../alerts/ntfy.js";
 import { parentPort } from "node:worker_threads";
 import { connectDB, disconnectDB } from "../db/index.js";
@@ -7,7 +6,6 @@ import { getSelectedPlan } from "../../config/constants.js";
 import { getUnprovisionedCustomer } from "../db/repository/customer.js";
 
 const provisionAccount = async () => {
-
   try {
     console.log(`[${new Date().toISOString()}] accountProvision job started.`);
     await connectDB();
@@ -43,17 +41,17 @@ const provisionAccount = async () => {
     const message = `${customer.fullName}'s account provisioned`;
     await ntfy({ route: "/provisionSuccess", payload: message });
     console.log(`Created ${customer.fullName} profileCreated: true`);
-
   } catch (error) {
     const message = `provisionAccount failed Error: ${error}`;
     await ntfy({ route: "/provisionFailed", payload: message });
     console.error(message);
   } finally {
-    await disconnectDB()
+    await disconnectDB();
     console.log(`[${new Date().toISOString()}] accountProvision job finished.`);
   }
 
   if (parentPort) parentPort.postMessage("done");
+  else process.exit(0);
 };
 
-await provisionAccount()
+await provisionAccount();

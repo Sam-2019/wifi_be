@@ -9,7 +9,7 @@ async function startBree() {
     jobs: [
       {
         name: "provisionAccount",
-        timeout: "30m",
+        timeout: false,
         interval: "15m",
       },
     ],

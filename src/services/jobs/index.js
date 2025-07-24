@@ -1,5 +1,6 @@
 import Bree from "bree";
 import path from "path";
+import mongoose from "mongoose";
 import Graceful from "@ladjs/graceful";
 import { __dirname } from "../../config/constants.js";
 
@@ -9,10 +10,9 @@ async function startBree() {
     root: path.resolve("./src/services/jobs"),
     jobs: [
       {
-        closeWorkerAfterMs: 30000,
         name: "provisionAccount",
         timeout: false,
-        interval: "1h",
+        interval: "2h",
       },
     ],
     logger: console,
@@ -40,6 +40,7 @@ async function startBree() {
 
   const graceful = new Graceful({
     brees: [bree],
+    mongooses: [mongoose],
   });
   graceful.listen();
 }

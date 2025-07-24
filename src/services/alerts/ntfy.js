@@ -18,14 +18,6 @@ const setupAlert = (title, message) => {
   };
 };
 
-const successAlert = (payload) => {
-  return setupAlert("Account Creation", payload);
-};
-
-const failAlert = (payload) => {
-  return setupAlert("Account Creation Failed", payload);
-};
-
 export const ntfy = async ({ payload, route }) => {
   if (!ntfyUri || !ntfyTopic || !ntfyAuthorization) {
     console.error("Ntfy configuration is missing.");
@@ -41,21 +33,12 @@ export const ntfy = async ({ payload, route }) => {
     return;
   }
 
-  const getInfo = {
-    name: payload?.fullName,
-    blockCourt: payload?.blockCourt,
-    roomNumber: payload?.roomNumber,
-    clientReference: payload?.clientReference,
-    userName: payload?.credentials?.userName,
-    registrationType: payload?.registrationType,
-  };
-
   const getPayload = (route) => {
     switch (route) {
-      case "/provisionSuccess":
-        return successAlert(getInfo);
       case "/provisionFailed":
-        return failAlert(payload);
+        return setupAlert("Account Creation Failed", payload);
+      case "/provisionSuccess":
+        return setupAlert("Account Creation", payload);
       case "/allProvisioned":
         return setupAlert("All Provisioned", "All customers provisioned");
       default:

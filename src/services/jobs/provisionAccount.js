@@ -1,6 +1,5 @@
-import { ntfy } from "../alerts/ntfy.js";
 import process from "node:process";
-import { parentPort } from "node:worker_threads";
+import { ntfy } from "../alerts/ntfy.js";
 import { connectDB, disconnectDB } from "../db/index.js";
 import { createUser, getUser } from "../mikrotik/index.js";
 import { getSelectedPlan } from "../../config/constants.js";
@@ -39,9 +38,8 @@ const provisionAccount = async () => {
     await createUser(results);
     customer.profileCreated = true;
     await customer.save();
-    const message = `${customer.fullName}'s account provisioned`;
+    const message = `${customer.fullName} - ${results.name} provisioned`;
     await ntfy({ route: "/provisionSuccess", payload: message });
-    console.log(`Created ${customer.fullName} profileCreated: true`);
   } catch (error) {
     const message = `provisionAccount failed Error: ${error}`;
     await ntfy({ route: "/provisionFailed", payload: message });
@@ -49,10 +47,8 @@ const provisionAccount = async () => {
   } finally {
     await disconnectDB();
     console.log(`[${new Date().toISOString()}] accountProvision job finished.`);
+    process.exit(0);
   }
-
-  if (parentPort) parentPort.postMessage("done");
-  else process.exit(0);
 };
 
 await provisionAccount();

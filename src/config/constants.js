@@ -82,8 +82,23 @@ const getSelectedPlan = () => {
   //   return "Monthly"
   // }
 
-  return "Daily"
-}
+  return "Daily";
+};
+
+const dataPlans = {
+  DAILY: {
+    name: "Daily",
+    uptime: "1d",
+  },
+  WEEKLY: {
+    name: "Weekly",
+    uptime: "7d",
+  },
+  MONTHLY: {
+    name: "Monthly",
+    uptime: "30d",
+  },
+};
 
 export {
   ttl,
@@ -103,6 +118,7 @@ export {
   ntfyUri,
   baseURL,
   paystack,
+  dataPlans,
   ntfyTopic,
   __dirname,
   assetPath,
@@ -127,5 +143,5 @@ export {
   mikrotikCredentials,
   ntfyAuthorization,
   internalServerError,
-  defaultMikrotikServer
+  defaultMikrotikServer,
 };

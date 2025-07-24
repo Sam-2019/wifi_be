@@ -9,7 +9,7 @@ const provisionAccount = async () => {
   try {
     console.log(`[${new Date().toISOString()}] accountProvision job started.`);
     await connectDB();
-    const allProvisioned = "All customers provisioned";
+    const allProvisioned = "☑️ All customers provisioned";
     const customer = await getUnprovisionedCustomer();
 
     if (!customer) {
@@ -38,10 +38,10 @@ const provisionAccount = async () => {
     await createUser(results);
     customer.profileCreated = true;
     await customer.save();
-    const message = `${customer.fullName} - ${results.name} provisioned`;
+    const message = `✅ ${customer.fullName} - ${results.name} provisioned`;
     await ntfy({ route: "/provisionSuccess", payload: message });
   } catch (error) {
-    const message = `provisionAccount failed Error: ${error}`;
+    const message = `❌ provisionAccount: ${error}`;
     await ntfy({ route: "/provisionFailed", payload: message });
     console.error(message);
   } finally {

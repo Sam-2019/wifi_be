@@ -35,6 +35,8 @@ export const ntfy = async ({ payload, route }) => {
 
   const getPayload = (route) => {
     switch (route) {
+      case "/noSale":
+        return setupAlert("Account Creation Failed", payload);
       case "/provisionFailed":
         return setupAlert("Account Creation Failed", payload);
       case "/provisionSuccess":

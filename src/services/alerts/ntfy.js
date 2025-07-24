@@ -35,14 +35,14 @@ export const ntfy = async ({ payload, route }) => {
 
   const getPayload = (route) => {
     switch (route) {
-      case "/noSale":
-        return setupAlert("Account Creation Failed", payload);
+      case "/noTopup":
+        return setupAlert("Reset Counter:", payload);
       case "/provisionFailed":
-        return setupAlert("Account Creation Failed", payload);
+        return setupAlert("Account Creation:", payload);
       case "/provisionSuccess":
-        return setupAlert("Account Creation", payload);
+        return setupAlert("Account Creation:", payload);
       case "/allProvisioned":
-        return setupAlert("All Provisioned", "All customers provisioned");
+        return setupAlert("Account Creation:", payload);
       default:
         console.error("Invalid alert type provided.");
         return null;

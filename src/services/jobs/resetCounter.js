@@ -1,22 +1,19 @@
-import { ntfy } from "../alerts/ntfy.js";
 import { resetCounter } from "../mikrotik/index.js";
-import { todaySales } from "../db/repository/sale.js";
 import { dataPlans } from "../../config/constants.js";
 import { connectDB, disconnectDB } from "../db/index.js";
+import { getActiveTopup } from "../db/repository/topup.js";
 
 const resetCounter = async () => {
   try {
     console.log(`[${new Date().toISOString()}] resetCounter job started.`);
     await connectDB();
-    const noSale = "No Sale";
-    const sale = await todaySales();
+    const customer = await getActiveTopup();
 
-    if (!sale) {
-      await ntfy({ route: "/noSale", payload: noSale });
+    if (!customer) {
+      const message = "☑️ No Topup";
+      console.log(message);
       return;
     }
-
-    const customer = sale[0];
     const userName = customer?.credentials.userName;
     const userInfo = await getUser(userName);
 
@@ -35,8 +32,6 @@ const resetCounter = async () => {
       console.log(message);
       return;
     }
-
-    
   } catch (error) {
     const message = `❌ Error: ${error}`;
     console.error(message);

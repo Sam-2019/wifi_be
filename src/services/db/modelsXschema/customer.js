@@ -25,10 +25,11 @@ const dataSchema = new Schema(
     },
     cardPrinted: { type: Boolean, default: false },
     profileCreated: { type: Boolean, default: false },
+    mktID: { type: String },
   },
   {
     timestamps: true,
-  },
+  }
 );
 
 const Customer = model("Customer", dataSchema);

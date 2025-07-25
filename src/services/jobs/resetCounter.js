@@ -1,3 +1,4 @@
+import { ntfy } from "../alerts/ntfy.js";
 import { resetCounter } from "../mikrotik/index.js";
 import { dataPlans } from "../../config/constants.js";
 import { connectDB, disconnectDB } from "../db/index.js";
@@ -7,33 +8,31 @@ const resetCounter = async () => {
   try {
     console.log(`[${new Date().toISOString()}] resetCounter job started.`);
     await connectDB();
+
     const customer = await getActiveTopup();
+    if (!customer) return;
 
-    if (!customer) {
-      const message = "☑️ No Topup";
-      console.log(message);
-      return;
-    }
     const userName = customer?.credentials?.userName;
-    const userInfo = await getUser(userName);
+    const user = await getUser(userName);
 
-    if (!userInfo) {
-      const message = `☑️ User not found`;
-      console.log(message);
-      return;
-    }
+    if (!user) return;
 
-    const userID = userInfo?.id;
-    const userUptime = userInfo?.uptime;
+    const userInfo = {
+      id: user?.id,
+      uptime: user?.uptime,
+      userName: userName,
+      fullName: customer?.fullName,
+    };
 
-    if (userUptime === dataPlans.DAILY.uptime) {
-      await resetCounter(userID);
-      const message = `✅ Reset Counter: ${customer?.fullName} - ${userData?.name}`;
-      console.log(message);
-      return;
-    }
+    if (userInfo?.uptime !== dataPlans.DAILY.uptime) return;
+
+    await resetCounter(userInfo.id);
+    const message = `👍🏾 Reset Counter: ${userInfo.fullName} - ${userInfo.userName}`;
+    await ntfy({ payload: message });
+
   } catch (error) {
-    const message = `❌ Error: ${error}`;
+    const message = `🤬 Reset Counter: ${error}`;
+    await ntfy({ payload: message });
     console.error(message);
   } finally {
     await disconnectDB();

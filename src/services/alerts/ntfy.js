@@ -14,17 +14,13 @@ const setupAlert = (title, message) => {
     title: title,
     // "tags": tags,
     priority: priority,
-    message: JSON.stringify(message),
+    message: message,
   };
 };
 
-export const ntfy = async ({ payload, route }) => {
+export const ntfy = async ({ payload }) => {
   if (!ntfyUri || !ntfyTopic || !ntfyAuthorization) {
     console.error("Ntfy configuration is missing.");
-    return;
-  }
-  if (!route) {
-    console.error("Route is required for ntfy notification.");
     return;
   }
 
@@ -33,27 +29,18 @@ export const ntfy = async ({ payload, route }) => {
     return;
   }
 
-  const getPayload = (route) => {
-    switch (route) {
-      case "/noTopup":
-        return setupAlert("Reset Counter:", payload);
-      case "/provisionFailed":
-        return setupAlert("Account Creation:", payload);
-      case "/provisionSuccess":
-        return setupAlert("Account Creation:", payload);
-      case "/allProvisioned":
-        return setupAlert("Account Creation:", payload);
-      default:
-        console.error("Invalid alert type provided.");
-        return null;
-    }
-  };
+  const beforeColon = /^(.*?)(?=:)/gm;
+  const afterColon = /(?<=: )(.*)/gm;
+
+  const title = payload.match(beforeColon);
+  const message = payload.match(afterColon);
+  const alert = setupAlert(title[0], message[0]);
 
   await fetch(ntfyUri, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${ntfyAuthorization}`,
     },
-    body: JSON.stringify(getPayload(route)),
+    body: JSON.stringify(alert),
   });
 };

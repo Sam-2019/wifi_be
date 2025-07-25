@@ -9,13 +9,9 @@ const provisionAccount = async () => {
   try {
     console.log(`[${new Date().toISOString()}] accountProvision job started.`);
     await connectDB();
-    const allProvisioned = "☑️ All customers provisioned";
-    const customer = await getUnprovisionedCustomer();
 
-    if (!customer) {
-      await ntfy({ route: "/allProvisioned", payload: allProvisioned });
-      return;
-    }
+    const customer = await getUnprovisionedCustomer();
+    if (!customer) return;
 
     const results = {
       name: customer?.credentials?.userName,
@@ -30,19 +26,16 @@ const provisionAccount = async () => {
     if (customerStatus && customer?.profileCreated === false) {
       customer.profileCreated = true;
       await customer.save();
-      const message = `Updated ${customer?.fullName} profileCreated: true`;
-      console.log(message);
       return;
     }
 
     await createUser(results);
     customer.profileCreated = true;
     await customer.save();
-    const message = `✅ ${customer?.fullName} - ${results?.name} provisioned`;
-    await ntfy({ route: "/provisionSuccess", payload: message });
+    await ntfy({ payload: `👍🏾 Account Provision: ${customer?.fullName} - ${results?.name}` });
   } catch (error) {
-    const message = `❌ provisionAccount: ${error}`;
-    await ntfy({ route: "/provisionFailed", payload: message });
+    const message = `🤬 Account Provision: ${error}`;
+    await ntfy({ payload: message });
     console.error(message);
   } finally {
     await disconnectDB();

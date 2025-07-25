@@ -1,4 +1,3 @@
-
 import { connectDB } from "../db/index.js";
 import { findSale } from "../db/repository/sale.js";
 import { bearer, baseURL } from "../../config/constants.js";
@@ -14,7 +13,7 @@ const paymentSync = async () => {
         clientReference: clientReference,
       };
 
-      const sale = await findSale(clientReference)
+      const sale = await findSale(clientReference);
       if (sale.clientReference) return;
 
       await fetch(`${baseURL}/api/payment/sync`, {
@@ -25,17 +24,19 @@ const paymentSync = async () => {
           Authorization: `Bearer ${bearer}`,
           "Content-Type": "application/json",
         },
-      }).then(async (response) => {
-        if (response.status === 200) {
-          return await ntfy({ route: "/paymentSync", payload: response });
-        }
-        await ntfy({ route: "/paymentSync", payload: "Registration not found" });
-      }).catch(async (err) => {
-        await ntfy({ route: "/paymentSync", payload: err });
       })
+        .then(async (response) => {
+          if (response.status === 200) {
+            return await ntfy({ payload: `👍🏾 Payment Sync: ${response}` });
+          }
+          await ntfy({ payload: `🤷🏾 Payment Sync: Registration not found` });
+        })
+        .catch(async (err) => {
+          await ntfy({ payload: `🤬 Payment Sync: ${err}` });
+        });
     });
   } else {
-   console.log("All sales synced");
+    console.log("All sales synced");
   }
 };
 

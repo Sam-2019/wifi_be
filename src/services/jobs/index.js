@@ -12,7 +12,7 @@ async function startBree() {
       {
         name: "provisionAccount",
         timeout: false,
-        interval: "15m",
+        interval: "30m",
       },
     ],
     logger: console,

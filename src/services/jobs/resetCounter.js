@@ -1,8 +1,8 @@
 import { ntfy } from "../alerts/ntfy.js";
-import { resetCounter } from "../mikrotik/index.js";
 import { dataPlans } from "../../config/constants.js";
 import { connectDB, disconnectDB } from "../db/index.js";
 import { getActiveTopup } from "../db/repository/topup.js";
+import { getUser, resetCounter } from "../mikrotik/index.js";
 
 const resetCounter = async () => {
   try {

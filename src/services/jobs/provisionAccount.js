@@ -2,7 +2,7 @@ import process from "node:process";
 import { ntfy } from "../alerts/ntfy.js";
 import { connectDB, disconnectDB } from "../db/index.js";
 import { createUser, getUser } from "../mikrotik/index.js";
-import { getSelectedPlan } from "../../config/constants.js";
+import { dataPlans, getSelectedPlan } from "../../config/constants.js";
 import { getUnprovisionedCustomer } from "../db/repository/customer.js";
 
 const provisionAccount = async () => {
@@ -14,14 +14,14 @@ const provisionAccount = async () => {
     if (!customer) return;
 
     const results = {
-      name: customer?.credentials?.userName,
+      userName: customer?.credentials?.userName,
       password: customer?.credentials?.password,
       email: customer?.email,
       profile: getSelectedPlan(),
-      comment: `Automated-${new Date().toISOString()}`,
+      limitUptime: dataPlans.DAILY.uptimeSub,
     };
 
-    const customerStatus = await getUser(results?.name);
+    const customerStatus = await getUser(results?.userName);
 
     if (customerStatus && customer?.profileCreated === false) {
       customer.profileCreated = true;
@@ -32,7 +32,9 @@ const provisionAccount = async () => {
     await createUser(results);
     customer.profileCreated = true;
     await customer.save();
-    await ntfy({ payload: `👍🏾 Account Provision: ${customer?.fullName} - ${results?.name}` });
+    await ntfy({
+      payload: `👍🏾 Account Provision: ${customer?.fullName} - ${results?.userName}`,
+    });
   } catch (error) {
     const message = `🤬 Account Provision: ${error}`;
     await ntfy({ payload: message });

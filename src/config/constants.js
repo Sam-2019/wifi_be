@@ -89,14 +89,17 @@ const dataPlans = {
   DAILY: {
     name: "Daily",
     uptime: "1d",
+    uptimeSub: "1d 00:00:00",
   },
   WEEKLY: {
     name: "Weekly",
     uptime: "7d",
+    uptimeSub: "7d 00:00:00",
   },
   MONTHLY: {
     name: "Monthly",
     uptime: "30d",
+    uptimeSub: "30d 00:00:00",
   },
 };
 

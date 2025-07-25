@@ -93,13 +93,10 @@ const enableUser = async (userName) => {
   }
 };
 
-const resetCounter = async (userName) => {
+const resetCounter = async (userID) => {
   try {
     await api.connect();
-    await api.send([
-      "/ip/hotspot/user/reset-counters",
-      `?name=${userName}`,
-    ]);
+    await api.send(["/ip/hotspot/user/reset-counters", `=.id=${userID}`]);
     await api.close();
     return true;
   } catch (err) {
@@ -108,16 +105,19 @@ const resetCounter = async (userName) => {
 };
 
 const createUser = async (userData) => {
+  const comment = `Automated-${new Date().toISOString()}`;
+
   try {
     await api.connect();
     await api.send([
       "/ip/hotspot/user/add",
-      `=name=${userData?.name}`,
-      `=password=${userData?.password}`,
+      `=name=${userData?.userName}`,
       `=email=${userData?.email}`,
       `=profile=${userData?.profile}`,
+      `=password=${userData?.password}`,
+      `=limit-uptime=${userData?.limitUptime}`,
+      `=comment=${comment}`,
       `=server=${defaultMikrotikServer}`,
-      `=comment=${userData?.comment}`,
     ]);
     await api.close();
     return true;

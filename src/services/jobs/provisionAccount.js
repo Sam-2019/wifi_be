@@ -18,19 +18,19 @@ const provisionAccount = async () => {
     }
 
     const results = {
-      name: customer.credentials.userName,
-      password: customer.credentials.password,
-      email: customer.email,
+      name: customer?.credentials?.userName,
+      password: customer?.credentials?.password,
+      email: customer?.email,
       profile: getSelectedPlan(),
       comment: `Automated-${new Date().toISOString()}`,
     };
 
-    const customerStatus = await getUser(results.name);
+    const customerStatus = await getUser(results?.name);
 
-    if (customerStatus && customer.profileCreated === false) {
+    if (customerStatus && customer?.profileCreated === false) {
       customer.profileCreated = true;
       await customer.save();
-      const message = `Updated ${customer.fullName} profileCreated: true`;
+      const message = `Updated ${customer?.fullName} profileCreated: true`;
       console.log(message);
       return;
     }
@@ -38,7 +38,7 @@ const provisionAccount = async () => {
     await createUser(results);
     customer.profileCreated = true;
     await customer.save();
-    const message = `✅ ${customer.fullName} - ${results.name} provisioned`;
+    const message = `✅ ${customer?.fullName} - ${results?.name} provisioned`;
     await ntfy({ route: "/provisionSuccess", payload: message });
   } catch (error) {
     const message = `❌ provisionAccount: ${error}`;

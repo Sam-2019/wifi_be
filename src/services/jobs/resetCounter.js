@@ -14,7 +14,7 @@ const resetCounter = async () => {
       console.log(message);
       return;
     }
-    const userName = customer?.credentials.userName;
+    const userName = customer?.credentials?.userName;
     const userInfo = await getUser(userName);
 
     if (!userInfo) {
@@ -28,7 +28,7 @@ const resetCounter = async () => {
 
     if (userUptime === dataPlans.DAILY.uptime) {
       await resetCounter(userID);
-      const message = `✅ Reset Counter: ${customer.fullName} - ${userData.name}`;
+      const message = `✅ Reset Counter: ${customer?.fullName} - ${userData?.name}`;
       console.log(message);
       return;
     }

@@ -9,6 +9,7 @@ import {
 import { ntfy } from "../services/alerts.js";
 import { writeToSheet } from "../services/gSheet.js";
 import { authMiddleware } from "../config/middleware.js";
+import { addTopup } from "../services/db/repository/topup.js";
 import { addCustomer } from "../services/db/repository/customer.js";
 import { addCallback } from "../services/db/repository/callback.js";
 import { addSale, findSale } from "../services/db/repository/sale.js";
@@ -25,7 +26,7 @@ router.post("/payment/callback", async (req, res) => {
     return res.status(400).send("Payment callback received with no data");
   }
 
-  const logCallback = { provider: hubtel, response: results }
+  const logCallback = { provider: hubtel, response: results };
   const responseCode = results.ResponseCode;
   const message = results.Message;
 
@@ -41,7 +42,7 @@ router.post("/payment/callback", async (req, res) => {
     await addCallback(logCallback);
     const registrationByRef = await getRegistrationByReference(clientReference);
     if (!registrationByRef) {
-      console.error("Registration not found for client reference:", clientReference);
+      console.error( "Registration not found for client reference:", clientReference);
       return res.status(404).send("Registration not found");
     }
 
@@ -51,7 +52,8 @@ router.post("/payment/callback", async (req, res) => {
     const modData = modifiedSalesRecordII(registrationByRef, results);
 
     await addSale(modData);
-    if (registrationByRef.registrationType === registration) { await addCustomer(registrationByRef) }
+    if (registrationByRef.registrationType === registration) { await addCustomer(registrationByRef) } 
+    else { await addTopup(registrationByRef) }
     await writeToSheet(modData, "Callback");
     await ntfy({ route: "/payment/callback", payload: modData });
     res.status(200).json({ message: success });
@@ -130,6 +132,7 @@ router.post("/payment/sync", authMiddleware, async (req, res) => {
       const modData = modifiedSalesRecord(registrationByRef, responseData);
       await addSale(modData);
       if (registrationByRef.registrationType === registration) { await addCustomer(registrationByRef) }
+      else { await addTopup(registrationByRef) }
       await writeToSheet(modData, "Sales");
       await ntfy({ route: "/payment/sync", payload: modData });
     }

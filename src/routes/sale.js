@@ -3,6 +3,7 @@ import express from "express";
 import { ntfy } from "../services/alerts.js";
 import { writeToSheet } from "../services/gSheet.js";
 import { authMiddleware } from "../config/middleware.js";
+import { addTopup } from "../services/db/repository/topup.js";
 import { internalServerError, registration } from "../config/constants.js";
 import { addSale, findSale, getSales } from "../services/db/repository/sale.js";
 
@@ -62,6 +63,7 @@ router
 
       await addSale(results);
       if (results.registrationType === registration) { addCustomer(results) }
+      else { await addTopup(results) }
       await writeToSheet(results, "Sales");
       await ntfy({ route: "/sale", payload: results });
       res.status(200).json({ message: "Sale added" });

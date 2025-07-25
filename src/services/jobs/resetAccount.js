@@ -4,7 +4,7 @@ import { connectDB, disconnectDB } from "../db/index.js";
 import { getActiveTopup } from "../db/repository/topup.js";
 import { getUser, resetCounter } from "../mikrotik/index.js";
 
-const resetCounter = async () => {
+const resetAccount = async () => {
   try {
     console.log(`[${new Date().toISOString()}] resetCounter job started.`);
     await connectDB();
@@ -41,4 +41,4 @@ const resetCounter = async () => {
   }
 };
 
-await resetCounter();
+await resetAccount();

@@ -15,7 +15,7 @@ async function startBree() {
         interval: "30m",
       },
       {
-        name: "resetCounter",
+        name: "resetAccount",
         timeout: false,
         interval: "5m",
       },

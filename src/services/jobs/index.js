@@ -14,6 +14,11 @@ async function startBree() {
         timeout: false,
         interval: "30m",
       },
+      {
+        name: "resetCounter",
+        timeout: false,
+        interval: "5m",
+      },
     ],
     logger: console,
   });

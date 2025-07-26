@@ -53,7 +53,7 @@ router.post("/payment/callback", async (req, res) => {
 
     await addSale(modData);
     if (registrationByRef.registrationType === registration) { await addCustomer(registrationByRef) } 
-    else { await addTopup(registrationByRef) }
+    else { await addTopup(modData) }
     await writeToSheet(modData, "Callback");
     await ntfy({ route: "/payment/callback", payload: modData });
     res.status(200).json({ message: success });
@@ -132,7 +132,7 @@ router.post("/payment/sync", authMiddleware, async (req, res) => {
       const modData = modifiedSalesRecord(registrationByRef, responseData);
       await addSale(modData);
       if (registrationByRef.registrationType === registration) { await addCustomer(registrationByRef) }
-      else { await addTopup(registrationByRef) }
+      else { await addTopup(modData) }
       await writeToSheet(modData, "Sales");
       await ntfy({ route: "/payment/sync", payload: modData });
     }

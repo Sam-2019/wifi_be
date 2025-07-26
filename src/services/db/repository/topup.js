@@ -10,7 +10,7 @@ const addTopup = async (data) => {
 };
 
 const getActiveTopup = async () => {
-  return await Topup.findOne({ status: "active" }).lean();
+  return await Topup.findOne({ status: "active" })
 };
 
 export { getTopups, addTopup, getActiveTopup };

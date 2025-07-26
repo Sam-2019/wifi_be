@@ -9,7 +9,7 @@ const dataSchema = new Schema(
     clientReference: { type: String },
     email: { type: String, lowercase: true },
     credentials: { type: Object },
-    purchaseInfo: { type: String },
+    purchaseInfo: { type: Object },
     transactionId: { type: String },
     externalTransactionId: { type: String },
     status: { type: String, default: "active" },

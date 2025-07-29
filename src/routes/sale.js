@@ -1,9 +1,9 @@
 import "dotenv/config";
 import express from "express";
 import { authMiddleware } from "../config/middleware.js";
-import { handleEmptyRequest, registerSale } from "../config/utils.js";
+import { internalServerError } from "../config/constants.js";
 import { findSale, getSales } from "../services/db/repository/sale.js";
-import { emptyRequest, internalServerError } from "../config/constants.js";
+import { handleEmptyReferenceRequest, handleEmptyRequest, registerSale } from "../config/utils.js";
 
 const router = express.Router();
 router.get("/sales", authMiddleware, async (req, res) => {
@@ -37,17 +37,9 @@ router
     }
   })
   .post(authMiddleware, async (req, res) => {
+    handleEmptyReferenceRequest({req, res});
+
     const results = req.body;
-
-    if (
-      results === undefined ||
-      results === null ||
-      results.clientReference === undefined ||
-      results.clientReference === null
-    ) {
-     return res.status(400).json({ message: emptyRequest });
-    }
-
     try {
       const sale = findSale(results.clientReference);
       if (sale) { return res.status(200).json({ message: "Duplicate", data: sale }) }

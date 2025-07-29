@@ -5,6 +5,7 @@ import {
   handleEmptyRequest,
   modifiedSalesRecord,
   modifiedSalesRecordII,
+  handleEmptyReferenceRequest,
 } from "../config/utils.js";
 import express from "express";
 import { ntfy } from "../services/alerts.js";
@@ -51,17 +52,9 @@ router.post("/payment/callback", async (req, res) => {
 });
 
 router.post("/payment/status", authMiddleware, async (req, res) => {
+  handleEmptyReferenceRequest({req, res});
+
   const results = req.body;
-
-  if (
-    results === undefined ||
-    results === null ||
-    results.clientReference === undefined ||
-    results.clientReference === null
-  ) {
-       return res.status(400).json({ message: emptyRequest });
-  }
-
   try {
     const response = await fetchRequest(results);
     if (!response.ok) { return res.status(400).json({ message: `Transaction status: ${response.statusText}` }); }
@@ -76,17 +69,9 @@ router.post("/payment/status", authMiddleware, async (req, res) => {
 });
 
 router.post("/payment/sync", authMiddleware, async (req, res) => {
+  handleEmptyReferenceRequest({req, res});
+  
   const results = req.body;
-
-  if (
-    results === undefined ||
-    results === null ||
-    results.clientReference === undefined ||
-    results.clientReference === null
-  ) {
-   return res.status(400).json({ message: emptyRequest });
-  }
-
   const clientReference = results.clientReference;
 
   try {

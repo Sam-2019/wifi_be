@@ -4,7 +4,13 @@ import { writeToSheet } from "../services/gSheet.js";
 import { addSale } from "../services/db/repository/sale.js";
 import { addTopup } from "../services/db/repository/topup.js";
 import { addCustomer } from "../services/db/repository/customer.js";
-import { authToken, hubtel, apiUrl, registration, emptyRequest } from "./constants.js";
+import {
+  hubtel,
+  apiUrl,
+  authToken,
+  registration,
+  emptyRequest,
+} from "./constants.js";
 
 const fetchOption = {
   method: "GET",
@@ -68,6 +74,19 @@ export const handleEmptyRequest = ({ req, res }) => {
   const results = req.body;
 
   if (results === undefined || results === null) {
+    return res.status(400).json({ message: emptyRequest });
+  }
+};
+
+export const handleEmptyReferenceRequest = ({ req, res }) => {
+  const results = req.body;
+
+  if (
+    results === undefined ||
+    results === null ||
+    results.clientReference === undefined ||
+    results.clientReference === null
+  ) {
     return res.status(400).json({ message: emptyRequest });
   }
 };

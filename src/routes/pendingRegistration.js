@@ -6,9 +6,9 @@ import {
   getPendingRegistrations,
 } from "../services/db/repository/pending_registration.js";
 import { ntfy } from "../services/alerts.js";
-import { handleEmptyRequest } from "../config/utils.js";
 import { authMiddleware } from "../config/middleware.js";
 import { emptyRequest, internalServerError } from "../config/constants.js";
+import { handleEmptyReferenceRequest, handleEmptyRequest } from "../config/utils.js";
 
 const router = express.Router();
 router.get("/pending-registrations", authMiddleware, async (req, res) => {
@@ -50,17 +50,9 @@ router
     }
   })
   .post(authMiddleware, async (req, res) => {
+    handleEmptyReferenceRequest({req, res});
+    
     const results = req.body;
-
-    if (
-      results === undefined ||
-      results === null ||
-      results.clientReference === undefined ||
-      results.clientReference === null
-    ) {
-      return res.status(400).json({ message: emptyRequest });
-    }
-
     try {
       await addPendingRegistration(results);
       await ntfy({ route: "/pending-registration", payload: results });

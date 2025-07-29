@@ -5,10 +5,6 @@ import {
   getFailedRegistrations,
 } from "../services/db/repository/failed_registration.js";
 import { ntfy } from "../services/alerts.js";
-import {
-  handleEmptyRequest,
-  handleEmptyReferenceRequest,
-} from "../config/utils.js";
 import { authMiddleware } from "../config/middleware.js";
 import { emptyRequest, internalServerError } from "../config/constants.js";
 
@@ -33,9 +29,18 @@ router.get("/failed-registrations", authMiddleware, async (req, res) => {
 router
   .route("/failed-registration")
   .get(authMiddleware, async (req, res) => {
-    handleEmptyRequest({ req, res });
-
     const results = req.query;
+    if (
+      results === undefined ||
+      results === null ||
+      results.email === undefined ||
+      results.email === null ||
+      results.phoneNumber === undefined ||
+      results.phoneNumber === null
+    ) {
+      return res.status(400).json({ message: emptyRequest });
+    }
+
     try {
       const failedRegistration = await getFailedRegistration(results);
       if (!failedRegistration) {
@@ -52,9 +57,16 @@ router
     }
   })
   .post(authMiddleware, async (req, res) => {
-    handleEmptyReferenceRequest({ req, res });
-
     const results = req.body;
+
+    if (
+      results === undefined ||
+      results === null ||
+      results.clientReference === undefined ||
+      results.clientReference === null
+    ) {
+      return res.status(400).json({ message: emptyRequest });
+    }
     try {
       await addFailedRegistration(results);
       await ntfy({ route: "/failed-registration", payload: results });

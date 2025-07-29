@@ -69,24 +69,3 @@ export const registerSale = async ({ route, payload }) => {
   await writeToSheet(payload, route);
   await ntfy({ route: route, payload: payload });
 };
-
-export const handleEmptyRequest = ({ req, res }) => {
-  const results = req.body ? req.body : req.query;
-
-  if (results === undefined || results === null) {
-    return res.status(400).json({ message: emptyRequest });
-  }
-};
-
-export const handleEmptyReferenceRequest = ({ req, res }) => {
-  const results = req.body ? req.body : req.query;
-
-  if (
-    results === undefined ||
-    results === null ||
-    results.clientReference === undefined ||
-    results.clientReference === null
-  ) {
-    return res.status(400).json({ message: emptyRequest });
-  }
-};

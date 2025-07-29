@@ -13,7 +13,6 @@ import {
   checkUsernameAvailability,
 } from "../services/db/repository/customer.js";
 import { ntfy } from "../services/alerts.js";
-import { handleEmptyRequest } from "../config/utils.js";
 import { authMiddleware } from "../config/middleware.js";
 
 const router = express.Router();
@@ -44,7 +43,7 @@ router
       results.userName === undefined ||
       results.userName === null
     ) {
-    return res.status(400).json({ message: emptyRequest });
+      return res.status(400).json({ message: emptyRequest });
     }
 
     try {
@@ -60,8 +59,11 @@ router
     }
   })
   .post(authMiddleware, async (req, res) => {
-    handleEmptyRequest({ req, res });
     const results = req.body;
+
+    if (results === undefined || results === null) {
+      return res.status(400).json({ message: emptyRequest });
+    }
 
     try {
       await addCustomer(results);
@@ -96,7 +98,7 @@ router.get("/customer/availabilty", authMiddleware, async (req, res) => {
     results.userName === undefined ||
     results.userName === null
   ) {
-     return res.status(400).json({ message: emptyRequest });
+    return res.status(400).json({ message: emptyRequest });
   }
 
   try {

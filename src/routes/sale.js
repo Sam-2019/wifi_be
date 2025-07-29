@@ -1,9 +1,9 @@
 import "dotenv/config";
 import express from "express";
+import { registerSale } from "../config/utils.js";
 import { authMiddleware } from "../config/middleware.js";
-import { internalServerError } from "../config/constants.js";
+import { internalServerError, emptyRequest } from "../config/constants.js";
 import { findSale, getSales } from "../services/db/repository/sale.js";
-import { handleEmptyReferenceRequest, handleEmptyRequest, registerSale } from "../config/utils.js";
 
 const router = express.Router();
 router.get("/sales", authMiddleware, async (req, res) => {
@@ -21,8 +21,16 @@ router.get("/sales", authMiddleware, async (req, res) => {
 router
   .route("/sale")
   .get(authMiddleware, async (req, res) => {
-    handleEmptyRequest({ req, res });
     const results = req.query;
+
+    if (
+      results === undefined ||
+      results === null ||
+      results.clientReference === undefined ||
+      results.clientReference === null
+    ) {
+      return res.status(400).json({ message: emptyRequest });
+    }
 
     const clientReference = results.clientReference;
     try {
@@ -36,12 +44,22 @@ router
     }
   })
   .post(authMiddleware, async (req, res) => {
-    handleEmptyReferenceRequest({req, res});
-
     const results = req.body;
+
+    if (
+      results === undefined ||
+      results === null ||
+      results.clientReference === undefined ||
+      results.clientReference === null
+    ) {
+      return res.status(400).json({ message: emptyRequest });
+    }
+
     try {
       const sale = findSale(results.clientReference);
-      if (sale) { return res.status(200).json({ message: "Duplicate", data: sale }) }
+      if (sale) {
+        return res.status(200).json({ message: "Duplicate", data: sale });
+      }
 
       await registerSale({ route: "/sale", payload: results });
       res.status(200).json({ message: "Sale added" });

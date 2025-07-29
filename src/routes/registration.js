@@ -35,7 +35,7 @@ router
 
     try {
       const registration = await getRegistration(results);
-      if (!registration || registration.length === 0) {
+      if (!registration) {
         return res
           .status(404)
           .json({ message: "No registration found", data: null });
@@ -56,7 +56,7 @@ router
       results.clientReference === undefined ||
       results.clientReference === null
     ) {
-     return res.status(400).json({ message: emptyRequest });
+      return res.status(400).json({ message: emptyRequest });
     }
 
     try {

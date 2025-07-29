@@ -35,7 +35,7 @@ router
 
     try {
       const failedRegistration = await getFailedRegistration(results);
-      if (!failedRegistration || failedRegistration.length === 0) {
+      if (!failedRegistration) {
         return res
           .status(404)
           .json({ message: "No failedRegistration found", data: null });

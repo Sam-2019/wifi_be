@@ -49,7 +49,7 @@ router
 
     try {
       const customer = await getCustomer(results);
-      if (!customer || customer.length === 0) {
+      if (!customer) {
         return res
           .status(404)
           .json({ message: "No customer found", data: null });
@@ -101,7 +101,7 @@ router.get("/customer/availabilty", authMiddleware, async (req, res) => {
 
   try {
     const customer = await checkUsernameAvailability(results);
-    if (!customer || customer.length === 0) {
+    if (!customer) {
       return res.status(200).json({ message: "", data: null });
     }
     res.status(200).json({ message: "Duplicate error", data: userExists });

@@ -35,15 +35,15 @@ router
     const results = req.query;
 
     try {
-      const pending_registration = await getPendingRegistration(results);
-      if (!pending_registration || pending_registration.length === 0) {
+      const pendingRegistration = await getPendingRegistration(results);
+      if (!pendingRegistration) {
         return res
           .status(404)
           .json({ message: "No pending registrations found", data: null });
       }
       res.status(200).json({
         message: "Pending registration found",
-        data: pending_registration,
+        data: pendingRegistration,
       });
     } catch (error) {
       res.status(500).send(internalServerError);

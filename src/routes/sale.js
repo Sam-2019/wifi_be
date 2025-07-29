@@ -28,7 +28,7 @@ router
 
     try {
       const sale = await findSale(clientReference);
-      if (!sale || sale.length === 0) {
+      if (!sale) {
         return res.status(404).json({ message: "No sale found", data: null });
       }
       res.status(200).json({ message: "Sale found", data: sale });

@@ -23,7 +23,6 @@ router.get("/failed-registrations", authMiddleware, async (req, res) => {
       data: failed_registrations,
     });
   } catch (error) {
-    console.error("Error in /failed-registrations:", error);
     res.status(500).send(internalServerError);
   }
 });
@@ -46,7 +45,6 @@ router
         data: failedRegistration,
       });
     } catch (error) {
-      console.error("Error in /failed-registration:", error);
       res.status(500).send(internalServerError);
     }
   })
@@ -59,7 +57,6 @@ router
       results.clientReference === undefined ||
       results.clientReference === null
     ) {
-      console.error("Received with no data");
       return res.status(400).send("Received with no data");
     }
 
@@ -68,7 +65,6 @@ router
       await ntfy({ route: "/failed-registration", payload: results });
       res.status(200).json({ message: "Failed registration added" });
     } catch (error) {
-      console.error("Error in /failed-registration:", error);
       res.status(500).send(internalServerError);
     }
   });

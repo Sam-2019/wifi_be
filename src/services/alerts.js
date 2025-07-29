@@ -15,20 +15,9 @@ const setupAlert = (title, message) => {
 };
 
 export const ntfy = async ({ payload, route }) => {
-  if (!ntfyUri || !ntfyTopic || !ntfyAuthorization) {
-    console.error("Ntfy configuration is missing.");
-    return;
-  }
-
-  if (!route) {
-    console.error("Route is required for ntfy notification.");
-    return;
-  }
-
-  if (!payload) {
-    console.error("Payload is required for ntfy notification.");
-    return;
-  }
+  if (!ntfyUri || !ntfyTopic || !ntfyAuthorization) return;
+  if (!route) return;
+  if (!payload) return;
 
   const getInfo = {
     name: payload?.fullName,

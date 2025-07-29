@@ -24,7 +24,6 @@ router.get("/pending-registrations", authMiddleware, async (req, res) => {
       data: pending_registrations,
     });
   } catch (error) {
-    console.error("Error in /pending-registrations", error);
     res.status(500).send(internalServerError);
   }
 });
@@ -47,7 +46,6 @@ router
         data: pending_registration,
       });
     } catch (error) {
-      console.error("Error in /pending-registration", error);
       res.status(500).send(internalServerError);
     }
   })
@@ -60,7 +58,6 @@ router
       results.clientReference === undefined ||
       results.clientReference === null
     ) {
-      console.error("Registration received with no data");
       return res.status(400).send("Registration received with no data");
     }
 
@@ -69,7 +66,6 @@ router
       await ntfy({ route: "/pending-registration", payload: results });
       res.status(200).json({ message: "Pending Registration added" });
     } catch (error) {
-      console.error("Error in /pending-registration:", error);
       res.status(500).send(internalServerError);
     }
   });

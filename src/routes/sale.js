@@ -14,7 +14,6 @@ router.get("/sales", authMiddleware, async (req, res) => {
     }
     res.status(200).json({ message: sales });
   } catch (error) {
-    console.error("Error in /sales:", error);
     res.status(500).send(internalServerError);
   }
 });
@@ -34,7 +33,6 @@ router
       }
       res.status(200).json({ message: "Sale found", data: sale });
     } catch (error) {
-      console.error("Error in /Sale:", error);
       res.status(500).send(internalServerError);
     }
   })
@@ -47,7 +45,6 @@ router
       results.clientReference === undefined ||
       results.clientReference === null
     ) {
-      console.error("Registration received with no data");
       return res.status(400).send("Registration received with no data");
     }
 
@@ -58,7 +55,6 @@ router
       await registerSale({ route: "/sale", payload: results });
       res.status(200).json({ message: "Sale added" });
     } catch (error) {
-      console.error("Error in /sale:", error);
       res.status(500).send(internalServerError);
     }
   });

@@ -24,7 +24,6 @@ router.get("/customers", authMiddleware, async (req, res) => {
     }
     res.status(200).json({ message: customers });
   } catch (error) {
-    console.error("Error in /customers:", error);
     res.status(500).send(internalServerError);
   }
 });
@@ -44,7 +43,6 @@ router
       results.userName === undefined ||
       results.userName === null
     ) {
-      console.error("Received with no data");
       return res.status(400).send("Received with no data");
     }
 
@@ -57,7 +55,6 @@ router
       }
       res.status(200).json({ message: "Customer found", data: customer });
     } catch (error) {
-      console.error("Error in /customer:", error);
       res.status(500).send(internalServerError);
     }
   })
@@ -70,7 +67,6 @@ router
       await ntfy({ route: "/customer", payload: results });
       res.status(200).json({ message: "Customer added" });
     } catch (error) {
-      console.error("Error in /customer:", error.message);
       if (error.code === 11000) {
         const emailMessage = error?.errmsg?.includes("email")
           ? emailExists
@@ -86,7 +82,6 @@ router
 
         res.status(422).json({ message: "Duplicate error", data: message });
       } else {
-        console.error("Error in /customer:", error);
         res.status(500).send(internalServerError);
       }
     }
@@ -100,7 +95,6 @@ router.get("/customer/availabilty", authMiddleware, async (req, res) => {
     results.userName === undefined ||
     results.userName === null
   ) {
-    console.error("Received with no data");
     return res.status(400).send("Received with no data");
   }
 
@@ -111,7 +105,6 @@ router.get("/customer/availabilty", authMiddleware, async (req, res) => {
     }
     res.status(200).json({ message: "Duplicate error", data: userExists });
   } catch (error) {
-    console.error("Error in /customer:", error);
     res.status(500).send(internalServerError);
   }
 });

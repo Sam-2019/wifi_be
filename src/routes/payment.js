@@ -25,7 +25,6 @@ router.post("/payment/callback", async (req, res) => {
   const message = results.Message;
 
   if (message !== success) {
-    console.error("Payment callback failed with status:", responseCode);
     return res.status(400).send("Payment callback failed");
   }
 
@@ -36,7 +35,6 @@ router.post("/payment/callback", async (req, res) => {
     await addCallback(logCallback);
     const registrationByRef = await getRegistrationByReference(clientReference);
     if (!registrationByRef) {
-      console.error( "Registration not found for client reference:", clientReference);
       return res.status(404).send("Registration not found");
     }
 
@@ -48,7 +46,6 @@ router.post("/payment/callback", async (req, res) => {
     await registerSale({ route: "/payment/callback", payload: modData });
     res.status(200).json({ message: success });
   } catch (error) {
-    console.error("Error processing payment callback:", error);
     return res.status(500).send(internalServerError);
   }
 });
@@ -69,7 +66,6 @@ router.post("/payment/status", authMiddleware, async (req, res) => {
     const response = await fetchRequest(results);
 
     if (!response.ok) {
-      console.error("Failed to fetch transaction status:", response.statusText);
       return res
         .status(400)
         .json({ message: "Failed to fetch transaction status" });
@@ -80,7 +76,6 @@ router.post("/payment/status", authMiddleware, async (req, res) => {
     await ntfy({ route: "/payment/status", payload: dataPayload });
     res.status(200).json(responseData);
   } catch (error) {
-    console.error("Error in /payment/status:", error);
     res.status(500).send(internalServerError);
   }
 });
@@ -102,7 +97,6 @@ router.post("/payment/sync", authMiddleware, async (req, res) => {
   try {
     const registrationByRef = await getRegistrationByReference(clientReference);
     if (registrationByRef === null || registrationByRef === undefined) {
-      console.error("Registration not found for client reference:", clientReference);
       return res.status(404).send("Registration not found");
     }
 
@@ -111,7 +105,6 @@ router.post("/payment/sync", authMiddleware, async (req, res) => {
 
     const response = await fetchRequest(results);
     if (!response.ok) {
-      console.error("Failed to fetch transaction status:", response.statusText);
       return res
         .status(400)
         .json({ message: "Failed to fetch transaction status" });
@@ -124,7 +117,6 @@ router.post("/payment/sync", authMiddleware, async (req, res) => {
     }
     res.status(200).json(responseData);
   } catch (error) {
-    console.error("Error in /payment/sync:", error);
     res.status(500).send(internalServerError);
   }
 });

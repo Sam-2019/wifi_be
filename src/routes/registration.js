@@ -23,7 +23,6 @@ router.get("/registrations", authMiddleware, async (req, res) => {
       .status(200)
       .json({ message: "Registrations found", data: registrations });
   } catch (error) {
-    console.error("Error in /registrations:", error);
     res.status(500).send(internalServerError);
   }
 });
@@ -45,7 +44,6 @@ router
         .status(200)
         .json({ message: "registration found", data: registration });
     } catch (error) {
-      console.error("Error in /registration:", error);
       res.status(500).send(internalServerError);
     }
   })
@@ -58,7 +56,6 @@ router
       results.clientReference === undefined ||
       results.clientReference === null
     ) {
-      console.error("Registration received with no data");
       return res.status(400).send("Registration received with no data");
     }
 
@@ -67,7 +64,6 @@ router
       await ntfy({ route: "/registration", payload: results });
       res.status(200).json({ message: "Registration added" });
     } catch (error) {
-      console.error("Error in /registration", error);
       res.status(500).send(internalServerError);
     }
   });

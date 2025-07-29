@@ -11,8 +11,8 @@ import { ntfy } from "../services/alerts.js";
 import { authMiddleware } from "../config/middleware.js";
 import { findSale } from "../services/db/repository/sale.js";
 import { addCallback } from "../services/db/repository/callback.js";
-import { hubtel, success, internalServerError } from "../config/constants.js";
 import { getRegistrationByReference } from "../services/db/repository/registration.js";
+import { hubtel, success, internalServerError, emptyRequest } from "../config/constants.js";
 
 const router = express.Router();
 
@@ -25,7 +25,7 @@ router.post("/payment/callback", async (req, res) => {
   const message = results.Message;
 
   if (message !== success) {
-    return res.status(400).send("Payment callback failed");
+    return res.status(400).json({ message: `Payment callback with status: ${responseCode}` });
   }
 
   const responseData = results.Data;
@@ -35,7 +35,7 @@ router.post("/payment/callback", async (req, res) => {
     await addCallback(logCallback);
     const registrationByRef = await getRegistrationByReference(clientReference);
     if (!registrationByRef) {
-      return res.status(404).send("Registration not found");
+      return res.status(404).json({ message: "Registration not found" });
     }
 
     const sale = await findSale(clientReference);
@@ -59,17 +59,12 @@ router.post("/payment/status", authMiddleware, async (req, res) => {
     results.clientReference === undefined ||
     results.clientReference === null
   ) {
-    return res.status(400).send("Payment status received with no data");
+       return res.status(400).json({ message: emptyRequest });
   }
 
   try {
     const response = await fetchRequest(results);
-
-    if (!response.ok) {
-      return res
-        .status(400)
-        .json({ message: "Failed to fetch transaction status" });
-    }
+    if (!response.ok) { return res.status(400).json({ message: `Transaction status: ${response.statusText}` }); }
 
     const responseData = await response.json();
     const dataPayload = responseData.data;
@@ -89,7 +84,7 @@ router.post("/payment/sync", authMiddleware, async (req, res) => {
     results.clientReference === undefined ||
     results.clientReference === null
   ) {
-    return res.status(400).send("Received with no data");
+   return res.status(400).json({ message: emptyRequest });
   }
 
   const clientReference = results.clientReference;
@@ -97,7 +92,7 @@ router.post("/payment/sync", authMiddleware, async (req, res) => {
   try {
     const registrationByRef = await getRegistrationByReference(clientReference);
     if (registrationByRef === null || registrationByRef === undefined) {
-      return res.status(404).send("Registration not found");
+      return res.status(404).json({ message: `Registration with ref: ${clientReference} not found` });
     }
 
     const sale = await findSale(clientReference);
@@ -105,9 +100,7 @@ router.post("/payment/sync", authMiddleware, async (req, res) => {
 
     const response = await fetchRequest(results);
     if (!response.ok) {
-      return res
-        .status(400)
-        .json({ message: "Failed to fetch transaction status" });
+      return res.status(400).json({ message: `Transaction status: ${response.statusText}` });
     }
     const responseData = await response.json();
 

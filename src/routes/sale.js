@@ -1,9 +1,9 @@
 import "dotenv/config";
 import express from "express";
 import { authMiddleware } from "../config/middleware.js";
-import { internalServerError } from "../config/constants.js";
 import { handleEmptyRequest, registerSale } from "../config/utils.js";
 import { findSale, getSales } from "../services/db/repository/sale.js";
+import { emptyRequest, internalServerError } from "../config/constants.js";
 
 const router = express.Router();
 router.get("/sales", authMiddleware, async (req, res) => {
@@ -45,7 +45,7 @@ router
       results.clientReference === undefined ||
       results.clientReference === null
     ) {
-      return res.status(400).send("Registration received with no data");
+     return res.status(400).json({ message: emptyRequest });
     }
 
     try {

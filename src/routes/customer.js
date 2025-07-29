@@ -3,6 +3,7 @@ import express from "express";
 import {
   userExists,
   emailExists,
+  emptyRequest,
   internalServerError,
 } from "../config/constants.js";
 import {
@@ -43,7 +44,7 @@ router
       results.userName === undefined ||
       results.userName === null
     ) {
-      return res.status(400).send("Received with no data");
+    return res.status(400).json({ message: emptyRequest });
     }
 
     try {
@@ -95,7 +96,7 @@ router.get("/customer/availabilty", authMiddleware, async (req, res) => {
     results.userName === undefined ||
     results.userName === null
   ) {
-    return res.status(400).send("Received with no data");
+     return res.status(400).json({ message: emptyRequest });
   }
 
   try {

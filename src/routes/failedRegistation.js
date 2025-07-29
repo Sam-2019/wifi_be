@@ -7,7 +7,7 @@ import {
 import { ntfy } from "../services/alerts.js";
 import { handleEmptyRequest } from "../config/utils.js";
 import { authMiddleware } from "../config/middleware.js";
-import { internalServerError } from "../config/constants.js";
+import { emptyRequest, internalServerError } from "../config/constants.js";
 
 const router = express.Router();
 router.get("/failed-registrations", authMiddleware, async (req, res) => {
@@ -57,7 +57,7 @@ router
       results.clientReference === undefined ||
       results.clientReference === null
     ) {
-      return res.status(400).send("Received with no data");
+   return res.status(400).json({ message: emptyRequest });
     }
 
     try {

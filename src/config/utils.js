@@ -71,7 +71,7 @@ export const registerSale = async ({ route, payload }) => {
 };
 
 export const handleEmptyRequest = ({ req, res }) => {
-  const results = req.body;
+  const results = req.body ? req.body : req.query;
 
   if (results === undefined || results === null) {
     return res.status(400).json({ message: emptyRequest });
@@ -79,7 +79,7 @@ export const handleEmptyRequest = ({ req, res }) => {
 };
 
 export const handleEmptyReferenceRequest = ({ req, res }) => {
-  const results = req.body;
+  const results = req.body ? req.body : req.query;
 
   if (
     results === undefined ||

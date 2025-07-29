@@ -19,8 +19,8 @@ const router = express.Router();
 
 router.post("/payment/callback", async (req, res) => {
   handleEmptyRequest({ req, res });
-  const results = req.query;
 
+  const results = req.body;
   const logCallback = { provider: hubtel, response: results };
   const responseCode = results.ResponseCode;
   const message = results.Message;
@@ -35,15 +35,12 @@ router.post("/payment/callback", async (req, res) => {
   try {
     await addCallback(logCallback);
     const registrationByRef = await getRegistrationByReference(clientReference);
-    if (!registrationByRef) {
-      return res.status(404).json({ message: "Registration not found" });
-    }
+    if (!registrationByRef) { return res.status(404).json({ message: "Registration not found" }) }
 
     const sale = await findSale(clientReference);
     if (sale) { return res.status(200).json({ message: "Duplicate", data: sale }) }
 
     const modData = modifiedSalesRecordII({ registrationByRef, results });
-
     await registerSale({ route: "/payment/callback", payload: modData });
     res.status(200).json({ message: success });
   } catch (error) {
@@ -76,19 +73,15 @@ router.post("/payment/sync", authMiddleware, async (req, res) => {
 
   try {
     const registrationByRef = await getRegistrationByReference(clientReference);
-    if (registrationByRef === null || registrationByRef === undefined) {
-      return res.status(404).json({ message: `Registration with ref: ${clientReference} not found` });
-    }
+    if (registrationByRef === null || registrationByRef === undefined) { return res.status(404).json({ message: `Registration with ref: ${clientReference} not found` }) }
 
     const sale = await findSale(clientReference);
     if (sale) { return res.status(200).json({ message: "Duplicate", data: sale }) }
 
     const response = await fetchRequest(results);
-    if (!response.ok) {
-      return res.status(400).json({ message: `Transaction status: ${response.statusText}` });
-    }
+    if (!response.ok) {return res.status(400).json({ message: `Transaction status: ${response.statusText}` }) }
+    
     const responseData = await response.json();
-
     if (responseData?.data?.status === "Paid") {
       const modData = modifiedSalesRecord({ registrationByRef, responseData });
       await registerSale({ route: "/payment/sync", payload: modData });

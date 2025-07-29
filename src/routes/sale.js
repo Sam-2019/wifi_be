@@ -25,7 +25,6 @@ router
     const results = req.query;
 
     const clientReference = results.clientReference;
-
     try {
       const sale = await findSale(clientReference);
       if (!sale) {

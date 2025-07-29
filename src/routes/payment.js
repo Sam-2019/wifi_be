@@ -1,20 +1,17 @@
 import "dotenv/config";
-import express from "express";
 import {
-  hubtel,
-  success,
-  registration,
-  internalServerError,
-} from "../config/constants.js";
+  fetchRequest,
+  registerSale,
+  modifiedSalesRecord,
+  modifiedSalesRecordII,
+} from "../config/utils.js";
+import express from "express";
 import { ntfy } from "../services/alerts.js";
-import { writeToSheet } from "../services/gSheet.js";
 import { authMiddleware } from "../config/middleware.js";
-import { addTopup } from "../services/db/repository/topup.js";
-import { addCustomer } from "../services/db/repository/customer.js";
+import { findSale } from "../services/db/repository/sale.js";
 import { addCallback } from "../services/db/repository/callback.js";
-import { addSale, findSale } from "../services/db/repository/sale.js";
+import { hubtel, success, internalServerError } from "../config/constants.js";
 import { getRegistrationByReference } from "../services/db/repository/registration.js";
-import { fetchRequest, modifiedSalesRecord, modifiedSalesRecordII } from "../config/utils.js";
 
 const router = express.Router();
 
@@ -51,11 +48,7 @@ router.post("/payment/callback", async (req, res) => {
 
     const modData = modifiedSalesRecordII(registrationByRef, results);
 
-    await addSale(modData);
-    if (registrationByRef.registrationType === registration) { await addCustomer(registrationByRef) } 
-    else { await addTopup(modData) }
-    await writeToSheet(modData, "Callback");
-    await ntfy({ route: "/payment/callback", payload: modData });
+    await registerSale({ route: "/payment/callback", payload: modData });
     res.status(200).json({ message: success });
   } catch (error) {
     console.error("Error processing payment callback:", error);
@@ -130,11 +123,7 @@ router.post("/payment/sync", authMiddleware, async (req, res) => {
 
     if (responseData?.data?.status === "Paid") {
       const modData = modifiedSalesRecord(registrationByRef, responseData);
-      await addSale(modData);
-      if (registrationByRef.registrationType === registration) { await addCustomer(registrationByRef) }
-      else { await addTopup(modData) }
-      await writeToSheet(modData, "Sales");
-      await ntfy({ route: "/payment/sync", payload: modData });
+      await registerSale({ route: "/payment/sync", payload: modData });
     }
     res.status(200).json(responseData);
   } catch (error) {

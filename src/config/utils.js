@@ -1,5 +1,10 @@
 import "dotenv/config";
-import { authToken, hubtel, apiUrl } from "./constants.js";
+import { ntfy } from "../services/alerts.js";
+import { writeToSheet } from "../services/gSheet.js";
+import { addSale } from "../services/db/repository/sale.js";
+import { addTopup } from "../services/db/repository/topup.js";
+import { addCustomer } from "../services/db/repository/customer.js";
+import { authToken, hubtel, apiUrl, registration } from "./constants.js";
 
 const fetchOption = {
   method: "GET",
@@ -37,7 +42,6 @@ export const modifiedSalesRecord = (registrationByRef, responseData) => {
   };
 };
 
-
 export const modifiedSalesRecordII = (registrationByRef, responseData) => {
   const dataPayload = responseData?.Data;
   return {
@@ -47,4 +51,15 @@ export const modifiedSalesRecordII = (registrationByRef, responseData) => {
     transactionId: dataPayload?.transactionId,
     externalTransactionId: dataPayload?.externalTransactionId,
   };
+};
+
+export const registerSale = async ({ route, payload }) => {
+  await addSale(payload);
+  if (payload.registrationType === registration) {
+    await addCustomer(payload);
+  } else {
+    await addTopup(payload);
+  }
+  await writeToSheet(payload, route);
+  await ntfy({ route: route, payload: payload });
 };

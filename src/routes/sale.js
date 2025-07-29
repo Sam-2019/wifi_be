@@ -1,11 +1,9 @@
 import "dotenv/config";
 import express from "express";
-import { ntfy } from "../services/alerts.js";
-import { writeToSheet } from "../services/gSheet.js";
+import { registerSale } from "../config/utils.js";
 import { authMiddleware } from "../config/middleware.js";
-import { addTopup } from "../services/db/repository/topup.js";
-import { internalServerError, registration } from "../config/constants.js";
-import { addSale, findSale, getSales } from "../services/db/repository/sale.js";
+import { internalServerError } from "../config/constants.js";
+import { findSale, getSales } from "../services/db/repository/sale.js";
 
 const router = express.Router();
 router.get("/sales", authMiddleware, async (req, res) => {
@@ -61,11 +59,7 @@ router
       const sale = findSale(results.clientReference);
       if (sale) { return res.status(200).json({ message: "Duplicate", data: sale }) }
 
-      await addSale(results);
-      if (results.registrationType === registration) { addCustomer(results) }
-      else { await addTopup(results) }
-      await writeToSheet(results, "Sales");
-      await ntfy({ route: "/sale", payload: results });
+      await registerSale({ route: "/sale", payload: results });
       res.status(200).json({ message: "Sale added" });
     } catch (error) {
       console.error("Error in /sale:", error);

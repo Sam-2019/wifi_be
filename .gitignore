@@ -4,3 +4,4 @@ node_modules
 trash
 *.env
 config/deploy.rb
+src/services/jobs/addMktId.js

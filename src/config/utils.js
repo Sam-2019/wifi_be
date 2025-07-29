@@ -31,7 +31,7 @@ export const fetchRequest = async (results) => {
   }
 };
 
-export const modifiedSalesRecord = (registrationByRef, responseData) => {
+export const modifiedSalesRecord = ({ registrationByRef, responseData }) => {
   const dataPayload = responseData?.data;
   return {
     ...registrationByRef,
@@ -42,7 +42,7 @@ export const modifiedSalesRecord = (registrationByRef, responseData) => {
   };
 };
 
-export const modifiedSalesRecordII = (registrationByRef, responseData) => {
+export const modifiedSalesRecordII = ({ registrationByRef, responseData }) => {
   const dataPayload = responseData?.Data;
   return {
     ...registrationByRef,
@@ -62,4 +62,13 @@ export const registerSale = async ({ route, payload }) => {
   }
   await writeToSheet(payload, route);
   await ntfy({ route: route, payload: payload });
+};
+
+export const handleEmptyRequest = ({ req, res }) => {
+  const results = req.body;
+
+  if (results === undefined || results === null) {
+    console.error("Received with no data");
+    return res.status(400).send("Received with no data");
+  }
 };

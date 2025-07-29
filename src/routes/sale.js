@@ -1,8 +1,8 @@
 import "dotenv/config";
 import express from "express";
-import { registerSale } from "../config/utils.js";
 import { authMiddleware } from "../config/middleware.js";
 import { internalServerError } from "../config/constants.js";
+import { handleEmptyRequest, registerSale } from "../config/utils.js";
 import { findSale, getSales } from "../services/db/repository/sale.js";
 
 const router = express.Router();
@@ -22,12 +22,8 @@ router.get("/sales", authMiddleware, async (req, res) => {
 router
   .route("/sale")
   .get(authMiddleware, async (req, res) => {
+    handleEmptyRequest({ req, res });
     const results = req.query;
-
-    if (results === undefined || results === null) {
-      console.error("Received with no data");
-      return res.status(400).send("Received with no data");
-    }
 
     const clientReference = results.clientReference;
 

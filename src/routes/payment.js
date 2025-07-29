@@ -2,6 +2,7 @@ import "dotenv/config";
 import {
   fetchRequest,
   registerSale,
+  handleEmptyRequest,
   modifiedSalesRecord,
   modifiedSalesRecordII,
 } from "../config/utils.js";
@@ -16,12 +17,8 @@ import { getRegistrationByReference } from "../services/db/repository/registrati
 const router = express.Router();
 
 router.post("/payment/callback", async (req, res) => {
-  const results = req.body;
-
-  if (results === undefined || results === null) {
-    console.error("Payment callback received with no data");
-    return res.status(400).send("Payment callback received with no data");
-  }
+  handleEmptyRequest({ req, res });
+  const results = req.query;
 
   const logCallback = { provider: hubtel, response: results };
   const responseCode = results.ResponseCode;
@@ -46,7 +43,7 @@ router.post("/payment/callback", async (req, res) => {
     const sale = await findSale(clientReference);
     if (sale) { return res.status(200).json({ message: "Duplicate", data: sale }) }
 
-    const modData = modifiedSalesRecordII(registrationByRef, results);
+    const modData = modifiedSalesRecordII({ registrationByRef, results });
 
     await registerSale({ route: "/payment/callback", payload: modData });
     res.status(200).json({ message: success });
@@ -122,7 +119,7 @@ router.post("/payment/sync", authMiddleware, async (req, res) => {
     const responseData = await response.json();
 
     if (responseData?.data?.status === "Paid") {
-      const modData = modifiedSalesRecord(registrationByRef, responseData);
+      const modData = modifiedSalesRecord({ registrationByRef, responseData });
       await registerSale({ route: "/payment/sync", payload: modData });
     }
     res.status(200).json(responseData);

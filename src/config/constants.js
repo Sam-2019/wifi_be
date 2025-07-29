@@ -19,6 +19,7 @@ const authorization = "authorization";
 const emailExists = "Email already exist";
 const componentPath = "src/ui/components/";
 const userExists = "Username already exist";
+const emptyRequest =  "Received with no data";
 
 const clientID = process.env.MERCHANT;
 const authToken = process.env.BASIC_AUTH;
@@ -79,6 +80,7 @@ export {
   emailExists,
   server_down,
   development,
+  emptyRequest,
   unauthorized,
   registration,
   excludeItems,

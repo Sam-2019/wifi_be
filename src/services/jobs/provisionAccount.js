@@ -36,9 +36,9 @@ const provisionAccount = async () => {
       payload: `👍🏾 Account Provision: ${customer?.fullName} - ${results?.userName}`,
     });
   } catch (error) {
-    const message = `🤬 Account Provision: ${error}`;
-    await ntfy({ payload: message });
-    console.error(message);
+    // const message = `🤬 Account Provision: ${error}`;
+    // await ntfy({ payload: message });
+    // console.error(message);
   } finally {
     await disconnectDB();
     console.log(`[${new Date().toISOString()}] accountProvision job finished.`);

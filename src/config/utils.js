@@ -48,12 +48,12 @@ export const modifiedSalesRecord = ({ registrationByRef, responseData }) => {
   };
 };
 
-export const modifiedSalesRecordII = ({ registrationByRef, responseData }) => {
-  const dataPayload = responseData?.Data;
+export const modifiedSalesRecordII = ({ registrationByRef, results }) => {
+  const dataPayload = results?.Data;
   return {
     ...registrationByRef,
     provider: hubtel.toUpperCase(),
-    providerResponse: responseData,
+    providerResponse: results,
     transactionId: dataPayload?.transactionId,
     externalTransactionId: dataPayload?.externalTransactionId,
   };

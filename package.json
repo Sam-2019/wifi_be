@@ -6,8 +6,8 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "bun --env-file=env/.local.env api/index.js",
-    "dev": "nodemon --env-file=env/.development.local.env api/index.js"
+    "start": "bun --env-file=env/.admin.prod.env api/index.js",
+    "dev": "nodemon --env-file=env/.admin.dev.env api/index.js"
   },
   "keywords": [],
   "author": "",

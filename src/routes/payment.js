@@ -6,17 +6,17 @@ import {
   modifiedSalesRecordII,
 } from "../config/utils.js";
 import express from "express";
-import { ntfy } from "../services/alerts.js";
-import { authMiddleware } from "../config/middleware.js";
-import { findSale } from "../services/db/repository/sale.js";
-import { addCallback } from "../services/db/repository/callback.js";
-import { getRegistrationByReference } from "../services/db/repository/registration.js";
 import {
   hubtel,
   success,
   emptyRequest,
   internalServerError,
 } from "../config/constants.js";
+import { ntfy } from "../services/alerts.js";
+import { authMiddleware } from "../config/middleware.js";
+import { findSale } from "../services/db/repository/sale.js";
+import { addCallback } from "../services/db/repository/callback.js";
+import { getRegistrationByReference } from "../services/db/repository/registration.js";
 
 const router = express.Router();
 
@@ -31,7 +31,9 @@ router.post("/payment/callback", async (req, res) => {
   const message = results.Message;
 
   if (message !== success) {
-    return res.status(400).json({ message: `Payment callback with status: ${responseCode}` });
+    return res
+      .status(400)
+      .json({ message: `Payment callback with status: ${responseCode}` });
   }
 
   const responseData = results.Data;
@@ -40,10 +42,14 @@ router.post("/payment/callback", async (req, res) => {
   try {
     await addCallback(logCallback);
     const registrationByRef = await getRegistrationByReference(clientReference);
-    if (!registrationByRef) { return res.status(404).json({ message: "Registration not found" }) }
+    if (!registrationByRef) {
+      return res.status(404).json({ message: "Registration not found" });
+    }
 
     const sale = await findSale(clientReference);
-    if (sale) { return res.status(200).json({ message: "Duplicate", data: sale }) }
+    if (sale) {
+      return res.status(200).json({ message: "Duplicate", data: sale });
+    }
 
     const modData = modifiedSalesRecordII({ registrationByRef, results });
     await registerSale({ route: "/payment/callback", payload: modData });
@@ -54,8 +60,8 @@ router.post("/payment/callback", async (req, res) => {
 });
 
 router.post("/payment/status", authMiddleware, async (req, res) => {
- const results = req.body; 
- if (
+  const results = req.body;
+  if (
     results === undefined ||
     results === null ||
     results.clientReference === undefined ||
@@ -64,10 +70,13 @@ router.post("/payment/status", authMiddleware, async (req, res) => {
     return res.status(400).json({ message: emptyRequest });
   }
 
-  
   try {
     const response = await fetchRequest(results);
-    if (!response.ok) { return res.status(400).json({ message: `Transaction status: ${response.statusText}` }); }
+    if (!response.ok) {
+      return res
+        .status(400)
+        .json({ message: `Transaction status: ${response.statusText}` });
+    }
 
     const responseData = await response.json();
     const dataPayload = responseData.data;
@@ -93,13 +102,25 @@ router.post("/payment/sync", authMiddleware, async (req, res) => {
 
   try {
     const registrationByRef = await getRegistrationByReference(clientReference);
-    if (registrationByRef === null || registrationByRef === undefined) { return res.status(404).json({ message: `Registration with ref: ${clientReference} not found` }) }
+    if (registrationByRef === null || registrationByRef === undefined) {
+      return res
+        .status(404)
+        .json({
+          message: `Registration with ref: ${clientReference} not found`,
+        });
+    }
 
     const sale = await findSale(clientReference);
-    if (sale) { return res.status(200).json({ message: "Duplicate", data: sale }) }
+    if (sale) {
+      return res.status(200).json({ message: "Duplicate", data: sale });
+    }
 
     const response = await fetchRequest(results);
-    if (!response.ok) {return res.status(400).json({ message: `Transaction status: ${response.statusText}` }) }
+    if (!response.ok) {
+      return res
+        .status(400)
+        .json({ message: `Transaction status: ${response.statusText}` });
+    }
 
     const responseData = await response.json();
     if (responseData?.data?.status === "Paid") {

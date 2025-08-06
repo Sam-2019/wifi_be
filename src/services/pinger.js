@@ -6,7 +6,7 @@ async function pingServer() {
       console.log("Server is up:", response.status);
     })
     .catch((error) => {
-      cabin.err("Server is down:", error.message);
+      console.err("Server is down:", error.message);
     });
 }
 

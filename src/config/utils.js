@@ -4,6 +4,7 @@ import { writeToSheet } from "../services/gSheet.js";
 import { addSale } from "../services/db/repository/sale.js";
 import { addTopup } from "../services/db/repository/topup.js";
 import { addCustomer } from "../services/db/repository/customer.js";
+import { allocateRouter } from "../services/db/repository/router.js";
 import {
   hubtel,
   apiUrl,
@@ -62,7 +63,9 @@ export const modifiedSalesRecordII = ({ registrationByRef, results }) => {
 export const registerSale = async ({ route, payload }) => {
   await addSale(payload);
   if (payload.registrationType === registration) {
-    await addCustomer(payload);
+    const station = payload?.blockCourt;
+    const customerId = await addCustomer(payload);
+    await allocateRouter({station, customerId,});
   } else {
     await addTopup(payload);
   }

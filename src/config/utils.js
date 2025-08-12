@@ -10,7 +10,6 @@ import {
   apiUrl,
   authToken,
   registration,
-  emptyRequest,
 } from "./constants.js";
 
 const fetchOption = {

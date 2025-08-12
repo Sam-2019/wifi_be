@@ -12,30 +12,30 @@ const mikrotikRouter = express.Router();
 // Returns current state of mikrotik
 mikrotikRouter.get("/mikrotik", authMiddleware, controller.ping);
 
-// Get all users
-// Endpoint: GET /api/mikrotik/users
-// Returns a list of all users in the Mikrotik hotspot
-mikrotikRouter.get("/mikrotik/users", authMiddleware, controller.users);
-
 // Get a specific user by userName
 // Endpoint: GET /api/mikrotik/user
 // Returns the user details for the specified userName
 mikrotikRouter.get("/mikrotik/user", authMiddleware, controller.user);
 
-// Disable a user
-// Endpoint: POST /api/mikrotik/user/disable
-// Disables the specified user in the Mikrotik hotspot
-mikrotikRouter.post("/mikrotik/user/disable", authMiddleware, controller.disableUser);
+// Get all users
+// Endpoint: GET /api/mikrotik/users
+// Returns a list of all users in the Mikrotik hotspot
+mikrotikRouter.get("/mikrotik/users", authMiddleware, controller.users);
+
+// Add a new user
+// Endpoint: POST /api/mikrotik/user/add
+// Adds a new user to the Mikrotik hotspot with the provided details
+mikrotikRouter.post("/mikrotik/user/add", authMiddleware, controller.addUser);
 
 // Enable a user
 // Endpoint: POST /api/mikrotik/user/enable
 // Enables the specified user in the Mikrotik hotspot
 mikrotikRouter.post("/mikrotik/user/enable", authMiddleware, controller.enableUser);
 
-// Add a new user
-// Endpoint: POST /api/mikrotik/user/add
-// Adds a new user to the Mikrotik hotspot with the provided details
-mikrotikRouter.post("/mikrotik/user/add", authMiddleware, controller.addUser);
+// Disable a user
+// Endpoint: POST /api/mikrotik/user/disable
+// Disables the specified user in the Mikrotik hotspot
+mikrotikRouter.post("/mikrotik/user/disable", authMiddleware, controller.disableUser);
 
 // Reset user counter
 // Endpoint: POST /api/mikrotik/user/resetCounter

@@ -18,10 +18,52 @@ import Sms from "../db/modelsXschema/sms.js";
 import Sale from "../db/modelsXschema/sale.js";
 import User from "../db/modelsXschema/user.js";
 import Logger from "../db/modelsXschema/log.js";
+import Router from "../db/modelsXschema/router.js";
 import Customer from "../db/modelsXschema/customer.js";
 import Registration from "../db/modelsXschema/registration.js";
 import FailedRegistration from "../db/modelsXschema/failed_registration.js";
 import PendingRegistration from "../db/modelsXschema/pending_registration.js";
+
+const defaultProperties = [
+  "fullName",
+  "phoneNumber",
+  "subscriptionPlan",
+  "blockCourt",
+  "clientReference",
+  "registrationType",
+];
+
+const customerProperties = [
+  "regID",
+  "fullName",
+  "phoneNumber",
+  "email",
+  "blockCourt",
+  "roomType",
+  "roomNumber",
+  "isCustodian",
+  "cardPrinted",
+  "profileCreated",
+];
+
+const registrationProperties = [
+  "regID",
+  "fullName",
+  "phoneNumber",
+  "subscriptionPlan",
+  "blockCourt",
+  "clientReference",
+  "registrationType",
+  "isCustodian",
+];
+
+const routerProperties = [
+  "serialNo",
+  "isConfigured",
+  "isAllocated",
+  "station",
+  "customerId",
+];
 
 // const authenticate = async (email, password) => {
 //   if (
@@ -71,10 +113,10 @@ const RegistrationResource = {
   features: [logger],
   options: {
     id: "registrations",
-    listProperties: ["regID", "fullName", "dateTime"],
-    filterProperties: ["regID", "fullName", "dateTime"],
-    editProperties: ["regID", "fullName", "dateTime"],
-    showProperties: ["regID", "fullName", "dateTime"],
+    listProperties: registrationProperties,
+    filterProperties: registrationProperties,
+    editProperties: registrationProperties,
+    showProperties: registrationProperties,
     sort: {
       sortBy: "updatedAt",
       direction: "desc",
@@ -102,10 +144,10 @@ const PendingRegistrationResource = {
   features: [logger],
   options: {
     id: "pending_registrations",
-    listProperties: ["regID", "fullName", "dateTime"],
-    filterProperties: ["regID", "fullName", "dateTime"],
-    editProperties: ["regID", "fullName", "dateTime"],
-    showProperties: ["regID", "fullName", "dateTime"],
+    listProperties: defaultProperties,
+    filterProperties: defaultProperties,
+    editProperties: defaultProperties,
+    showProperties: defaultProperties,
     sort: {
       sortBy: "updatedAt",
       direction: "desc",
@@ -133,10 +175,10 @@ const SaleResource = {
   features: [logger],
   options: {
     id: "sales",
-    listProperties: ["regID", "fullName", "dateTime"],
-    filterProperties: ["regID", "fullName", "dateTime"],
-    editProperties: ["regID", "fullName", "dateTime"],
-    showProperties: ["regID", "fullName", "dateTime"],
+    listProperties: defaultProperties,
+    filterProperties: defaultProperties,
+    editProperties: defaultProperties,
+    showProperties: defaultProperties,
     sort: {
       sortBy: "updatedAt",
       direction: "desc",
@@ -164,12 +206,12 @@ const FailedRegistrationResource = {
   features: [logger],
   options: {
     id: "failed_registrations",
-    listProperties: ["regID", "fullName", "dateTime"],
-    filterProperties: ["regID", "fullName", "dateTime"],
-    editProperties: ["regID", "fullName", "dateTime"],
-    showProperties: ["regID", "fullName", "dateTime"],
+    listProperties: defaultProperties,
+    filterProperties: defaultProperties,
+    editProperties: defaultProperties,
+    showProperties: defaultProperties,
     sort: {
-      sortBy: "updatedAt",
+      sortBy: "createdAt",
       direction: "desc",
     },
     actions: {
@@ -251,7 +293,7 @@ const UserResource = {
               ...request.payload,
               encryptedPassword: await bcrypt.hash(
                 request.payload.password,
-                salt,
+                salt
               ),
               password: undefined,
             };
@@ -275,7 +317,7 @@ const UserResource = {
                 ...request.payload,
                 encryptedPassword: await bcrypt.hash(
                   request.payload.password,
-                  salt,
+                  salt
                 ),
                 password: undefined,
               };
@@ -314,46 +356,10 @@ const CustomerResource = {
   features: [logger],
   options: {
     id: "customers",
-    listProperties: [
-      "fullName",
-      "phoneNumber",
-      "email",
-      "blockCourt",
-      "roomType",
-      "roomNumber",
-      "isCustodian",
-      "cardPrinted",
-    ],
-    filterProperties: [
-      "fullName",
-      "phoneNumber",
-      "email",
-      "blockCourt",
-      "roomType",
-      "roomNumber",
-      "isCustodian",
-      "cardPrinted",
-    ],
-    editProperties: [
-      "fullName",
-      "phoneNumber",
-      "email",
-      "blockCourt",
-      "roomType",
-      "roomNumber",
-      "isCustodian",
-      "cardPrinted",
-    ],
-    showProperties: [
-      "fullName",
-      "phoneNumber",
-      "email",
-      "blockCourt",
-      "roomType",
-      "roomNumber",
-      "isCustodian",
-      "cardPrinted",
-    ],
+    listProperties: customerProperties,
+    filterProperties: customerProperties,
+    editProperties: customerProperties,
+    showProperties: customerProperties,
 
     actions: {
       new: {
@@ -364,6 +370,42 @@ const CustomerResource = {
       },
       edit: {
         isAccessible: true,
+      },
+      delete: {
+        isAccessible: false,
+      },
+      bulkDelete: {
+        isAccessible: false,
+      },
+    },
+  },
+};
+
+const RouterResource = {
+  resource: Router,
+  features: [logger],
+  options: {
+    id: "routers",
+    listProperties: routerProperties,
+    filterProperties: routerProperties,
+    editProperties: routerProperties,
+    showProperties: routerProperties,
+    sort: {
+      sortBy: "updatedAt",
+      direction: "desc",
+    },
+    actions: {
+      new: {
+        isAccessible: false,
+      },
+      show: {
+        isAccessible: ({ currentAdmin }) => isAdminRole({ currentAdmin }),
+      },
+      edit: {
+        isAccessible: false,
+      },
+      list: {
+        isAccessible: ({ currentAdmin }) => isAdminRole({ currentAdmin }),
       },
       delete: {
         isAccessible: false,
@@ -422,6 +464,7 @@ const adminOptions = {
     SmsResource,
     UserResource,
     SaleResource,
+    RouterResource,
     CustomerResource,
     RegistrationResource,
     FailedRegistrationResource,
@@ -440,7 +483,7 @@ const adminRouter = AdminJSExpress.buildAuthenticatedRouter(
     cookiePassword: cookiePass,
   },
   null,
-  dbSession,
+  dbSession
 );
 
 export { adminjs, adminRouter };

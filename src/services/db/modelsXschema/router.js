@@ -2,12 +2,12 @@ import { model, Schema } from "mongoose";
 
 const dataSchema = new Schema(
   {
-    regID: { type: String },
-    serialNo: { type: String },
-    station: { type: String },
+    no: { type: Number, unique: true, required: true },
+    serialNo: { type: String, unique: true, required: true },
     isConfigured: { type: Boolean, default: false },
     isAllocated: { type: Boolean, default: false },
-    customerId: { type: Schema.Types.ObjectId, ref: "Customer" },
+    station: { type: String },
+    customerId: { type: Schema.Types.ObjectId, ref: "Customer"},
   },
   {
     timestamps: true,

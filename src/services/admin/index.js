@@ -33,6 +33,16 @@ const defaultProperties = [
   "registrationType",
 ];
 
+const saleProperties = [
+  "fullName",
+  "phoneNumber",
+  "subscriptionPlan",
+  "clientReference",
+  "registrationType",
+  "transactionId",
+  "externalTransactionId",
+];
+
 const customerProperties = [
   "regID",
   "fullName",
@@ -59,12 +69,13 @@ const registrationProperties = [
 
 const routerProperties = [
   "serialNo",
-  "isConfigured",
-  "isAllocated",
-  "station",
-  "customerId",
+  // "isConfigured",
+  // "isAllocated",
+  // "station",
+  // "customerId",
 ];
 
+const smsProperties = ["mobileNumber", "message", "provider", "payload"];
 // const authenticate = async (email, password) => {
 //   if (
 //     email === adminCredentials.email &&
@@ -175,10 +186,10 @@ const SaleResource = {
   features: [logger],
   options: {
     id: "sales",
-    listProperties: defaultProperties,
-    filterProperties: defaultProperties,
-    editProperties: defaultProperties,
-    showProperties: defaultProperties,
+    listProperties: saleProperties,
+    filterProperties: saleProperties,
+    editProperties: saleProperties,
+    showProperties: saleProperties,
     sort: {
       sortBy: "updatedAt",
       direction: "desc",
@@ -237,10 +248,10 @@ const SmsResource = {
   features: [logger],
   options: {
     id: "sms_receipts",
-    listProperties: ["mobileNumber", "message", "provider", "payload"],
-    filterProperties: ["mobileNumber", "message", "provider", "payload"],
-    editProperties: ["mobileNumber", "message", "provider", "payload"],
-    showProperties: ["mobileNumber", "message", "provider", "payload"],
+    listProperties: smsProperties,
+    filterProperties: smsProperties,
+    editProperties: smsProperties,
+    showProperties: smsProperties,
     sort: {
       sortBy: "updatedAt",
       direction: "desc",
@@ -360,7 +371,10 @@ const CustomerResource = {
     filterProperties: customerProperties,
     editProperties: customerProperties,
     showProperties: customerProperties,
-
+    sort: {
+      sortBy: "createdAt",
+      direction: "desc",
+    },
     actions: {
       new: {
         isAccessible: false,
@@ -399,13 +413,13 @@ const RouterResource = {
         isAccessible: false,
       },
       show: {
-        isAccessible: ({ currentAdmin }) => isAdminRole({ currentAdmin }),
+        isAccessible: false,
       },
       edit: {
         isAccessible: false,
       },
       list: {
-        isAccessible: ({ currentAdmin }) => isAdminRole({ currentAdmin }),
+        isAccessible: false,
       },
       delete: {
         isAccessible: false,
@@ -464,11 +478,9 @@ const adminOptions = {
     SmsResource,
     UserResource,
     SaleResource,
-    RouterResource,
     CustomerResource,
     RegistrationResource,
     FailedRegistrationResource,
-    PendingRegistrationResource,
   ],
 };
 

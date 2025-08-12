@@ -63,9 +63,10 @@ export const modifiedSalesRecordII = ({ registrationByRef, results }) => {
 export const registerSale = async ({ route, payload }) => {
   await addSale(payload);
   if (payload.registrationType === registration) {
-    const station = payload?.blockCourt;
-    const customerId = await addCustomer(payload);
-    await allocateRouter({station, customerId,});
+    await addCustomer(payload);
+    // const station = payload?.blockCourt;
+    // const customerId = await addCustomer(payload);
+    // if (payload.isCustodian === true) await allocateRouter({ station, customerId });
   } else {
     await addTopup(payload);
   }

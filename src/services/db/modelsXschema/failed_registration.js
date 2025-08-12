@@ -2,7 +2,6 @@ import { model, Schema } from "mongoose";
 
 const dataSchema = new Schema(
   {
-    regID: { type: String },
     fullName: { type: String },
     phoneNumber: { type: String },
     subscriptionPlan: { type: String },
@@ -19,9 +18,9 @@ const dataSchema = new Schema(
     dateTime: { type: Date, default: Date.now() },
     credentials: { type: Object },
     provider: { type: String },
-    providerResponse: { type: String },
+    providerResponse: { type: Object },
     registrationType: { type: String },
-    purchaseInfo: { type: String },
+    purchaseInfo: { type: Object },
   },
   {
     timestamps: true,

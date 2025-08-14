@@ -54,8 +54,8 @@ export const modifiedSalesRecordII = ({ registrationByRef, results }) => {
     ...registrationByRef,
     provider: hubtel.toUpperCase(),
     providerResponse: results,
-    transactionId: dataPayload?.transactionId,
-    externalTransactionId: dataPayload?.externalTransactionId,
+    transactionId: dataPayload?.TransactionId,
+    externalTransactionId: dataPayload?.ExternalTransactionId,
   };
 };
 

@@ -57,7 +57,6 @@ const customerProperties = [
 ];
 
 const registrationProperties = [
-  "regID",
   "fullName",
   "phoneNumber",
   "subscriptionPlan",

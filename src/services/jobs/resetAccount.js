@@ -10,7 +10,7 @@ const resetAccount = async () => {
     await connectDB();
 
     const customer = await getActiveTopup();
-    console.log({customer})
+
     if (!customer) return;
 
     const userName = customer?.credentials?.userName;
@@ -26,7 +26,7 @@ const resetAccount = async () => {
     };
 
     const message = `${userInfo.userName} - ${userInfo.uptime}`;
-    await ntfy({ payload: message });
+    console.log({ message });
     if (userInfo?.uptime !== dataPlans.DAILY.uptime) return;
 
     await resetCounter(userInfo.id);

@@ -10,6 +10,7 @@ const resetAccount = async () => {
     await connectDB();
 
     const customer = await getActiveTopup();
+    console.log({customer})
     if (!customer) return;
 
     const userName = customer?.credentials?.userName;

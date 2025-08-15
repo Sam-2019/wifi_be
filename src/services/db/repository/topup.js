@@ -10,7 +10,9 @@ const addTopup = async (data) => {
 };
 
 const getActiveTopup = async () => {
-  return await Topup.findOne({ status: "active" })
+  return await Topup.findOne({ status: "active" }).sort({
+    createdAt: -1,
+  });
 };
 
 export { getTopups, addTopup, getActiveTopup };

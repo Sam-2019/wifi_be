@@ -17,7 +17,7 @@ async function startBree() {
       {
         name: "resetAccount",
         timeout: false,
-        interval: "5m",
+        interval: "3m",
       },
     ],
     logger: console,

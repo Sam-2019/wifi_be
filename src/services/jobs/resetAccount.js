@@ -31,9 +31,9 @@ const resetAccount = async () => {
     await customer.save();
     await ntfy({ payload: `👍🏾 Reset Counter: ${userInfo.fullName} - ${userInfo.userName}` });
   } catch (error) {
-    // const message = `🤬 Reset Counter: ${error}`;
-    // await ntfy({ payload: message });
-    // console.error(message);
+    const message = `🤬 Reset Counter: ${error}`;
+    await ntfy({ payload: message });
+    console.error(message);
   } finally {
     await disconnectDB();
     console.log(`[${new Date().toISOString()}] resetCounter job finished.`);

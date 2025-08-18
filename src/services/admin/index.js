@@ -13,6 +13,7 @@ import {
   companyName,
   adminCredentials,
 } from "../../config/constants.js";
+import logo from "../../../public/assets/logo.png";
 
 import Sms from "../db/modelsXschema/sms.js";
 import Sale from "../db/modelsXschema/sale.js";
@@ -498,7 +499,7 @@ const LogResource = {
 
 const adminOptions = {
   branding: {
-    logo: "/public/assets/logo.png",
+    logo: "../../../public/assets/logo.png",
     softwareBrothers: false,
     companyName: companyName,
   },

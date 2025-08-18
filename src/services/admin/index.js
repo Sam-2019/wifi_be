@@ -401,7 +401,7 @@ const FeedbackResource = {
   resource: Feedback,
   features: [logger],
   options: {
-    id: "fedback",
+    id: "feedback",
     listProperties: feedbackProperties,
     filterProperties: feedbackProperties,
     editProperties: feedbackProperties,

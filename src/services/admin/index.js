@@ -20,6 +20,7 @@ import User from "../db/modelsXschema/user.js";
 import Logger from "../db/modelsXschema/log.js";
 import Router from "../db/modelsXschema/router.js";
 import Customer from "../db/modelsXschema/customer.js";
+import Feedback from "../db/modelsXschema/feedback.js";
 import Registration from "../db/modelsXschema/registration.js";
 import FailedRegistration from "../db/modelsXschema/failed_registration.js";
 import PendingRegistration from "../db/modelsXschema/pending_registration.js";
@@ -32,6 +33,8 @@ const defaultProperties = [
   "clientReference",
   "registrationType",
 ];
+
+const feedbackProperties = ["name", "phoneNumber", "category", "comment"];
 
 const saleProperties = [
   "fullName",
@@ -389,6 +392,37 @@ const CustomerResource = {
       },
       bulkDelete: {
         isAccessible: false,
+      },
+    },
+  },
+};
+
+const FeedbackResource = {
+  resource: Feedback,
+  features: [logger],
+  options: {
+    id: "fedback",
+    listProperties: feedbackProperties,
+    filterProperties: feedbackProperties,
+    editProperties: feedbackProperties,
+    showProperties: feedbackProperties,
+    sort: {
+      sortBy: "updatedAt",
+      direction: "desc",
+    },
+    actions: {
+      new: {
+        isAccessible: ({ currentAdmin }) => isAdminRole({ currentAdmin }),
+      },
+      edit: {
+        isAccessible: false,
+        isVisible: true,
+      },
+      delete: {
+        isAccessible: ({ currentAdmin }) => isAdminRole({ currentAdmin }),
+      },
+      bulkDelete: {
+        isAccessible: ({ currentAdmin }) => isAdminRole({ currentAdmin }),
       },
     },
   },

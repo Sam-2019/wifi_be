@@ -498,7 +498,7 @@ const LogResource = {
 
 const adminOptions = {
   branding: {
-    logo: "/assets/logo.png",
+    logo: "/public/assets/logo.png",
     softwareBrothers: false,
     companyName: companyName,
   },
@@ -512,6 +512,7 @@ const adminOptions = {
     UserResource,
     SaleResource,
     CustomerResource,
+    FeedbackResource,
     RegistrationResource,
     FailedRegistrationResource,
   ],

@@ -34,7 +34,7 @@ const defaultProperties = [
   "registrationType",
 ];
 
-const feedbackProperties = ["name", "phoneNumber", "category", "comment"];
+const feedbackProperties = ["fullName", "phoneNumber", "category", "comment"];
 
 const saleProperties = [
   "fullName",

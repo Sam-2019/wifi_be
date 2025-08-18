@@ -22,7 +22,7 @@ router
       res.status(500).send(internalServerError);
     }
   })
-  .post(async (req, res) => {
+  .post(authMiddleware, async (req, res) => {
     const results = req.body;
     const { name, phoneNumber, category, comment } = results;
     const param = [name, phoneNumber, category, comment];

@@ -2,7 +2,7 @@ import { model, Schema } from "mongoose";
 
 const dataSchema = new Schema(
   {
-    name: { type: String },
+    fullName: { type: String },
     phoneNumber: { type: String },
     category: { type: String },
     comment: { type: String },

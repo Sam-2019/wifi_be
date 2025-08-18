@@ -24,8 +24,8 @@ router
   })
   .post(authMiddleware, async (req, res) => {
     const results = req.body;
-    const { name, phoneNumber, category, comment } = results;
-    const param = [name, phoneNumber, category, comment];
+    const { fullName, phoneNumber, category, comment } = results;
+    const param = [fullName, phoneNumber, category, comment];
 
     if (param.includes(undefined) || param.includes(null)) {
       return res.status(400).json({ message: emptyRequest });

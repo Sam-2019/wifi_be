@@ -1,5 +1,6 @@
 import "dotenv/config";
 import express from "express";
+import { writeToSheet } from "../services/gSheet.js";
 import { authMiddleware } from "../config/middleware.js";
 import { internalServerError, emptyRequest } from "../config/constants.js";
 import {
@@ -33,6 +34,7 @@ router
 
     try {
       await addFeedback(results);
+      await writeToSheet(results);
       res.status(200).json({ message: "Feedback added" });
     } catch (error) {
       res.status(500).send(internalServerError);

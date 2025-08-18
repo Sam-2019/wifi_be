@@ -1,18 +1,10 @@
 import { gsUri } from "../config/constants.js";
 
-export const writeToSheet = async (payload, path) => {
-  const updatedPayload =
-    path === "Pending Registration"
-      ? {
-          ...payload,
-          path: path,
-        }
-      : payload;
-
+export const writeToSheet = async (payload) => {
   fetch(gsUri, {
     method: "POST",
     mode: "no-cors",
-    body: JSON.stringify(updatedPayload),
+    body: JSON.stringify(payload),
     headers: {
       "Content-Type": "application/json",
     },

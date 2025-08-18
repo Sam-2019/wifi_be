@@ -4,7 +4,7 @@ import { writeToSheet } from "../services/gSheet.js";
 import { addSale } from "../services/db/repository/sale.js";
 import { addTopup } from "../services/db/repository/topup.js";
 import { addCustomer } from "../services/db/repository/customer.js";
-import { allocateRouter } from "../services/db/repository/router.js";
+// import { allocateRouter } from "../services/db/repository/router.js";
 import {
   hubtel,
   apiUrl,
@@ -69,6 +69,6 @@ export const registerSale = async ({ route, payload }) => {
   } else {
     await addTopup(payload);
   }
-  await writeToSheet(payload, route);
+  await writeToSheet(payload);
   await ntfy({ route: route, payload: payload });
 };

@@ -25,7 +25,9 @@ const provisionAccount = async () => {
 
     if (customerStatus && customer?.profileCreated === false) {
       customer.profileCreated = true;
+      customer.mktID = customerStatus?.id;
       await customer.save();
+      await ntfy({payload: `👍🏾 Profile updated ${results?.userName} - ${customerStatus?.id}`});
       return;
     }
 

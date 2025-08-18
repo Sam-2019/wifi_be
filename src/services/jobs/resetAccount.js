@@ -25,17 +25,16 @@ const resetAccount = async () => {
       fullName: customer?.fullName,
     };
 
-    const message = `${userInfo.userName} - ${userInfo.uptime}`;
-    console.log({ message });
+    // const message = `${userInfo.userName} - ${userInfo.uptime}`;
     if (userInfo?.uptime !== dataPlans.DAILY.uptime) return;
 
     const state = await resetCounter(userInfo.id);
     if (state === true) {
       customer.status = "expired";
       await customer.save();
-      await ntfy({
-        payload: `👍🏾 Reset Counter: ${userInfo.fullName} - ${userInfo.userName}`,
-      });
+      const message = `👍🏾 Reset Counter: ${userInfo.fullName} - ${userInfo.userName}`;
+      await ntfy({ payload: message });
+      console.log(message);
     }
   } catch (error) {
     const message = `🤬 Reset Counter: ${error}`;

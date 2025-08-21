@@ -68,7 +68,7 @@ router
     try {
       await addCustomer(results);
       await ntfy({ route: "/customer", payload: results });
-      res.status(200).json({ message: "Customer added" });
+      res.status(201).json({ message: "Customer added" });
     } catch (error) {
       if (error.code === 11000) {
         const emailMessage = error?.errmsg?.includes("email")

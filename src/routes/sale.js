@@ -62,7 +62,7 @@ router
       }
 
       await registerSale({ route: "/sale", payload: results });
-      res.status(200).json({ message: "Sale added" });
+      res.status(201).json({ message: "Sale added" });
     } catch (error) {
       res.status(500).send(internalServerError);
     }

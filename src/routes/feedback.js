@@ -35,7 +35,7 @@ router
     try {
       await addFeedback(results);
       await writeToSheet(results);
-      res.status(200).json({ message: "Feedback added" });
+      res.status(201).json({ message: "Feedback added" });
     } catch (error) {
       res.status(500).send(internalServerError);
     }

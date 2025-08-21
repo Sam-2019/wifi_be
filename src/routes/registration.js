@@ -71,7 +71,7 @@ router
     try {
       await addRegistration(results);
       await ntfy({ route: "/registration", payload: results });
-      res.status(200).json({ message: "Registration added" });
+      res.status(201).json({ message: "Registration added" });
     } catch (error) {
       res.status(500).send(internalServerError);
     }

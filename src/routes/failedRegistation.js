@@ -70,7 +70,7 @@ router
     try {
       await addFailedRegistration(results);
       await ntfy({ route: "/failed-registration", payload: results });
-      res.status(200).json({ message: "Failed registration added" });
+      res.status(201).json({ message: "Failed registration added" });
     } catch (error) {
       res.status(500).send(internalServerError);
     }

@@ -70,7 +70,7 @@ router
     try {
       await addPendingRegistration(results);
       await ntfy({ route: "/pending-registration", payload: results });
-      res.status(200).json({ message: "Pending Registration added" });
+      res.status(201).json({ message: "Pending Registration added" });
     } catch (error) {
       res.status(500).send(internalServerError);
     }

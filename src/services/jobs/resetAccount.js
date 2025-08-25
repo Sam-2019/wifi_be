@@ -1,8 +1,16 @@
+import mongoose from "mongoose";
+import Graceful from "@ladjs/graceful";
 import { ntfy } from "../alerts/ntfy.js";
+import { connectDB } from "../db/index.js";
 import { dataPlans } from "../../config/constants.js";
-import { connectDB, disconnectDB } from "../db/index.js";
 import { getActiveTopup } from "../db/repository/topup.js";
 import { getUser, resetCounter } from "../mikrotik/index.js";
+
+const graceful = new Graceful({
+  mongooses: [mongoose],
+});
+
+graceful.listen();
 
 const resetAccount = async () => {
   try {
@@ -41,7 +49,6 @@ const resetAccount = async () => {
     await ntfy({ payload: message });
     console.error(message);
   } finally {
-    await disconnectDB();
     console.log(`[${new Date().toISOString()}] resetCounter job finished.`);
     process.exit(0);
   }

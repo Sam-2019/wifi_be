@@ -30,18 +30,6 @@ async function startBree() {
     console.error("Error starting Bree:", error);
   }
 
-  // Optional: Graceful shutdown
-  process.on("SIGINT", async () => {
-    console.log("Stopping Bree...");
-    await bree.stop();
-    if (mongoose.connection.readyState === 1) {
-      await mongoose.disconnect();
-      console.log(
-        "Mongoose default connection disconnected through app termination"
-      );
-    }
-    process.exit(0);
-  });
 
   const graceful = new Graceful({
     brees: [bree],

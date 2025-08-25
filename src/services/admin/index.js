@@ -18,6 +18,7 @@ import Sms from "../db/modelsXschema/sms.js";
 import Sale from "../db/modelsXschema/sale.js";
 import User from "../db/modelsXschema/user.js";
 import Logger from "../db/modelsXschema/log.js";
+import Topup from "../db/modelsXschema/topup.js";
 import Router from "../db/modelsXschema/router.js";
 import Customer from "../db/modelsXschema/customer.js";
 import Feedback from "../db/modelsXschema/feedback.js";
@@ -37,6 +38,16 @@ const defaultProperties = [
 const feedbackProperties = ["fullName", "phoneNumber", "category", "comment"];
 
 const saleProperties = [
+  "fullName",
+  "phoneNumber",
+  "subscriptionPlan",
+  "clientReference",
+  "registrationType",
+  "transactionId",
+  "externalTransactionId",
+];
+
+const topupProperties = [
   "fullName",
   "phoneNumber",
   "subscriptionPlan",
@@ -192,6 +203,37 @@ const SaleResource = {
     filterProperties: saleProperties,
     editProperties: saleProperties,
     showProperties: saleProperties,
+    sort: {
+      sortBy: "updatedAt",
+      direction: "desc",
+    },
+    actions: {
+      new: {
+        isAccessible: ({ currentAdmin }) => isAdminRole({ currentAdmin }),
+      },
+      edit: {
+        isAccessible: false,
+        isVisible: true,
+      },
+      delete: {
+        isAccessible: ({ currentAdmin }) => isAdminRole({ currentAdmin }),
+      },
+      bulkDelete: {
+        isAccessible: ({ currentAdmin }) => isAdminRole({ currentAdmin }),
+      },
+    },
+  },
+};
+
+const TopupResource = {
+  resource: Topup,
+  features: [logger],
+  options: {
+    id: "topups",
+    listProperties: topupProperties,
+    filterProperties: topupProperties,
+    editProperties: topupProperties,
+    showProperties: topupProperties,
     sort: {
       sortBy: "updatedAt",
       direction: "desc",
@@ -511,6 +553,7 @@ const adminOptions = {
     SmsResource,
     UserResource,
     SaleResource,
+    TopupResource,
     CustomerResource,
     FeedbackResource,
     RegistrationResource,

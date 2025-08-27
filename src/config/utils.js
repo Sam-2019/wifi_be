@@ -3,14 +3,10 @@ import { ntfy } from "../services/alerts.js";
 import { writeToSheet } from "../services/gSheet.js";
 import { addSale } from "../services/db/repository/sale.js";
 import { addTopup } from "../services/db/repository/topup.js";
+import { hubtel, apiUrl, topup, authToken } from "./constants.js";
 import { addCustomer } from "../services/db/repository/customer.js";
+import { addMembership } from "../services/db/repository/membership.js";
 // import { allocateRouter } from "../services/db/repository/router.js";
-import {
-  hubtel,
-  apiUrl,
-  authToken,
-  registration,
-} from "./constants.js";
 
 const fetchOption = {
   method: "GET",
@@ -61,13 +57,13 @@ export const modifiedSalesRecordII = ({ registrationByRef, results }) => {
 
 export const registerSale = async ({ route, payload }) => {
   await addSale(payload);
-  if (payload.registrationType === registration) {
+  if (payload.registrationType === topup) {
+    await addTopup(payload);
+  } else {
     await addCustomer(payload);
     // const station = payload?.blockCourt;
     // const customerId = await addCustomer(payload);
     // if (payload.isCustodian === true) await allocateRouter({ station, customerId });
-  } else {
-    await addTopup(payload);
   }
   await writeToSheet(payload);
   await ntfy({ route: route, payload: payload });

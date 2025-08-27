@@ -53,6 +53,7 @@ const excludeItemsRegistrations = {
 };
 
 const topup = "Top Up";
+const membership = "Membership";
 const registration = "Registration";
 
 export {
@@ -76,6 +77,7 @@ export {
   successful,
   production,
   userExists,
+  membership,
   companyName,
   emailExists,
   server_down,

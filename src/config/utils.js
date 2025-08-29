@@ -5,7 +5,6 @@ import { addSale } from "../services/db/repository/sale.js";
 import { addTopup } from "../services/db/repository/topup.js";
 import { hubtel, apiUrl, topup, authToken } from "./constants.js";
 import { addCustomer } from "../services/db/repository/customer.js";
-import { addMembership } from "../services/db/repository/membership.js";
 // import { allocateRouter } from "../services/db/repository/router.js";
 
 const fetchOption = {

@@ -56,7 +56,7 @@ router
     }
 
     try {
-      const sale = findSale(results.clientReference);
+      const sale = await findSale(results.clientReference);
       if (sale) {
         return res.status(200).json({ message: "Duplicate", data: sale });
       }

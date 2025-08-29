@@ -20,6 +20,21 @@ const findSale = async (data) => {
   ).lean();
 };
 
+const findCustomerSale = async (data) => {
+  const email = data?.email;
+  const phoneNumber = data?.phoneNumber;
+
+  return await Sale.findOne(
+    {
+      phoneNumber: phoneNumber,
+      email: email,
+    },
+    excludeItems
+  ).sort({
+    createdAt: -1,
+  });
+};
+
 const yesterdaySales = async () => {
   const today = new Date();
   const yesterday = new Date(today);
@@ -46,4 +61,11 @@ const todaySales = async () => {
     .lean();
 };
 
-export { getSales, addSale, findSale, yesterdaySales, todaySales };
+export {
+  getSales,
+  addSale,
+  findSale,
+  todaySales,
+  yesterdaySales,
+  findCustomerSale,
+};

@@ -4,7 +4,8 @@ import Graceful from "@ladjs/graceful";
 import { ntfy } from "../alerts/ntfy.js";
 import { connectDB } from "../db/index.js";
 import { createUser, getUser } from "../mikrotik/index.js";
-import { dataPlans, getSelectedPlan } from "../../config/constants.js";
+import { getSelectedPlan } from "../../config/constants.js";
+import { findCustomerSale } from "../db/repository/sale.js";
 import { getUnprovisionedCustomer } from "../db/repository/customer.js";
 
 const graceful = new Graceful({
@@ -21,12 +22,16 @@ const provisionAccount = async () => {
     const customer = await getUnprovisionedCustomer();
     if (!customer) return;
 
+    const customerSale = await findCustomerSale(customer);
+    if (!customerSale) return;
+
+    const selectedPlan = getSelectedPlan(customerSale?.subscriptionPlan);
     const results = {
       userName: customer?.credentials?.userName,
       password: customer?.credentials?.password,
       email: customer?.email,
-      profile: getSelectedPlan(),
-      limitUptime: dataPlans.DAILY.uptimeSub,
+      profile: selectedPlan.name,
+      limitUptime: selectedPlan.uptimeSub,
     };
 
     const customerStatus = await getUser(results?.userName);

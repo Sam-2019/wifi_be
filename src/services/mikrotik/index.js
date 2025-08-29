@@ -126,6 +126,17 @@ const createUser = async (userData) => {
   }
 };
 
+const resetGroupCounter = async () => {
+  try {
+    await api.connect();
+    await api.send(["/ip/hotspot/user/reset-counters"]);
+    await api.close();
+    return true;
+  } catch (err) {
+    throw err.message;
+  }
+};
+
 export {
   getUser,
   getUsers,

@@ -73,18 +73,6 @@ const defaultMikrotikServer = process.env.MIKROTIK_DEFAULT_SERVER || "hotspot1";
 const topup = "Top Up";
 const registration = "Registration";
 
-const getSelectedPlan = () => {
-  // if (data.includes("WEEKLY")) {
-  //   return "Weekly"
-  // }
-
-  // if (data.includes("MONTHLY")) {
-  //   return "Monthly"
-  // }
-
-  return "Daily";
-};
-
 const dataPlans = {
   DAILY: {
     name: "Daily",
@@ -101,6 +89,17 @@ const dataPlans = {
     uptime: "30d",
     uptimeSub: "30d 00:00:00",
   },
+  MEMBERSHIP: {
+    name: "Membership",
+    uptime: "1h",
+    uptimeSub: "01:00:00",
+  },
+};
+
+const getSelectedPlan = (data) => {
+  const key = Object.keys(dataPlans).find((planKey) => data.includes(planKey));
+
+  return key ? dataPlans[key] : dataPlans.DAILY;
 };
 
 export {

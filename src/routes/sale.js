@@ -1,6 +1,6 @@
 import "dotenv/config";
 import express from "express";
-import { registerSale } from "../config/utils.js";
+import { fetchRequest, registerSale } from "../config/utils.js";
 import { authMiddleware } from "../config/middleware.js";
 import { internalServerError, emptyRequest } from "../config/constants.js";
 import { findSale, getSales } from "../services/db/repository/sale.js";
@@ -56,11 +56,18 @@ router
     }
 
     try {
+      const response = await fetchRequest(results);
+      if (!response.ok) {
+        return res
+          .status(400)
+          .json({ message: `Transaction status: ${response.statusText}` });
+      }
+
       const sale = await findSale(results.clientReference);
       if (sale) {
         return res.status(200).json({ message: "Duplicate", data: sale });
       }
-
+      
       await registerSale({ route: "/sale", payload: results });
       res.status(201).json({ message: "Sale added" });
     } catch (error) {

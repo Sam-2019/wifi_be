@@ -2,7 +2,6 @@ import Bree from "bree";
 import path from "path";
 import mongoose from "mongoose";
 import Graceful from "@ladjs/graceful";
-import { __dirname } from "../../config/constants.js";
 
 async function startBree() {
   const bree = new Bree({
@@ -29,7 +28,6 @@ async function startBree() {
   } catch (error) {
     console.error("Error starting Bree:", error);
   }
-
 
   const graceful = new Graceful({
     brees: [bree],

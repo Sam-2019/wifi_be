@@ -53,7 +53,7 @@ router.post("/payment/callback", async (req, res) => {
 
     const modData = modifiedSalesRecordII({ registrationByRef, results });
     await registerSale({ route: "/payment/callback", payload: modData });
-    res.status(200).json({ message: success });
+    res.status(201).json({ message: success });
   } catch (error) {
     return res.status(500).send(internalServerError);
   }

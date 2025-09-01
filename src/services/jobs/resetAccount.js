@@ -2,12 +2,12 @@ import mongoose from "mongoose";
 import {
   getSelectedPlan,
   parseUptimeToSeconds,
-} from "../src/config/constants.js";
+} from "../../config/constants.js";
 import Graceful from "@ladjs/graceful";
-import { ntfy } from "../src/services/alerts/ntfy.js";
-import { connectDB } from "../src/services/db/index.js";
-import { getActiveTopup } from "../src/services/db/repository/topup.js";
-import { getUser, resetCounter } from "../src/services/mikrotik/index.js";
+import { ntfy } from "../alerts/ntfy.js";
+import { connectDB } from "../db/index.js";
+import { getActiveTopup } from "../db/repository/topup.js";
+import { getUser, resetCounter } from "../mikrotik/index.js";
 
 const graceful = new Graceful({
   mongooses: [mongoose],

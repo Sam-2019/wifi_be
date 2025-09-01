@@ -52,7 +52,6 @@ const topupProperties = [
   "phoneNumber",
   "subscriptionPlan",
   "clientReference",
-  "registrationType",
   "transactionId",
   "externalTransactionId",
 ];

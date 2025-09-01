@@ -19,7 +19,7 @@ const addTopup = async (data) => {
 };
 
 const getActiveTopup = async () => {
-  return await Topup.findOne({ status: "active" }, excludeActiveItems).sort({
+  return await Topup.findOne({ status: "active" }).sort({
     createdAt: -1,
   });
 };

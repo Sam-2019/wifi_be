@@ -26,10 +26,6 @@ const authToken = process.env.BASIC_AUTH;
 const server_url = process.env.SERVER_URL;
 const hostUrl = process.env.TRANSACTION_STATUS_CHECK_URL;
 
-const dbUri = process.env.DB_URL;
-const dbName = process.env.DB_NAME;
-const gsUri = process.env.GOOGLE_SCRIPTS;
-
 const apiUrl = `${hostUrl}/${clientID}/status`;
 const internalServerError = "Internal Server Error";
 
@@ -67,17 +63,12 @@ const httpStatus = {
 };
 
 export {
-  dbUri,
   admin,
   topup,
-  gsUri,
   apiUrl,
-  dbName,
   hubtel,
   success,
-  ntfyUri,
   paystack,
-  ntfyTopic,
   __dirname,
   assetPath,
   forbidden,
@@ -99,7 +90,6 @@ export {
   excludeItems,
   authorization,
   componentPath,
-  ntfyAuthorization,
   internalServerError,
   excludeItemsRegistrations,
 };

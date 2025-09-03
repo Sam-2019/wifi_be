@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { dbUri, dbName } from "../../config/constants.js";
+import { config } from "../../config/index.js";
 
 const dbConn = mongoose.connection;
 dbConn.on("connected", () => {
@@ -7,8 +7,8 @@ dbConn.on("connected", () => {
 });
 
 const connectDB = async () => {
-  await mongoose.connect(dbUri, {
-    dbName: dbName,
+  await mongoose.connect(config.database.uri, {
+    dbName: config.database.name,
     // autoIndex: true,
   });
 };

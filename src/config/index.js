@@ -4,7 +4,7 @@ const config = {
     uri: process.env.SERVER_URL,
   },
   database: {
-    uri: process.env.DB_URI,
+    uri: process.env.DB_URL,
     name: process.env.DB_NAME,
   },
   notify: {

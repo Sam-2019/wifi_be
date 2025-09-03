@@ -3,11 +3,12 @@ import cors from "cors";
 import bodyParser from "body-parser";
 import express, { json } from "express";
 import router from "../src/routes/index.js";
+import { config } from "../src/config/index.js";
 import { ping } from "../src/services/pinger.js";
 import { __dirname } from "../src/config/constants.js";
 import { connectDB } from "../src/services/db/index.js";
 
-const port = process.env.PORT || 4000;
+const port = config.server.port || 4000;
 
 const start = async () => {
   const app = express();

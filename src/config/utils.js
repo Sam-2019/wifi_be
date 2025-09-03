@@ -1,27 +1,30 @@
 import "dotenv/config";
+import { config } from "./index.js";
 import { ntfy } from "../services/alerts.js";
+import { hubtel, topup } from "./constants.js";
 import { writeToSheet } from "../services/gSheet.js";
 import { addSale } from "../services/db/repository/sale.js";
 import { addTopup } from "../services/db/repository/topup.js";
-import { hubtel, apiUrl, topup, authToken } from "./constants.js";
 import { addCustomer } from "../services/db/repository/customer.js";
 // import { allocateRouter } from "../services/db/repository/router.js";
+
 
 const fetchOption = {
   method: "GET",
   headers: {
-    Authorization: `Basic ${authToken}`,
+    Authorization: `Basic ${config.gateway.token}`,
     "Content-Type": "application/json",
   },
 };
 
 export const fetchRequest = async (results) => {
+  const statusUrl = `${config.gateway.url}/${config.gateway.clientid}/status`;
   const queryParams = {
     clientReference: results.clientReference,
   };
 
   const queryString = new URLSearchParams(queryParams).toString();
-  const endpoint = `${apiUrl}?${queryString}`;
+  const endpoint = `${statusUrl}?${queryString}`;
 
   try {
     const response = await fetch(endpoint, fetchOption);

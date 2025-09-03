@@ -20,13 +20,6 @@ const emailExists = "Email already exist";
 const componentPath = "src/ui/components/";
 const userExists = "Username already exist";
 const emptyRequest = "Received with no data";
-
-const clientID = process.env.MERCHANT;
-const authToken = process.env.BASIC_AUTH;
-const server_url = process.env.SERVER_URL;
-const hostUrl = process.env.TRANSACTION_STATUS_CHECK_URL;
-
-const apiUrl = `${hostUrl}/${clientID}/status`;
 const internalServerError = "Internal Server Error";
 
 const excludeItems = {
@@ -65,16 +58,13 @@ const httpStatus = {
 export {
   admin,
   topup,
-  apiUrl,
   hubtel,
   success,
   paystack,
   __dirname,
   assetPath,
   forbidden,
-  authToken,
   server_up,
-  server_url,
   successful,
   production,
   userExists,

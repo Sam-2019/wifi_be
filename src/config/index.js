@@ -1,6 +1,7 @@
 const config = {
-  storage: {
-    bucketName: process.env.S3_BUCKET_NAME,
+  server: {
+    port: process.env.PORT,
+    uri: process.env.SERVER_URL,
   },
   database: {
     uri: process.env.DB_URI,
@@ -16,6 +17,11 @@ const config = {
   },
   authorization: {
     bearer: process.env.AUTHORIZATION,
+  },
+  gateway: {
+    clientid: process.env.MERCHANT,
+    token: process.env.BASIC_AUTH,
+    url: process.env.TRANSACTION_STATUS_CHECK_URL,
   },
 };
 

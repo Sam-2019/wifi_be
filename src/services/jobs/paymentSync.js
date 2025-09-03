@@ -1,6 +1,6 @@
 import { connectDB } from "../db/index.js";
 import { findSale } from "../db/repository/sale.js";
-import { bearer, baseURL } from "../../config/constants.js";
+import { bearer, baseURL, httpStatus } from "../../config/constants.js";
 import { getTodaysRegistrations } from "../db/repository/registration.js";
 
 const paymentSync = async () => {
@@ -26,10 +26,10 @@ const paymentSync = async () => {
         },
       })
         .then(async (response) => {
-          if (response.status === 200) {
+          if (response.status === httpStatus.OK) {
             return await ntfy({ payload: `👍🏾 Payment Sync: ${response}` });
           }
-          await ntfy({ payload: `🤷🏾 Payment Sync: Registration not found` });
+          await ntfy({ payload: "🤷🏾 Payment Sync: Registration not found" });
         })
         .catch(async (err) => {
           await ntfy({ payload: `🤬 Payment Sync: ${err}` });

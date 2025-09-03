@@ -7,15 +7,16 @@ import {
   pingMikrotik,
   resetCounter,
 } from "../services/mikrotik/index.js";
+import { httpStatus } from "../config/constants.js";
 
 class Mikrotik {
   async ping(req, res) {
     try {
       await pingMikrotik();
-      res.status(200).json({ message: "ping successful" });
+      res.status(httpStatus.OK).json({ message: "ping successful" });
     } catch (error) {
       console.error("ping failed:", error);
-      res.status(500).json({ message: error });
+      res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ message: error });
     }
   }
 
@@ -23,10 +24,12 @@ class Mikrotik {
     try {
       const users = await getUsers();
       res
-        .status(200)
+        .status(httpStatus.OK)
         .json({ data: users, message: "Users fetched successfully" });
     } catch (error) {
-      res.status(500).json({ error: error || "Failed to fetch users" });
+      res
+        .status(httpStatus.INTERNAL_SERVER_ERROR)
+        .json({ error: error || "Failed to fetch users" });
     }
   }
 
@@ -34,19 +37,25 @@ class Mikrotik {
     const results = req.body;
 
     if (!results || !results.userName) {
-      return res.status(400).json({ error: "Username is required" });
+      return res
+        .status(httpStatus.BAD_REQUEST)
+        .json({ error: "Username is required" });
     }
     const { userName } = results;
     try {
       const user = await getUser(userName);
       if (!user) {
-        return res.status(404).json({ message: "User not found" });
+        return res
+          .status(httpStatus.NOT_FOUND)
+          .json({ message: "User not found" });
       }
       res
-        .status(200)
+        .status(httpStatus.OK)
         .json({ data: user, message: "User fetched successfully" });
     } catch (error) {
-      res.status(500).json({ error: error || "Failed to fetch user" });
+      res
+        .status(httpStatus.INTERNAL_SERVER_ERROR)
+        .json({ error: error || "Failed to fetch user" });
     }
   }
 
@@ -54,29 +63,37 @@ class Mikrotik {
     const results = req.body;
 
     if (!results || !results.userName) {
-      return res.status(400).json({ error: "Username is required" });
+      return res
+        .status(httpStatus.BAD_REQUEST)
+        .json({ error: "Username is required" });
     }
     const { userName } = results;
 
     try {
       await disableUser(userName);
-      res.status(200).json({ message: "User disabled successfully" });
+      res.status(httpStatus.OK).json({ message: "User disabled successfully" });
     } catch (error) {
-      res.status(500).json({ error: error || "Failed to disable user" });
+      res
+        .status(httpStatus.INTERNAL_SERVER_ERROR)
+        .json({ error: error || "Failed to disable user" });
     }
   }
 
   async enableUser(req, res) {
     const results = req.body;
     if (!results || !results.userName) {
-      return res.status(400).json({ error: "Username is required" });
+      return res
+        .status(httpStatus.BAD_REQUEST)
+        .json({ error: "Username is required" });
     }
     const { userName } = results;
     try {
       await enableUser(userName);
-      res.status(200).json({ message: "User enabled successfully" });
+      res.status(httpStatus.OK).json({ message: "User enabled successfully" });
     } catch (error) {
-      res.status(500).json({ error: error || "Failed to enable user" });
+      res
+        .status(httpStatus.INTERNAL_SERVER_ERROR)
+        .json({ error: error || "Failed to enable user" });
     }
   }
 
@@ -89,7 +106,7 @@ class Mikrotik {
       !results.profile
     ) {
       return res
-        .status(400)
+        .status(httpStatus.BAD_REQUEST)
         .send({ error: "Name, password and profile are required" });
     }
 
@@ -97,22 +114,26 @@ class Mikrotik {
       const user = await createUser(results);
       res.status(201).json({ data: user, message: "User added successfully" });
     } catch (error) {
-      res.status(500).json({ error: error || "Failed to add user" });
+      res
+        .status(httpStatus.INTERNAL_SERVER_ERROR)
+        .json({ error: error || "Failed to add user" });
     }
   }
 
   async resetUserCounter(req, res) {
     const results = req.body;
     if (!results || !results.userName) {
-      return res.status(400).json({ error: "Username is required" });
+      return res
+        .status(httpStatus.BAD_REQUEST)
+        .json({ error: "Username is required" });
     }
 
     const { userName } = results;
     try {
       await resetCounter(userName);
-      res.status(200).json({ message: "Counter reset successful" });
+      res.status(httpStatus.OK).json({ message: "Counter reset successful" });
     } catch (error) {
-      res.status(500).json({ error: error });
+      res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ error: error });
     }
   }
 }

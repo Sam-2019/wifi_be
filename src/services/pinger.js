@@ -1,7 +1,7 @@
-import { server_url } from "../config/constants.js";
+import { config } from "../config/index.js";
 
 async function pingServer() {
-  fetch(server_url)
+  fetch(config.server.uri)
     .then((response) => {
       console.log("Server is up:", response.status);
     })

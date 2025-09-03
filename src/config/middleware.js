@@ -1,4 +1,4 @@
-import { forbidden, unauthorized } from "./constants.js";
+import { forbidden, unauthorized, httpStatus } from "./constants.js";
 
 export const authMiddleware = (req, res, next) => {
   const authorization = req.headers.authorization;
@@ -11,7 +11,7 @@ export const authMiddleware = (req, res, next) => {
     authorization === "null" ||
     authorization === "undefined"
   ) {
-    return res.status(401).json({ message: unauthorized });
+    return res.status(httpStatus.UNAUTHORIZED).json({ message: unauthorized });
   }
 
   if (authorization?.startsWith("Bearer ")) {
@@ -20,7 +20,7 @@ export const authMiddleware = (req, res, next) => {
     const strinfigy = decodeToken.toString();
 
     if (strinfigy !== AUTHORIZATION) {
-      return res.status(403).json({ message: forbidden });
+      return res.status(httpStatus.FORBIDDEN).json({ message: forbidden });
     }
   }
 

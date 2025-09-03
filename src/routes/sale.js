@@ -2,7 +2,7 @@ import "dotenv/config";
 import express from "express";
 import { fetchRequest, registerSale } from "../config/utils.js";
 import { authMiddleware } from "../config/middleware.js";
-import { internalServerError, emptyRequest } from "../config/constants.js";
+import { internalServerError, emptyRequest, httpStatus } from "../config/constants.js";
 import { findSale, getSales } from "../services/db/repository/sale.js";
 
 const router = express.Router();
@@ -10,11 +10,11 @@ router.get("/sales", authMiddleware, async (req, res) => {
   try {
     const sales = await getSales();
     if (!sales || sales.length === 0) {
-      return res.status(404).json({ message: "No sales found", data: [] });
+      return res.status(httpStatus.NOT_FOUND).json({ message: "No sales found", data: [] });
     }
-    res.status(200).json({ message: sales });
+    res.status(httpStatus.OK).json({ message: sales });
   } catch (error) {
-    res.status(500).send(internalServerError);
+    res.status(httpStatus.INTERNAL_SERVER_ERROR).send(internalServerError);
   }
 });
 
@@ -29,18 +29,18 @@ router
       results.clientReference === undefined ||
       results.clientReference === null
     ) {
-      return res.status(400).json({ message: emptyRequest });
+      return res.status(httpStatus.BAD_REQUEST).json({ message: emptyRequest });
     }
 
     const clientReference = results.clientReference;
     try {
       const sale = await findSale(clientReference);
       if (!sale) {
-        return res.status(404).json({ message: "No sale found", data: null });
+        return res.status(httpStatus.NOT_FOUND).json({ message: "No sale found", data: null });
       }
-      res.status(200).json({ message: "Sale found", data: sale });
+      res.status(httpStatus.OK).json({ message: "Sale found", data: sale });
     } catch (error) {
-      res.status(500).send(internalServerError);
+      res.status(httpStatus.INTERNAL_SERVER_ERROR).send(internalServerError);
     }
   })
   .post(authMiddleware, async (req, res) => {
@@ -52,26 +52,26 @@ router
       results.clientReference === undefined ||
       results.clientReference === null
     ) {
-      return res.status(400).json({ message: emptyRequest });
+      return res.status(httpStatus.BAD_REQUEST).json({ message: emptyRequest });
     }
 
     try {
       const response = await fetchRequest(results);
       if (!response.ok) {
         return res
-          .status(400)
+          .status(httpStatus.BAD_REQUEST)
           .json({ message: `Transaction status: ${response.statusText}` });
       }
 
       const sale = await findSale(results.clientReference);
       if (sale) {
-        return res.status(200).json({ message: "Duplicate", data: sale });
+        return res.status(httpStatus.OK).json({ message: "Duplicate", data: sale });
       }
       
       await registerSale({ route: "/sale", payload: results });
-      res.status(201).json({ message: "Sale added" });
+      res.status(httpStatus.CREATED).json({ message: "Sale added" });
     } catch (error) {
-      res.status(500).send(internalServerError);
+      res.status(httpStatus.INTERNAL_SERVER_ERROR).send(internalServerError);
     }
   });
 

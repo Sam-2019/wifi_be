@@ -2,6 +2,7 @@ import "dotenv/config";
 import express from "express";
 import {
   userExists,
+  httpStatus,
   emailExists,
   emptyRequest,
   internalServerError,
@@ -20,11 +21,13 @@ router.get("/customers", authMiddleware, async (req, res) => {
   try {
     const customers = await getCustomers();
     if (!customers || customers.length === 0) {
-      return res.status(404).json({ message: "No customers found", data: [] });
+      return res
+        .status(httpStatus.NOT_FOUND)
+        .json({ message: "No customers found", data: [] });
     }
-    res.status(200).json({ message: customers });
+    res.status(httpStatus.OK).json({ message: customers });
   } catch (error) {
-    res.status(500).send(internalServerError);
+    res.status(httpStatus.INTERNAL_SERVER_ERROR).send(internalServerError);
   }
 });
 
@@ -43,32 +46,34 @@ router
       results.userName === undefined ||
       results.userName === null
     ) {
-      return res.status(400).json({ message: emptyRequest });
+      return res.status(httpStatus.BAD_REQUEST).json({ message: emptyRequest });
     }
 
     try {
       const customer = await getCustomer(results);
       if (!customer) {
         return res
-          .status(404)
+          .status(httpStatus.NOT_FOUND)
           .json({ message: "No customer found", data: null });
       }
-      res.status(200).json({ message: "Customer found", data: customer });
+      res
+        .status(httpStatus.OK)
+        .json({ message: "Customer found", data: customer });
     } catch (error) {
-      res.status(500).send(internalServerError);
+      res.status(httpStatus.INTERNAL_SERVER_ERROR).send(internalServerError);
     }
   })
   .post(authMiddleware, async (req, res) => {
     const results = req.body;
 
     if (results === undefined || results === null) {
-      return res.status(400).json({ message: emptyRequest });
+      return res.status(httpStatus.BAD_REQUEST).json({ message: emptyRequest });
     }
 
     try {
       await addCustomer(results);
       await ntfy({ route: "/customer", payload: results });
-      res.status(201).json({ message: "Customer added" });
+      res.status(httpStatus.CREATED).json({ message: "Customer added" });
     } catch (error) {
       if (error.code === 11000) {
         const emailMessage = error?.errmsg?.includes("email")
@@ -83,9 +88,11 @@ router
           userName: userNameMessage,
         };
 
-        res.status(422).json({ message: "Duplicate error", data: message });
+        res
+          .status(httpStatus.UNPROCESSABLE_ENTITY)
+          .json({ message: "Duplicate error", data: message });
       } else {
-        res.status(500).send(internalServerError);
+        res.status(httpStatus.INTERNAL_SERVER_ERROR).send(internalServerError);
       }
     }
   });
@@ -98,17 +105,19 @@ router.get("/customer/availabilty", authMiddleware, async (req, res) => {
     results.userName === undefined ||
     results.userName === null
   ) {
-    return res.status(400).json({ message: emptyRequest });
+    return res.status(httpStatus.BAD_REQUEST).json({ message: emptyRequest });
   }
 
   try {
     const customer = await checkUsernameAvailability(results);
     if (!customer) {
-      return res.status(200).json({ message: "", data: null });
+      return res.status(httpStatus.OK).json({ message: "", data: null });
     }
-    res.status(200).json({ message: "Duplicate error", data: userExists });
+    res
+      .status(httpStatus.CONFLICT)
+      .json({ message: "Duplicate error", data: userExists });
   } catch (error) {
-    res.status(500).send(internalServerError);
+    res.status(httpStatus.INTERNAL_SERVER_ERROR).send(internalServerError);
   }
 });
 

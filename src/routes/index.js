@@ -2,15 +2,15 @@ import "dotenv/config";
 import path from "path";
 import express from "express";
 import apiRouter from "./api.js";
-import { __dirname } from "../config/constants.js";
+import { __dirname, httpStatus } from "../config/constants.js";
 
 const router = express.Router();
 router.get("/", async (req, res) => {
 	try {
-		res.status(200);
+		res.status(httpStatus.OK);
 		res.sendFile(path.join(`${__dirname}/public/up.html`));
 	} catch (error) {
-		res.status(500);
+		res.status(httpStatus.INTERNAL_SERVER_ERROR);
 		res.sendFile(path.join(`${__dirname}/public/down.html`));
 	}
 });

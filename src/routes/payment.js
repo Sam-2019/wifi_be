@@ -9,6 +9,7 @@ import express from "express";
 import {
   hubtel,
   success,
+  httpStatus,
   emptyRequest,
   internalServerError,
 } from "../config/constants.js";
@@ -23,7 +24,7 @@ const router = express.Router();
 router.post("/payment/callback", async (req, res) => {
   const results = req.body;
   if (results === undefined || results === null) {
-    return res.status(400).json({ message: emptyRequest });
+    return res.status(httpStatus.BAD_REQUEST).json({ message: emptyRequest });
   }
 
   const logCallback = { provider: hubtel, response: results };
@@ -32,7 +33,7 @@ router.post("/payment/callback", async (req, res) => {
 
   if (message !== success) {
     return res
-      .status(400)
+      .status(httpStatus.BAD_REQUEST)
       .json({ message: `Payment callback with status: ${responseCode}` });
   }
 
@@ -43,19 +44,19 @@ router.post("/payment/callback", async (req, res) => {
     await addCallback(logCallback);
     const registrationByRef = await getRegistrationByReference(clientReference);
     if (!registrationByRef) {
-      return res.status(404).json({ message: "Registration not found" });
+      return res.status(httpStatus.NOT_FOUND).json({ message: "Registration not found" });
     }
 
     const sale = await findSale(clientReference);
     if (sale) {
-      return res.status(200).json({ message: "Duplicate", data: sale });
+      return res.status(httpStatus.OK).json({ message: "Duplicate", data: sale });
     }
 
     const modData = modifiedSalesRecordII({ registrationByRef, results });
     await registerSale({ route: "/payment/callback", payload: modData });
-    res.status(201).json({ message: success });
+    res.status(httpStatus.CREATED).json({ message: success });
   } catch (error) {
-    return res.status(500).send(internalServerError);
+    return res.status(httpStatus.INTERNAL_SERVER_ERROR).send(internalServerError);
   }
 });
 
@@ -67,23 +68,23 @@ router.post("/payment/status", authMiddleware, async (req, res) => {
     results.clientReference === undefined ||
     results.clientReference === null
   ) {
-    return res.status(400).json({ message: emptyRequest });
+    return res.status(httpStatus.BAD_REQUEST).json({ message: emptyRequest });
   }
 
   try {
     const response = await fetchRequest(results);
     if (!response.ok) {
       return res
-        .status(400)
+        .status(httpStatus.BAD_REQUEST)
         .json({ message: `Transaction status: ${response.statusText}` });
     }
 
     const responseData = await response.json();
     const dataPayload = responseData.data;
     await ntfy({ route: "/payment/status", payload: dataPayload });
-    res.status(200).json(responseData);
+    res.status(httpStatus.OK).json(responseData);
   } catch (error) {
-    res.status(500).send(internalServerError);
+    res.status(httpStatus.INTERNAL_SERVER_ERROR).send(internalServerError);
   }
 });
 
@@ -95,7 +96,7 @@ router.post("/payment/sync", authMiddleware, async (req, res) => {
     results.clientReference === undefined ||
     results.clientReference === null
   ) {
-    return res.status(400).json({ message: emptyRequest });
+    return res.status(httpStatus.BAD_REQUEST).json({ message: emptyRequest });
   }
 
   const clientReference = results.clientReference;
@@ -104,7 +105,7 @@ router.post("/payment/sync", authMiddleware, async (req, res) => {
     const registrationByRef = await getRegistrationByReference(clientReference);
     if (registrationByRef === null || registrationByRef === undefined) {
       return res
-        .status(404)
+        .status(httpStatus.NOT_FOUND)
         .json({
           message: `Registration with ref: ${clientReference} not found`,
         });
@@ -112,13 +113,13 @@ router.post("/payment/sync", authMiddleware, async (req, res) => {
 
     const sale = await findSale(clientReference);
     if (sale) {
-      return res.status(200).json({ message: "Duplicate", data: sale });
+      return res.status(httpStatus.OK).json({ message: "Duplicate", data: sale });
     }
 
     const response = await fetchRequest(results);
     if (!response.ok) {
       return res
-        .status(400)
+        .status(httpStatus.BAD_REQUEST)
         .json({ message: `Transaction status: ${response.statusText}` });
     }
 
@@ -127,9 +128,9 @@ router.post("/payment/sync", authMiddleware, async (req, res) => {
       const modData = modifiedSalesRecord({ registrationByRef, responseData });
       await registerSale({ route: "/payment/sync", payload: modData });
     }
-    res.status(200).json(responseData);
+    res.status(httpStatus.OK).json(responseData);
   } catch (error) {
-    res.status(500).send(internalServerError);
+    res.status(httpStatus.INTERNAL_SERVER_ERROR).send(internalServerError);
   }
 });
 

@@ -19,7 +19,7 @@ const authorization = "authorization";
 const emailExists = "Email already exist";
 const componentPath = "src/ui/components/";
 const userExists = "Username already exist";
-const emptyRequest =  "Received with no data";
+const emptyRequest = "Received with no data";
 
 const clientID = process.env.MERCHANT;
 const authToken = process.env.BASIC_AUTH;
@@ -56,6 +56,19 @@ const topup = "Top Up";
 const membership = "Membership";
 const registration = "Registration";
 
+const httpStatus = {
+  OK: 200,
+  CREATED: 201,
+  ACCEPTED: 202,
+  NO_CONTENT: 204,
+  BAD_REQUEST: 400,
+  UNAUTHORIZED: 401,
+  FORBIDDEN: 403,
+  NOT_FOUND: 404,
+  CONFLICT: 409,
+  INTERNAL_SERVER_ERROR: 500,
+};
+
 export {
   dbUri,
   admin,
@@ -77,6 +90,7 @@ export {
   successful,
   production,
   userExists,
+  httpStatus,
   membership,
   companyName,
   emailExists,
@@ -90,5 +104,5 @@ export {
   componentPath,
   ntfyAuthorization,
   internalServerError,
-  excludeItemsRegistrations
+  excludeItemsRegistrations,
 };

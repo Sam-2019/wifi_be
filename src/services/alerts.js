@@ -1,7 +1,7 @@
-import { ntfyUri, ntfyTopic, ntfyAuthorization } from "../config/constants.js";
+import { config } from "../config/index.js";
 
 const priority = 4;
-const topic = ntfyTopic;
+const topic = config.notify.topic;
 // const tags = ["warning", "cd"];
 
 const setupAlert = (title, message) => {
@@ -15,7 +15,7 @@ const setupAlert = (title, message) => {
 };
 
 export const ntfy = async ({ payload, route }) => {
-  if (!ntfyUri || !ntfyTopic || !ntfyAuthorization) return;
+  if (!config.notify.uri || !config.notify.topic || !config.notify.auth) return;
   if (!route) return;
   if (!payload) return;
 
@@ -31,10 +31,10 @@ export const ntfy = async ({ payload, route }) => {
 
   const alert = setupAlert(route, getInfo);
 
-  await fetch(ntfyUri, {
+  await fetch(config.notify.uri, {
     method: "POST",
     headers: {
-      Authorization: `Bearer ${ntfyAuthorization}`,
+      Authorization: `Bearer ${config.notify.auth}`,
     },
     body: JSON.stringify(alert),
   });

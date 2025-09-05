@@ -1,8 +1,9 @@
+import { config } from "./index.js";
 import { forbidden, unauthorized, httpStatus } from "./constants.js";
 
 export const authMiddleware = (req, res, next) => {
   const authorization = req.headers.authorization;
-  const AUTHORIZATION = process.env.AUTHORIZATION;
+  const AUTHORIZATION = config.authorization.bearer;
 
   if (
     !req.headers ||

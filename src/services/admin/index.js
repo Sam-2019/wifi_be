@@ -6,15 +6,10 @@ import AdminJS, { ComponentLoader } from "adminjs";
 import { findUser } from "../db/repository/user.js";
 import * as AdminJSMongoose from "@adminjs/mongoose";
 import { dashboard } from "../../config/filePath.js";
-import { cookie, cookiePass } from "../../config/constants.js";
-import {
-  salt,
-  admin,
-  companyName,
-  adminCredentials,
-} from "../../config/constants.js";
+import { admin, companyName } from "../../config/constants.js";
 
 import Sms from "../db/modelsXschema/sms.js";
+import { config } from "../../config/index.js";
 import Sale from "../db/modelsXschema/sale.js";
 import User from "../db/modelsXschema/user.js";
 import Logger from "../db/modelsXschema/log.js";
@@ -25,6 +20,14 @@ import Feedback from "../db/modelsXschema/feedback.js";
 import Registration from "../db/modelsXschema/registration.js";
 import FailedRegistration from "../db/modelsXschema/failed_registration.js";
 import PendingRegistration from "../db/modelsXschema/pending_registration.js";
+
+const adminCredentials = {
+  role: config.admin.role,
+  email: config.admin.email,
+  userID: config.admin.userID,
+  fullName: config.admin.fullName,
+  password: config.admin.password,
+};
 
 const defaultProperties = [
   "fullName",
@@ -347,7 +350,7 @@ const UserResource = {
               ...request.payload,
               encryptedPassword: await bcrypt.hash(
                 request.payload.password,
-                salt
+                Number(config.session.salt)
               ),
               password: undefined,
             };
@@ -567,8 +570,8 @@ const adminRouter = AdminJSExpress.buildAuthenticatedRouter(
   adminjs,
   {
     authenticate,
-    cookieName: cookie,
-    cookiePassword: cookiePass,
+    cookieName: config.cookie.name,
+    cookiePassword: config.cookie.password,
   },
   null,
   dbSession

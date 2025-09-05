@@ -1,13 +1,6 @@
-import {
-  ttl,
-  dbUri,
-  crypto,
-  dbName,
-  secret,
-  dbCollection,
-} from "../../config/constants.js";
 import mongoose from "mongoose";
 import MongoStore from "connect-mongo";
+import { config } from "../../config/index.js";
 
 const dbConn = mongoose.connection;
 dbConn.on("connected", () => {
@@ -15,8 +8,8 @@ dbConn.on("connected", () => {
 });
 
 const connectDB = async () => {
-  await mongoose.connect(dbUri, {
-    dbName: dbName,
+  await mongoose.connect(config.database.uri, {
+    dbName: config.database.name,
     autoIndex: true,
   });
 };
@@ -29,13 +22,13 @@ const disconnectDB = async () => {
 const dbSession = {
   resave: true,
   saveUninitialized: true,
-  secret: secret,
+  secret: config.session.secret,
   store: MongoStore.create({
-    mongoUrl: dbUri,
-    dbName: dbName,
-    collectionName: dbCollection,
-    ttl: ttl,
-    crypto: { secret: crypto },
+    mongoUrl: config.database.uri,
+    dbName: config.database.name,
+    collectionName: config.database.collection,
+    ttl: 14 * 24 * 60 * 60,
+    crypto: { secret: config.session.crypto },
   }),
 };
 

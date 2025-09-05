@@ -1,6 +1,7 @@
 import { connectDB } from "../db/index.js";
+import { config } from "../../config/index.js";
 import { findSale } from "../db/repository/sale.js";
-import { bearer, baseURL, httpStatus } from "../../config/constants.js";
+import { httpStatus } from "../../config/constants.js";
 import { getTodaysRegistrations } from "../db/repository/registration.js";
 
 const paymentSync = async () => {
@@ -16,12 +17,12 @@ const paymentSync = async () => {
       const sale = await findSale(clientReference);
       if (sale.clientReference) return;
 
-      await fetch(`${baseURL}/api/payment/sync`, {
+      await fetch(`${config.server.uri}/api/payment/sync`, {
         method: "POST",
         mode: "cors",
         body: JSON.stringify(payload),
         headers: {
-          Authorization: `Bearer ${bearer}`,
+          Authorization: `Bearer ${config.authorization.bearer}`,
           "Content-Type": "application/json",
         },
       })

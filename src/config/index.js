@@ -42,6 +42,7 @@ const config = {
     secret: process.env.SESSION_SECRET,
     crypto: process.env.SESSION_CRYPTO_SECRET,
     collection: process.env.SESSION_COLLECTION,
+    ttl: 14 * 24 * 60 * 60
   },
   cookie: {
     name: process.env.COOKIE_NAME,

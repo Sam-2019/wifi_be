@@ -1,10 +1,13 @@
 import RouterOSClient from "ros-client";
-import {
-  mikrotikCredentials,
-  defaultMikrotikServer,
-} from "../../config/constants.js";
+import { config } from "../../config/index.js";
 
-// Create API client instance
+const mikrotikCredentials = {
+  port: config.mikrotik.port,
+  host: config.mikrotik.host,
+  username: config.mikrotik.username,
+  password: config.mikrotik.password,
+};
+
 const api = new RouterOSClient({
   ...mikrotikCredentials,
   tls: false,
@@ -105,6 +108,7 @@ const resetCounter = async (userID) => {
 };
 
 const createUser = async (userData) => {
+  const defaultMikrotikServer = config.mikrotik.server;
   const comment = `Automated-${new Date().toISOString()}`;
 
   try {

@@ -18,12 +18,7 @@ const server_down = "server is down";
 const authorization = "authorization";
 const componentPath = "src/ui/components/";
 
-const bearer = process.env.BEARER;
-const baseURL = process.env.BASE_PROD_URL;
-
 const internalServerError = "Internal Server Error";
-
-const ttl = 14 * 24 * 60 * 60;
 
 const excludeItems = {
   _id: 0,
@@ -34,12 +29,7 @@ const excludeItems = {
   __v: 0,
 };
 
-const mikrotikCredentials = {
-  port: process.env.MIKROTIK_PORT,
-  host: process.env.MIKROTIK_HOST,
-  username: process.env.MIKROTIK_USERNAME,
-  password: process.env.MIKROTIK_PASSWORD,
-};
+
 
 const topup = "Top Up";
 const registration = "Registration";
@@ -109,13 +99,10 @@ const httpStatus = {
 };
 
 export {
-  ttl,
   admin,
   topup,
   hubtel,
-  bearer,
   success,
-  baseURL,
   paystack,
   dataPlans,
   __dirname,
@@ -134,7 +121,6 @@ export {
   authorization,
   componentPath,
   getSelectedPlan,
-  mikrotikCredentials,
   internalServerError,
   parseUptimeToSeconds,
 };

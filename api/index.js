@@ -9,7 +9,7 @@ import requestReceived from "request-received";
 import { __dirname } from "../src/config/constants.js";
 import { connectDB } from "../src/services/db/index.js";
 import { startBree } from "../src/services/jobs/index.js";
-import { adminjs, adminRouter } from "../src/services/admin/index.js";
+// import { adminjs, adminRouter } from "../src/services/admin/index.js";
 
 const port = process.env.PORT || 4000;
 
@@ -32,12 +32,12 @@ const start = async () => {
   app.use(bodyParser.json());
   app.disable("x-powered-by");
   app.use(express.static(path.join(__dirname, "/public")));
-  app.use(adminjs.options.rootPath, adminRouter);
+  // app.use(adminjs.options.rootPath, adminRouter);
   app.use(bodyParser.urlencoded({ extended: false }));
 
   app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
-    console.log(`AdminJS started on ${port}${adminjs.options.rootPath}`);
+    // console.log(`AdminJS started on ${port}${adminjs.options.rootPath}`);
   });
 
   process.on("SIGTERM", () => {

@@ -26,6 +26,7 @@ const dbSession = {
   store: MongoStore.create({
     mongoUrl: config.database.uri,
     dbName: config.database.name,
+    mongoOptions: { useNewUrlParser: true, useUnifiedTopology: true },
     collectionName: config.session.collection,
     ttl: 14 * 24 * 60 * 60,
     crypto: { secret: config.session.crypto },

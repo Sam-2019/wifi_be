@@ -1,5 +1,5 @@
 import bcrypt from "bcrypt";
-import MongoStore from "connect-mongo";
+import { dbSession } from "../db/index.js";
 import loggerFeature from "@adminjs/logger";
 import AdminJSExpress from "@adminjs/express";
 import AdminJS, { ComponentLoader } from "adminjs";
@@ -574,19 +574,7 @@ const adminRouter = AdminJSExpress.buildAuthenticatedRouter(
     cookiePassword: config.cookie.password,
   },
   null,
-  {
-    secret: config.session.secret,
-    resave: true,
-    saveUninitialized: true,
-    store: MongoStore.create({
-      mongoUrl: config.database.uri,
-      dbName: config.database.name,
-      stringify: false,
-      collectionName: config.session.collection,
-      ttl: config.session.ttl,
-      crypto: { secret: config.session.crypto },
-    }),
-  }
+  dbSession
 );
 
 export { adminjs, adminRouter };

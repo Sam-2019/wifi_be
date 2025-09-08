@@ -24,11 +24,11 @@ const dbSession = {
   resave: true,
   saveUninitialized: true,
   store: MongoStore.create({
-    mongoUrl: config.database.uri,
+    mongoUrl: String(config.database.uri),
+    collectionName: config.session.collection,
     dbName: config.database.name,
     stringify: false,
-    collectionName: config.session.collection,
-    ttl: config.session.ttl,
+    ttl: Number(config.session.ttl),
     crypto: { secret: config.session.crypto },
   }),
 };

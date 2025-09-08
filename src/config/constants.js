@@ -1,7 +1,7 @@
-import "dotenv/config";
 import path from "path";
 
 const admin = "admin";
+const topup = "Top Up";
 const hubtel = "hubtel";
 const success = "success";
 const paystack = "paystack";
@@ -9,10 +9,12 @@ const forbidden = "Forbidden";
 const assetPath = "./assets/";
 const successful = "successful";
 const production = "production";
+const membership = "Membership";
 const __dirname = path.resolve();
 const server_up = "server is up";
 const development = "development";
 const companyName = "PentagonWifi";
+const registration = "Registration";
 const unauthorized = "Unauthorized";
 const server_down = "server is down";
 const authorization = "authorization";
@@ -37,10 +39,6 @@ const excludeItemsRegistrations = {
   updatedAt: 0,
   __v: 0,
 };
-
-const topup = "Top Up";
-const membership = "Membership";
-const registration = "Registration";
 
 const httpStatus = {
   OK: 200,

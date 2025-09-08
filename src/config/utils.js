@@ -1,4 +1,3 @@
-import "dotenv/config";
 import { config } from "./index.js";
 import { ntfy } from "../services/alerts.js";
 import { hubtel, topup } from "./constants.js";
@@ -6,8 +5,6 @@ import { writeToSheet } from "../services/gSheet.js";
 import { addSale } from "../services/db/repository/sale.js";
 import { addTopup } from "../services/db/repository/topup.js";
 import { addCustomer } from "../services/db/repository/customer.js";
-// import { allocateRouter } from "../services/db/repository/router.js";
-
 
 const fetchOption = {
   method: "GET",
@@ -63,9 +60,6 @@ export const registerSale = async ({ route, payload }) => {
     await addTopup(payload);
   } else {
     await addCustomer(payload);
-    // const station = payload?.blockCourt;
-    // const customerId = await addCustomer(payload);
-    // if (payload.isCustodian === true) await allocateRouter({ station, customerId });
   }
   await writeToSheet(payload);
   await ntfy({ route: route, payload: payload });

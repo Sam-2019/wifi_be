@@ -2,13 +2,11 @@ import { config } from "../config/index.js";
 
 const priority = 4;
 const topic = config.notify.topic;
-// const tags = ["warning", "cd"];
 
 const setupAlert = (title, message) => {
   return {
     topic: topic,
     title: title,
-    // "tags": tags,
     priority: priority,
     message: JSON.stringify(message),
   };

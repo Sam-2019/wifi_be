@@ -1,4 +1,3 @@
-import "dotenv/config";
 import express from "express";
 import { writeToSheet } from "../services/gSheet.js";
 import { authMiddleware } from "../config/middleware.js";

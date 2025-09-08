@@ -1,4 +1,3 @@
-import "dotenv/config";
 import {
   fetchRequest,
   registerSale,

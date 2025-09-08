@@ -1,4 +1,3 @@
-import "dotenv/config";
 import path from "path";
 import express from "express";
 import apiRouter from "./api.js";

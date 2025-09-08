@@ -20,15 +20,15 @@ const disconnectDB = async () => {
 };
 
 const dbSession = {
+  secret: config.session.secret,
   resave: true,
   saveUninitialized: true,
-  secret: config.session.secret,
   store: MongoStore.create({
     mongoUrl: config.database.uri,
     dbName: config.database.name,
-    mongoOptions: { useNewUrlParser: true, useUnifiedTopology: true },
+    stringify: false,
     collectionName: config.session.collection,
-    ttl: 14 * 24 * 60 * 60,
+    ttl: config.session.ttl,
     crypto: { secret: config.session.crypto },
   }),
 };

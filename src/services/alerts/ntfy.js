@@ -1,4 +1,4 @@
-import { config } from "../config/index.js";
+import { config } from "../../config/index.js";
 
 const priority = 4;
 const topic = config.notify.topic;

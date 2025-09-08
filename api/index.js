@@ -32,7 +32,7 @@ const start = async () => {
   app.use(bodyParser.json());
   app.disable("x-powered-by");
   app.use(express.static(path.join(__dirname, "/public")));
-  app.use(adminjs.options.rootPath, adminRouter);
+  // app.use(adminjs.options.rootPath, adminRouter);
   app.use(bodyParser.urlencoded({ extended: false }));
 
   app.listen(port, () => {

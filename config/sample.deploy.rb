@@ -43,10 +43,11 @@ task :bun_install do
   command %(bun install)
 end
 
+
 desc "start app"
 task :start_app do
     in_path(fetch(:current_path)) do
-    command %(pm2 start ./api/index.js --time --name #{fetch(:application_name)} )
+    command %(pm2 start ./api/index.js --name #{fetch(:application_name)} --log-date-format 'ddd, MMM D, YYYY h:mm:ss A')
     command %(pm2 save)
   end
 end
@@ -54,35 +55,35 @@ end
 desc "restart app"
 task :restart do
   in_path(fetch(:current_path)) do
-    command %(pm2 restart --time #{fetch(:application_name)})
+    command %(pm2 restart #{fetch(:application_name)} --log-date-format 'ddd, MMM D, YYYY h:mm:ss A')
   end
 end
 
 desc "reload app"
 task :reload do
   in_path(fetch(:current_path)) do
-    command %(pm2 reload #{fetch(:application_name)})
+    command %(pm2 reload #{fetch(:application_name)} --update-env --log-date-format 'ddd, MMM D, YYYY h:mm:ss A')
   end
 end
 
 desc "shutdown app"
 task :shutdown do
   in_path(fetch(:current_path)) do
-    command %(pm2 stop #{fetch(:application_name)})
+    command %(pm2 stop #{fetch(:application_name)} --log-date-format 'ddd, MMM D, YYYY h:mm:ss A')
   end
 end
 
-desc "delete pm2 app"
+desc "delete app"
 task :delete_app do
   command %(pm2 delete #{fetch(:application_name)})
 end
 
-desc "show logs"
+desc "show app logs"
 task logs: :remote_environment do
   command %(pm2 logs --lines 100)
 end
 
-desc "flush logs"
+desc "flush app logs"
 task flush: :remote_environment do
   command %(pm2 flush 0)
 end
@@ -94,10 +95,20 @@ end
 
 desc "app metadata"
 task meta: :remote_environment do
-  command %(pm2 show #{fetch(:application_name)})
+  command %(pm2 show #{fetch(:application_name)} --log-date-format 'ddd, MMM D, YYYY h:mm:ss A')
 end
 
 desc "list apps"
 task list: :remote_environment do
   command %(pm2 list)
+end
+
+desc "rollback last deployment"
+task rollback: :remote_environment do
+    in_path(fetch(:current_path)) do
+    command %(pm2 stop #{fetch(:application_name)} --log-date-format 'ddd, MMM D, YYYY h:mm:ss A')
+    command %(pm2 delete #{fetch(:application_name)})
+    command %(pm2 start ./api/index.js --name #{fetch(:application_name)} --log-date-format 'ddd, MMM D, YYYY h:mm:ss A')
+    command %(pm2 save)
+  end
 end

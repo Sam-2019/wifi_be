@@ -1,7 +1,7 @@
 import path from "path";
-import "dotenv/config";
 
 const admin = "admin";
+const topup = "Top Up";
 const hubtel = "hubtel";
 const success = "success";
 const paystack = "paystack";
@@ -14,10 +14,10 @@ const server_up = "server is up";
 const development = "development";
 const companyName = "PentagonWifi";
 const unauthorized = "Unauthorized";
+const registration = "Registration";
 const server_down = "server is down";
 const authorization = "authorization";
 const componentPath = "src/ui/components/";
-
 const internalServerError = "Internal Server Error";
 
 const excludeItems = {
@@ -28,11 +28,6 @@ const excludeItems = {
   updatedAt: 0,
   __v: 0,
 };
-
-
-
-const topup = "Top Up";
-const registration = "Registration";
 
 const dataPlans = {
   DAILY: {

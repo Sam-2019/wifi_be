@@ -1,13 +1,10 @@
 import mongoose from "mongoose";
-import {
-  getSelectedPlan,
-  parseUptimeToSeconds,
-} from "../../config/constants.js";
 import Graceful from "@ladjs/graceful";
 import { ntfy } from "../alerts/ntfy.js";
 import { connectDB } from "../db/index.js";
 import { getActiveTopup } from "../db/repository/topup.js";
 import { getUser, resetCounter } from "../mikrotik/index.js";
+import { getSelectedPlan, parseUptimeToSeconds } from "../../config/constants.js";
 
 const graceful = new Graceful({
   mongooses: [mongoose],
@@ -42,8 +39,6 @@ const resetAccount = async () => {
       fullName: customer?.fullName,
     };
 
-    // const message = `${userInfo.userName} - ${userInfo.uptime}`;
-    // if (userInfo?.uptime !== planUptime) return;
     if (userUptimeSeconds < planUptimeSeconds) return;
 
     const state = await resetCounter(userInfo.id);
@@ -52,7 +47,6 @@ const resetAccount = async () => {
       await customer.save();
       const message = `👍🏾 Reset Counter: ${userInfo.fullName} - ${userInfo.userName}`;
       await ntfy({ payload: message });
-      console.log(message);
     }
   } catch (error) {
     const message = `🤬 Reset Counter: ${error}`;

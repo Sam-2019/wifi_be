@@ -27,7 +27,7 @@ const dbSession = {
     mongoUrl: config.database.uri,
     dbName: config.database.name,
     collectionName: config.session.collection,
-    ttl: config.session.ttl,
+    ttl: 14 * 24 * 60 * 60,
     crypto: { secret: config.session.crypto },
   }),
 };

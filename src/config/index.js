@@ -11,8 +11,8 @@ const config = {
   },
   notify: {
     uri: process.env.NTFY_URL,
-    auth: process.env.NTFY_AUTH,
     topic: process.env.NTFY_TOPIC,
+    auth: process.env.NTFY_AUTHORIZATION,
   },
   google: {
     uri: process.env.GOOGLE_SCRIPTS,

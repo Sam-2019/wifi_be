@@ -113,7 +113,7 @@ const createUser = async (userData) => {
 
   try {
     await api.connect();
-    await api.send([
+    const user = await api.send([
       "/ip/hotspot/user/add",
       `=name=${userData?.userName}`,
       `=email=${userData?.email}`,
@@ -124,7 +124,7 @@ const createUser = async (userData) => {
       `=server=${defaultMikrotikServer}`,
     ]);
     await api.close();
-    return true;
+    return modifiedUser(user);
   } catch (err) {
     throw err.message;
   }

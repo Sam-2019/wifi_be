@@ -46,8 +46,9 @@ const provisionAccount = async () => {
       return;
     }
 
-    await createUser(results);
+    const createdUser = await createUser(results);
     customer.profileCreated = true;
+    customer.mktID = createdUser?.id;
     await customer.save();
     await ntfy({
       payload: `👍🏾 Account Provision: ${customer?.fullName} - ${results?.userName}`,

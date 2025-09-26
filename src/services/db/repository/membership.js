@@ -5,6 +5,13 @@ const getMemberships = async () => {
   return await Membership.find({}, excludeItems).lean();
 };
 
+const getMember = async (data) => {
+  const userName = data?.userName;
+  return await Membership.find({
+    "credentials.userName": userName,
+  }, excludeItems).lean();
+};
+
 const addMembership = async (data) => {
   return await Membership.create(data);
 };
@@ -21,4 +28,4 @@ const getUnprovisionMember = async () => {
   return await Membership.findOne({ profileCreated: "false" }).lean();
 };
 
-export { getMemberships, addMembership, getActiveMember, getDisabledMember, getUnprovisionMember };
+export { getMemberships, getMember, addMembership, getActiveMember, getDisabledMember, getUnprovisionMember };

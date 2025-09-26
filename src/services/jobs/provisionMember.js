@@ -32,6 +32,7 @@ const provisionMember = async () => {
             email: member?.email,
             profile: selectedPlan.name,
             limitUptime: selectedPlan.uptimeSub,
+            disabled: true
         };
 
         const memberStatus = await getUser(results?.userName);

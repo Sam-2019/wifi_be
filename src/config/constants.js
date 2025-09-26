@@ -50,9 +50,9 @@ const dataPlans = {
   },
   MEMBERSHIP: {
     name: "Membership",
-    uptime: "1h",
-    uptimeSub: "01:00:00",
-    uptimeSeconds: 3600,
+    uptime: "",
+    uptimeSub: "00:00:00",
+    uptimeSeconds: 0,
   },
 };
 

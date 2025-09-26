@@ -4,7 +4,7 @@ import { hubtel, topup } from "./constants.js";
 import { writeToSheet } from "../services/gSheet.js";
 import { addSale } from "../services/db/repository/sale.js";
 import { addTopup } from "../services/db/repository/topup.js";
-import { addCustomer } from "../services/db/repository/customer.js";
+import { addMembership } from "../services/db/repository/membership.js";
 
 const fetchOption = {
   method: "GET",
@@ -59,7 +59,7 @@ export const registerSale = async ({ route, payload }) => {
   if (payload.registrationType === topup) {
     await addTopup(payload);
   } else {
-    await addCustomer(payload);
+    await addMembership(payload);
   }
   await writeToSheet(payload);
   await ntfy({ route: route, payload: payload });

@@ -4,20 +4,32 @@ const dataSchema = new Schema(
   {
     fullName: { type: String },
     phoneNumber: { type: String },
-    subscriptionPlan: { type: String },
-    planFee: { type: Number },
-    clientReference: { type: String },
-    email: { type: String, lowercase: true },
-    credentials: { type: Object },
-    purchaseInfo: { type: Object },
-    transactionId: { type: String },
-    externalTransactionId: { type: String },
-    status: { type: String, default: "active" },
+    email: { type: String, lowercase: true, unique: true },
+    dateOfBirth: { type: Date },
+    blockCourt: { type: String },
+    roomType: { type: String },
+    roomNumber: { type: String },
+    isCustodian: { type: Boolean, default: false },
+    credentials: {
+      userName: {
+        type: String,
+        required: true,
+        unique: true,
+      },
+      password: {
+        type: String,
+        required: true,
+      },
+    },
+    cardPrinted: { type: Boolean, default: false },
+    profileCreated: { type: Boolean, default: false },
+    studentId: { type: String, unique: true },
+    status: { type: String, default: "inactive" },
   },
   {
     timestamps: true,
   }
 );
 
-const Membership = model("Memberships", dataSchema);
+const Membership = model("Membership", dataSchema);
 export default Membership;

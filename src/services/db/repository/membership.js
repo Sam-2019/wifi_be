@@ -13,8 +13,8 @@ const getActiveMembership = async () => {
   return await Membership.findOne({ status: "activated" }).lean();
 };
 
-const getExpiredMembership = async () => {
-  return await Membership.findOne({ status: "expired" }).lean();
+const getInactiveMembership = async () => {
+  return await Membership.findOne({ status: "inactive" }).lean();
 };
 
-export { getMemberships, addMembership, getActiveMembership, getExpiredMembership };
+export { getMemberships, addMembership, getActiveMembership, getInactiveMembership };

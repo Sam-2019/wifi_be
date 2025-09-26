@@ -9,12 +9,16 @@ const addMembership = async (data) => {
   return await Membership.create(data);
 };
 
-const getActiveMembership = async () => {
-  return await Membership.findOne({ status: "activated" }).lean();
+const getActiveMember = async () => {
+  return await Membership.findOne({ status: "active" }).lean();
 };
 
-const getInactiveMembership = async () => {
-  return await Membership.findOne({ status: "inactive" }).lean();
+const getDisabledMember = async () => {
+  return await Membership.findOne({ status: "diasbled" }).lean();
 };
 
-export { getMemberships, addMembership, getActiveMembership, getInactiveMembership };
+const getUnprovisionMember = async () => {
+  return await Membership.findOne({ profileCreated: "false" }).lean();
+};
+
+export { getMemberships, addMembership, getActiveMember, getDisabledMember, getUnprovisionMember };

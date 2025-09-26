@@ -1,3 +1,4 @@
+
 import { model, Schema } from "mongoose";
 
 const dataSchema = new Schema(
@@ -24,7 +25,8 @@ const dataSchema = new Schema(
     cardPrinted: { type: Boolean, default: false },
     profileCreated: { type: Boolean, default: false },
     studentId: { type: String, unique: true },
-    status: { type: String, default: "inactive" },
+    status: { type: String, default: "disabled" },
+    mktID: { type: String, },
   },
   {
     timestamps: true,

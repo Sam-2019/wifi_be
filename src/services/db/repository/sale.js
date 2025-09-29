@@ -16,7 +16,7 @@ const findSale = async (data) => {
     {
       clientReference: clientReference,
     },
-    excludeItems
+    excludeItems,
   ).lean();
 };
 

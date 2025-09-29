@@ -43,19 +43,25 @@ router.post("/payment/callback", async (req, res) => {
     await addCallback(logCallback);
     const registrationByRef = await getRegistrationByReference(clientReference);
     if (!registrationByRef) {
-      return res.status(httpStatus.NOT_FOUND).json({ message: "Registration not found" });
+      return res
+        .status(httpStatus.NOT_FOUND)
+        .json({ message: "Registration not found" });
     }
 
     const sale = await findSale(clientReference);
     if (sale) {
-      return res.status(httpStatus.OK).json({ message: "Duplicate", data: sale });
+      return res
+        .status(httpStatus.OK)
+        .json({ message: "Duplicate", data: sale });
     }
 
     const modData = modifiedSalesRecordII({ registrationByRef, results });
     await registerSale({ route: "/payment/callback", payload: modData });
     res.status(httpStatus.CREATED).json({ message: success });
   } catch (error) {
-    return res.status(httpStatus.INTERNAL_SERVER_ERROR).send(internalServerError);
+    return res
+      .status(httpStatus.INTERNAL_SERVER_ERROR)
+      .send(internalServerError);
   }
 });
 
@@ -103,16 +109,16 @@ router.post("/payment/sync", authMiddleware, async (req, res) => {
   try {
     const registrationByRef = await getRegistrationByReference(clientReference);
     if (registrationByRef === null || registrationByRef === undefined) {
-      return res
-        .status(httpStatus.NOT_FOUND)
-        .json({
-          message: `Registration with ref: ${clientReference} not found`,
-        });
+      return res.status(httpStatus.NOT_FOUND).json({
+        message: `Registration with ref: ${clientReference} not found`,
+      });
     }
 
     const sale = await findSale(clientReference);
     if (sale) {
-      return res.status(httpStatus.OK).json({ message: "Duplicate", data: sale });
+      return res
+        .status(httpStatus.OK)
+        .json({ message: "Duplicate", data: sale });
     }
 
     const response = await fetchRequest(results);

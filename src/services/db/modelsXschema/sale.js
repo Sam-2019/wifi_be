@@ -21,7 +21,7 @@ const dataSchema = new Schema(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 const Sale = model("Sales", dataSchema);

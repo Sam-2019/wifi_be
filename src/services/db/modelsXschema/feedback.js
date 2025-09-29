@@ -9,7 +9,7 @@ const dataSchema = new Schema(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 const Feedback = model("Feedback", dataSchema);

@@ -30,7 +30,7 @@ const dataSchema = new Schema(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 const Membership = model("Membership", dataSchema);

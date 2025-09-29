@@ -1,12 +1,16 @@
 import express from "express";
 import {
+  httpStatus,
+  emptyRequest,
+  internalServerError,
+} from "../config/constants.js";
+import {
   addPendingRegistration,
   getPendingRegistration,
   getPendingRegistrations,
 } from "../services/db/repository/pending_registration.js";
 import { ntfy } from "../services/alerts.js";
 import { authMiddleware } from "../config/middleware.js";
-import { emptyRequest, internalServerError, httpStatus } from "../config/constants.js";
 
 const router = express.Router();
 router.get("/pending-registrations", authMiddleware, async (req, res) => {
@@ -69,7 +73,9 @@ router
     try {
       await addPendingRegistration(results);
       await ntfy({ route: "/pending-registration", payload: results });
-      res.status(httpStatus.CREATED).json({ message: "Pending Registration added" });
+      res
+        .status(httpStatus.CREATED)
+        .json({ message: "Pending Registration added" });
     } catch (error) {
       res.status(httpStatus.INTERNAL_SERVER_ERROR).send(internalServerError);
     }

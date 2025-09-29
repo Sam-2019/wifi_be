@@ -17,4 +17,9 @@ const getExpiredMembership = async () => {
   return await Membership.findOne({ status: "expired" }).lean();
 };
 
-export { getMemberships, addMembership, getActiveMembership, getExpiredMembership };
+export {
+  addMembership,
+  getMemberships,
+  getActiveMembership,
+  getExpiredMembership,
+};

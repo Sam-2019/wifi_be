@@ -5,9 +5,10 @@
   "main": "index.ts",
   "type": "module",
   "scripts": {
+    "start": "bun api/index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon --env-file=env/.dev.env api/index.js",
-    "start": "bun api/index.js"
+    "biome": "bunx --bun biome format --write ./api ./public ./src"
   },
   "keywords": [],
   "author": "",

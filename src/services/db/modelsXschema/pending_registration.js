@@ -23,7 +23,7 @@ const dataSchema = new Schema(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 const PendingRegistration = model("PendingRegistration", dataSchema);

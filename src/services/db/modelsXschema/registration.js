@@ -31,7 +31,7 @@ const dataSchema = new Schema(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 const Registration = model("Registration", dataSchema);

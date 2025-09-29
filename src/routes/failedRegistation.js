@@ -1,12 +1,16 @@
 import express from "express";
 import {
+  httpStatus,
+  emptyRequest,
+  internalServerError,
+} from "../config/constants.js";
+import {
   addFailedRegistration,
   getFailedRegistration,
   getFailedRegistrations,
 } from "../services/db/repository/failed_registration.js";
 import { ntfy } from "../services/alerts.js";
 import { authMiddleware } from "../config/middleware.js";
-import { emptyRequest, internalServerError, httpStatus } from "../config/constants.js";
 
 const router = express.Router();
 router.get("/failed-registrations", authMiddleware, async (req, res) => {
@@ -70,7 +74,9 @@ router
     try {
       await addFailedRegistration(results);
       await ntfy({ route: "/failed-registration", payload: results });
-      res.status(httpStatus.CREATED).json({ message: "Failed registration added" });
+      res
+        .status(httpStatus.CREATED)
+        .json({ message: "Failed registration added" });
     } catch (error) {
       res.status(httpStatus.INTERNAL_SERVER_ERROR).send(internalServerError);
     }

@@ -16,7 +16,7 @@ const dataSchema = new Schema(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 const Topup = model("Topups", dataSchema);

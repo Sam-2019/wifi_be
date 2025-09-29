@@ -7,11 +7,11 @@ const dataSchema = new Schema(
     isConfigured: { type: Boolean, default: false },
     isAllocated: { type: Boolean, default: false },
     station: { type: String },
-    customerId: { type: Schema.Types.ObjectId, ref: "Customer"},
+    customerId: { type: Schema.Types.ObjectId, ref: "Customer" },
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 const Router = model("Router", dataSchema);

@@ -18,12 +18,8 @@ const getFailedRegistration = async (data) => {
       email: email,
       phoneNumber: phoneNumber,
     },
-    excludeItems
+    excludeItems,
   ).lean();
 };
 
-export {
-  addFailedRegistration,
-  getFailedRegistration,
-  getFailedRegistrations,
-};
+export { addFailedRegistration, getFailedRegistration, getFailedRegistrations };

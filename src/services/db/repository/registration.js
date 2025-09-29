@@ -1,5 +1,9 @@
+import {
+  excludeItems,
+  registration,
+  excludeItemsRegistrations,
+} from "../../../config/constants.js";
 import Registration from "../modelsXschema/registration.js";
-import { excludeItems, registration, excludeItemsRegistrations } from "../../../config/constants.js";
 
 const getRegistrations = async () => {
   return await Registration.find({}, excludeItems).lean();
@@ -21,20 +25,25 @@ const getRegistration = async (data) => {
       registrationType: registration,
       "credentials.userName": userName,
     },
-    excludeItems
+    excludeItems,
   ).lean();
 };
 
 const getRegistrationByReference = async (data) => {
   const clientReference = data;
-  
+
   return await Registration.findOne(
     {
-      clientReference: clientReference
+      clientReference: clientReference,
     },
-    excludeItemsRegistrations
+    excludeItemsRegistrations,
   )
     .sort({ $natural: -1 })
     .lean();
-}
-export { addRegistration, getRegistration, getRegistrations, getRegistrationByReference };
+};
+export {
+  addRegistration,
+  getRegistration,
+  getRegistrations,
+  getRegistrationByReference,
+};

@@ -24,7 +24,7 @@ const dataSchema = new Schema(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 const FailedRegistration = model("FailedRegistration", dataSchema);

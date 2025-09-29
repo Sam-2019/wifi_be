@@ -1,12 +1,16 @@
 import express from "express";
 import {
+  httpStatus,
+  emptyRequest,
+  internalServerError,
+} from "../config/constants.js";
+import {
   addRegistration,
   getRegistration,
   getRegistrations,
 } from "../services/db/repository/registration.js";
 import { ntfy } from "../services/alerts.js";
 import { authMiddleware } from "../config/middleware.js";
-import { emptyRequest, internalServerError, httpStatus } from "../config/constants.js";
 
 const router = express.Router();
 router.get("/registrations", authMiddleware, async (req, res) => {

@@ -9,28 +9,27 @@ import { __dirname } from "../src/config/constants.js";
 import { connectDB } from "../src/services/db/index.js";
 
 const port = config.server.port || 4000;
+const app = express();
+app.use(
+  cors({
+    origin: "*",
+    methods: ["GET", "POST"],
+  }),
+);
+await connectDB();
+
+ping();
+app.use(json());
+app.use("/", router);
+app.use(bodyParser.json());
+app.disable("x-powered-by");
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.static(path.join(__dirname, "/public")));
 
 const start = async () => {
-  const app = express();
-  app.use(
-    cors({
-      origin: "*",
-      methods: ["GET", "POST"],
-    }),
-  );
-  await connectDB();
-
-  ping();
-  app.use(json());
-  app.use("/", router);
-  app.use(bodyParser.json());
-  app.disable("x-powered-by");
-  app.use(bodyParser.urlencoded({ extended: false }));
-  app.use(express.static(path.join(__dirname, "/public")));
-
   app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
   });
 };
 
-start();
+await start();

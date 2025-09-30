@@ -75,7 +75,7 @@ router
       const sale = await findSale(results.clientReference);
       if (sale) {
         return res
-          .status(httpStatus.OK)
+          .status(httpStatus.FOUND)
           .json({ message: "Duplicate", data: sale });
       }
 

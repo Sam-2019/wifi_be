@@ -28,7 +28,7 @@ const dataSchema = new Schema(
     provider: { type: String },
     registrationType: { type: String },
     purchaseInfo: { type: Object },
-    studentId: { type: String, unique: true }
+    studentId: { type: String }
   },
   {
     timestamps: true,

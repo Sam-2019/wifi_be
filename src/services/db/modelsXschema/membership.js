@@ -24,7 +24,7 @@ const dataSchema = new Schema(
     },
     cardPrinted: { type: Boolean, default: false },
     profileCreated: { type: Boolean, default: false },
-    studentId: { type: String, unique: true },
+    studentId: { type: String },
     status: { type: String, default: "disabled" },
     mktID: { type: String, },
   },

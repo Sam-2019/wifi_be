@@ -1,4 +1,3 @@
-
 import { model, Schema } from "mongoose";
 
 const dataSchema = new Schema(
@@ -12,21 +11,15 @@ const dataSchema = new Schema(
     roomNumber: { type: String },
     isCustodian: { type: Boolean, default: false },
     credentials: {
-      userName: {
-        type: String,
-        required: true,
-        unique: true,
-      },
-      password: {
-        type: String,
-        required: true,
-      },
+      userName: { type: String, required: true, unique: true },
+      password: { type: String, required: true },
     },
+    selectedCard: { type: Object },
     cardPrinted: { type: Boolean, default: false },
     profileCreated: { type: Boolean, default: false },
     studentId: { type: String },
     status: { type: String, default: "disabled" },
-    mktID: { type: String, },
+    mktID: { type: String },
   },
   {
     timestamps: true,

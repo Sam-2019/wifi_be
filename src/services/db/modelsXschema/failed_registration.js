@@ -17,11 +17,12 @@ const dataSchema = new Schema(
     isCustodian: { type: Boolean, default: false },
     dateTime: { type: Date, default: Date.now() },
     credentials: { type: Object },
+    selectedCard: { type: Object },
     provider: { type: String },
     providerResponse: { type: Object },
     registrationType: { type: String },
     purchaseInfo: { type: Object },
-    studentId: { type: String }
+    studentId: { type: String },
   },
   {
     timestamps: true,

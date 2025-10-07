@@ -13,7 +13,7 @@ const dataSchema = new Schema(
     isCustodian: { type: Boolean, default: false },
     dateTime: { type: Date, default: Date.now() },
     credentials: {
-      userName: { type: String, required: true, unique: true, }, 
+      userName: { type: String, required: true, unique: true }, 
 	  password: { type: String, required: true, },
     },
     selectedCard: { type: Object },

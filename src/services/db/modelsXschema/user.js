@@ -5,13 +5,13 @@ const dataSchema = new Schema(
     fullName: { type: String, required: true },
     email: {
       type: String,
-      required: true,
       unique: true,
+      required: true,
       lowercase: true,
     },
     encryptedPassword: {
       type: String,
-      required: true,
+      required: true
     },
     role: {
       type: String,

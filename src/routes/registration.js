@@ -62,6 +62,7 @@ router
   })
   .post(authMiddleware, async (req, res) => {
     const results = req.body;
+
     if (
       results === undefined ||
       results === null ||

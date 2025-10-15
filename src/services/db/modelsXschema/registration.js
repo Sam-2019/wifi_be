@@ -26,6 +26,7 @@ const dataSchema = new Schema(
     registrationType: { type: String },
     purchaseInfo: { type: Object },
     studentId: { type: String },
+    termsAccepted: { type: Boolean },
   },
   {
     timestamps: true,

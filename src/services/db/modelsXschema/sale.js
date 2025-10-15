@@ -17,7 +17,8 @@ const dataSchema = new Schema(
     purchaseInfo: { type: Object },
     transactionId: { type: String },
     externalTransactionId: { type: String },
-    studentId: { type: String }
+    studentId: { type: String },
+    termsAccepted: { type: Boolean },
   },
   {
     timestamps: true,

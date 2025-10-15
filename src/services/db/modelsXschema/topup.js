@@ -13,7 +13,8 @@ const dataSchema = new Schema(
     transactionId: { type: String },
     externalTransactionId: { type: String },
     status: { type: String, default: "active" },
-    studentId: { type: String }
+    studentId: { type: String },
+    termsAccepted: { type: Boolean },
   },
   {
     timestamps: true,
